@@ -5,11 +5,11 @@ import api from '@/api'
 const props = defineProps({
   themeColor: {
     type: String,
-    default: '#2563EB' // Default admin blue
+    default: '#006D3E' // Default admin blue
   },
   hoverColorClass: {
     type: String,
-    default: 'hover:text-[#2563EB]'
+    default: 'hover:text-[#006D3E]'
   },
   badgeColorClass: {
     type: String,
@@ -19,7 +19,6 @@ const props = defineProps({
 
 const notifications = ref<any[]>([])
 const isOpen = ref(false)
-const isLoading = ref(false)
 const bellRef = ref<HTMLElement | null>(null)
 
 const unreadCount = computed(() => {
@@ -28,15 +27,12 @@ const unreadCount = computed(() => {
 
 const fetchNotifications = async () => {
   try {
-    isLoading.value = true
     const res = await api.get('/notifications')
     if (res.data.success) {
       notifications.value = res.data.data
     }
   } catch (err) {
     console.error('Failed to fetch notifications:', err)
-  } finally {
-    isLoading.value = false
   }
 }
 
@@ -122,12 +118,12 @@ onUnmounted(() => {
       <!-- Red/Green Pulse Badge -->
       <span 
         v-if="unreadCount > 0" 
-        class="absolute top-2 right-2 w-2.5 h-2.5 rounded-full border-2 border-white animate-ping"
+        class="absolute top-2 right-2 w-2.5 h-2.5 rounded-lg border-2 border-white animate-ping"
         :class="props.badgeColorClass"
       ></span>
       <span 
         v-if="unreadCount > 0" 
-        class="absolute top-2 right-2 w-2.5 h-2.5 rounded-full border-2 border-white"
+        class="absolute top-2 right-2 w-2.5 h-2.5 rounded-lg border-2 border-white"
         :class="props.badgeColorClass"
       ></span>
     </button>
@@ -143,7 +139,7 @@ onUnmounted(() => {
     >
       <div 
         v-if="isOpen" 
-        class="absolute right-0 mt-3 w-80 sm:w-96 bg-white/95 backdrop-blur-xl border border-gray-100 rounded-3xl shadow-2xl shadow-gray-900/10 z-[100] overflow-hidden"
+        class="absolute right-0 mt-3 w-80 sm:w-96 bg-white/95 backdrop-blur-xl border border-gray-100 rounded-xl shadow-2xl shadow-gray-900/10 z-[100] overflow-hidden"
       >
         <!-- Header -->
         <div class="px-6 py-4 border-b border-gray-50 flex justify-between items-center bg-gray-50/50">
@@ -163,12 +159,7 @@ onUnmounted(() => {
 
         <!-- Notification List -->
         <div class="max-h-80 overflow-y-auto divide-y divide-gray-50/70 scrollbar-thin">
-          <div v-if="isLoading && notifications.length === 0" class="py-12 text-center space-y-3">
-            <div class="animate-spin rounded-full h-6 w-6 border-2 border-t-transparent mx-auto" :style="{ borderColor: props.themeColor, borderTopColor: 'transparent' }"></div>
-            <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Memuat...</p>
-          </div>
-          
-          <div v-else-if="notifications.length === 0" class="py-12 text-center text-gray-400">
+          <div v-if="notifications.length === 0" class="py-12 text-center text-gray-400">
             <span class="material-symbols-outlined text-4xl text-gray-200 mb-2">notifications_off</span>
             <p class="text-xs font-bold">Tidak ada notifikasi baru.</p>
           </div>

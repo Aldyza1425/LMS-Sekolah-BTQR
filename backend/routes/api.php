@@ -31,6 +31,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('admin')->prefix('admin')->group(function () {
         Route::get('/dashboard', [\App\Http\Controllers\Api\Admin\DashboardController::class, 'index']);
 
+        // Settings
+        Route::get('/settings/lembaga', [\App\Http\Controllers\Api\Admin\SettingsController::class, 'getLembaga']);
+        Route::post('/settings/lembaga', [\App\Http\Controllers\Api\Admin\SettingsController::class, 'saveLembaga']);
+        Route::get('/settings/system', [\App\Http\Controllers\Api\Admin\SettingsController::class, 'getSystem']);
+        Route::post('/settings/system', [\App\Http\Controllers\Api\Admin\SettingsController::class, 'saveSystem']);
+        Route::post('/settings/backup', [\App\Http\Controllers\Api\Admin\SettingsController::class, 'backup']);
+        Route::post('/settings/change-password', [\App\Http\Controllers\Api\Admin\SettingsController::class, 'changePassword']);
+
         // Pengajar Management
         Route::get('pengajar', [\App\Http\Controllers\Api\Admin\PengajarController::class, 'index']);
         Route::post('pengajar', [\App\Http\Controllers\Api\Admin\PengajarController::class, 'store']);

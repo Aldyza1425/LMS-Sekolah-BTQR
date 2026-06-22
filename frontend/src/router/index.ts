@@ -25,15 +25,20 @@ const router = createRouter({
       ]
     },
     {
-      path: '/lms/login',
+      path: '/login',
       name: 'lms.login',
       component: () => import('../views/lms/Login.vue')
     },
+    {
+      path: '/lms',
+      redirect: '/login'
+    },
+
 
     // --- LMS Admin Routes ---
     // --- LMS Admin Routes ---
     {
-      path: '/lms/admin',
+      path: '/admin',
       component: () => import('../components/layouts/AdminLayout.vue'),
       meta: { requiresAuth: true, role: 'admin' },
       children: [
@@ -81,7 +86,7 @@ const router = createRouter({
     },
     // --- LMS Pengajar Routes ---
     {
-      path: '/lms/pengajar',
+      path: '/pengajar',
       component: () => import('../components/layouts/PengajarLayout.vue'),
       meta: { requiresAuth: true, role: 'pengajar' },
       children: [
@@ -169,7 +174,7 @@ const router = createRouter({
     },
     // --- LMS Siswa Routes ---
     {
-      path: '/lms/siswa',
+      path: '/siswa',
       component: SiswaLayout,
       meta: { requiresAuth: true, role: 'siswa' },
       children: [
@@ -219,37 +224,37 @@ const router = createRouter({
       ]
     },
     {
-      path: '/lms/siswa/modul/:slug/pretest/:mid',
+      path: '/siswa/modul/:slug/pretest/:mid',
       name: 'siswa.modul.pretest',
       component: () => import('../views/siswa/modul/PreTestView.vue'),
       meta: { title: 'Pre Test', requiresAuth: true, role: 'siswa' }
     },
     {
-      path: '/lms/siswa/modul/:slug/post-test/:mid',
+      path: '/siswa/modul/:slug/post-test/:mid',
       name: 'siswa.modul.post_test',
       component: () => import('../views/siswa/modul/PostTestView.vue'),
       meta: { title: 'Ujian', requiresAuth: true, role: 'siswa' }
     },
     {
-      path: '/lms/siswa/modul/:slug/post-test/:mid/result',
+      path: '/siswa/modul/:slug/post-test/:mid/result',
       name: 'siswa.modul.post_test.result',
       component: () => import('../views/siswa/modul/PostTestResult.vue'),
       meta: { title: 'Hasil Ujian', requiresAuth: true, role: 'siswa' }
     },
     {
-      path: '/lms/siswa/modul/:slug/pre-test/:mid/result',
+      path: '/siswa/modul/:slug/pre-test/:mid/result',
       name: 'siswa.modul.pre_test.result',
       component: () => import('../views/siswa/modul/PostTestResult.vue'),
       meta: { title: 'Hasil Pre-Test', requiresAuth: true, role: 'siswa' }
     },
     {
-      path: '/lms/siswa/try-out/:id',
+      path: '/siswa/try-out/:id',
       name: 'siswa.try-out.show',
       component: () => import('../views/siswa/try-out/Show.vue'),
       meta: { title: 'Ujian Try Out', requiresAuth: true, role: 'siswa' }
     },
     {
-      path: '/lms/siswa/try-out/:id/result',
+      path: '/siswa/try-out/:id/result',
       name: 'siswa.try-out.result',
       component: () => import('../views/siswa/try-out/Result.vue'),
       meta: { title: 'Hasil Try Out', requiresAuth: true, role: 'siswa' }

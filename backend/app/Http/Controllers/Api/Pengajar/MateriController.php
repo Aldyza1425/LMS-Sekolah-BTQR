@@ -23,6 +23,7 @@ class MateriController extends Controller
             'durasi' => 'nullable|integer|min:0',
             'has_pretest' => 'nullable|boolean',
             'has_posttest' => 'nullable|boolean',
+            'is_arabic' => 'nullable|boolean',
 
             'quizzes' => 'nullable|array',
             'quizzes.*.soal' => 'required_with:quizzes|string',
@@ -52,6 +53,7 @@ class MateriController extends Controller
                 
                 $materi->has_pretest = filter_var($request->has_pretest, FILTER_VALIDATE_BOOLEAN);
                 $materi->has_posttest = filter_var($request->has_posttest, FILTER_VALIDATE_BOOLEAN);
+                $materi->is_arabic = filter_var($request->is_arabic, FILTER_VALIDATE_BOOLEAN);
 
                 if ($request->hasFile('file')) {
                     $path = $request->file('file')->store('materi', 'public');
@@ -166,6 +168,7 @@ class MateriController extends Controller
             'durasi' => 'nullable|integer|min:0',
             'has_pretest' => 'nullable|boolean',
             'has_posttest' => 'nullable|boolean',
+            'is_arabic' => 'nullable|boolean',
             'quizzes' => 'nullable|array',
             'quizzes.*.soal' => 'required_with:quizzes|string',
             'quizzes.*.a' => 'required_with:quizzes|string',
@@ -192,6 +195,7 @@ class MateriController extends Controller
                 
                 $materi->has_pretest = filter_var($request->has_pretest, FILTER_VALIDATE_BOOLEAN);
                 $materi->has_posttest = filter_var($request->has_posttest, FILTER_VALIDATE_BOOLEAN);
+                $materi->is_arabic = filter_var($request->is_arabic, FILTER_VALIDATE_BOOLEAN);
 
                 if ($request->hasFile('file')) {
                     if ($materi->file_path) {

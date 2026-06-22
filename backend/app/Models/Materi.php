@@ -17,6 +17,7 @@ class Materi extends Model
         'urutan',
         'has_pretest',
         'has_posttest',
+        'is_arabic',
     ];
 
     public function modul()

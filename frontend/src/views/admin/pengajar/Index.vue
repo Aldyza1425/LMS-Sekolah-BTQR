@@ -3,11 +3,14 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import api from '@/api'
 import { useToast } from '@/composables/useToast'
+import SkeletonLoader from '@/components/SkeletonLoader.vue'
+import { useSkeletonCount } from '@/composables/useSkeletonCount'
 
 const router = useRouter()
 const { success, error } = useToast()
 const pengajars = ref<any[]>([])
-const loading = ref(false)
+const loading = ref(true)
+const { skeletonCount, updateSkeletonCount } = useSkeletonCount('admin.pengajar', 5)
 const pagination = ref({
   current_page: 1,
   last_page: 1
@@ -18,6 +21,7 @@ const fetchPengajars = async (page = 1) => {
   try {
     const response = await api.get(`/admin/pengajar?page=${page}`)
     pengajars.value = response.data.data
+    updateSkeletonCount(pengajars.value.length)
     pagination.value = {
       current_page: response.data.current_page,
       last_page: response.data.last_page
@@ -67,14 +71,14 @@ onMounted(() => {
       </div>
       <button 
         @click="router.push({ name: 'admin.pengajar.create' })"
-        class="flex items-center gap-2 px-6 py-3.5 bg-[#2563EB] text-white rounded-2xl font-bold hover:shadow-lg hover:shadow-blue-500/20 hover:opacity-90 transition-all cursor-pointer active:scale-95 self-start md:self-auto"
+        class="flex items-center gap-2 px-6 py-3.5 bg-[#006D3E] text-white rounded-lg font-bold hover:shadow-lg hover:shadow-blue-500/20 hover:opacity-90 transition-all cursor-pointer active:scale-95 self-start md:self-auto"
       >
         <span class="material-symbols-outlined">person_add</span>
         Tambah Pengajar
       </button>
     </div>
 
-    <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+    <div class="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
           <thead>
@@ -86,9 +90,7 @@ onMounted(() => {
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-50">
-            <tr v-if="loading" v-for="i in 3" :key="i" class="animate-pulse">
-              <td colspan="4" class="px-6 py-8"><div class="h-4 bg-gray-100 rounded w-full"></div></td>
-            </tr>
+            <SkeletonLoader v-if="loading" type="table" :rows="skeletonCount" />
             <tr v-else-if="pengajars.length === 0">
               <td colspan="4" class="px-6 py-20 text-center">
                 <span class="material-symbols-outlined text-5xl text-gray-200 mb-2">person_off</span>
@@ -98,11 +100,11 @@ onMounted(() => {
             <tr v-for="pengajar in pengajars" :key="pengajar.id" class="hover:bg-gray-50/50 transition-colors group">
               <td class="px-6 py-5">
                 <div class="flex items-center gap-4">
-                  <div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-[#2563EB] font-bold shadow-sm">
+                  <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center text-[#006D3E] font-bold shadow-sm">
                     {{ pengajar.name.charAt(0).toUpperCase() }}
                   </div>
                   <div>
-                    <p class="font-bold text-gray-900 leading-none mb-1 group-hover:text-[#2563EB] transition-colors">{{ pengajar.name }}</p>
+                    <p class="font-bold text-gray-900 leading-none mb-1 group-hover:text-[#006D3E] transition-colors">{{ pengajar.name }}</p>
                     <p class="text-xs text-gray-400 font-medium">Terdaftar: {{ new Date(pengajar.created_at).toLocaleDateString() }}</p>
                   </div>
                 </div>
@@ -122,13 +124,13 @@ onMounted(() => {
               <td class="px-6 py-5 text-center">
                 <span 
                   v-if="pengajar.is_active" 
-                  class="px-3 py-1 bg-green-50 text-green-600 rounded-full text-[10px] font-black uppercase tracking-widest border border-green-100"
+                  class="px-3 py-1 bg-green-50 text-green-600 rounded-lg text-[10px] font-black uppercase tracking-widest border border-green-100"
                 >
                   Aktif
                 </span>
                 <span 
                   v-else 
-                  class="px-3 py-1 bg-orange-50 text-orange-600 rounded-full text-[10px] font-black uppercase tracking-widest border border-orange-100"
+                  class="px-3 py-1 bg-orange-50 text-orange-600 rounded-lg text-[10px] font-black uppercase tracking-widest border border-orange-100"
                 >
                   Verifikasi
                 </span>

@@ -41,11 +41,11 @@ const handleLogin = async () => {
 
       // Navigasi sesuai role
       if (role === 'admin') {
-        router.push('/lms/admin');
+        router.push('/admin');
       } else if (role === 'pengajar') {
-        router.push('/lms/pengajar');
+        router.push('/pengajar');
       } else {
-        router.push('/lms/siswa');
+        router.push('/siswa');
       }
     }
   } catch (err: any) {
@@ -61,13 +61,13 @@ const handleLogin = async () => {
 <template>
   <div class="min-h-screen bg-surface flex items-center justify-center p-6">
     <ToastNotification />
-    <div class="max-w-5xl w-full bg-white rounded-[32px] shadow-xl shadow-primary/5 overflow-hidden flex flex-col md:flex-row border border-gray-100">
+    <div class="max-w-5xl w-full bg-white rounded-xl shadow-xl shadow-primary/5 overflow-hidden flex flex-col md:flex-row border border-gray-100">
       
       <!-- Left: Visual/Branding -->
       <div class="md:w-1/2 bg-primary p-12 text-white flex flex-col justify-between relative overflow-hidden">
         <div class="absolute inset-0 opacity-10 pointer-events-none">
-          <div class="absolute top-[-10%] left-[-10%] w-64 h-64 border-4 border-white rounded-full"></div>
-          <div class="absolute bottom-[-20%] right-[-10%] w-96 h-96 border-4 border-white rounded-full"></div>
+          <div class="absolute top-[-10%] left-[-10%] w-64 h-64 border-4 border-white rounded-lg"></div>
+          <div class="absolute bottom-[-20%] right-[-10%] w-96 h-96 border-4 border-white rounded-lg"></div>
         </div>
         
         
@@ -93,14 +93,14 @@ const handleLogin = async () => {
           <div class="space-y-2">
             <label class="text-sm font-bold text-gray-700 ml-1">Email atau Username</label>
             <div class="relative group">
-              <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">
+              <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors duration-300 ease-out">
                 person
               </span>
               <input 
                 v-model="email"
                 type="text" 
                 placeholder="masukkan email/username"
-                class="w-full pl-12 pr-5 py-3.5 rounded-2xl border border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-gray-300"
+                class="w-full pl-12 pr-5 py-3.5 rounded-lg border border-gray-200/70 hover:border-primary/20 focus:border-primary/50 focus:ring-2 focus:ring-primary/10 outline-none transition-all duration-300 ease-out placeholder:text-gray-300"
                 required
               />
             </div>
@@ -109,37 +109,32 @@ const handleLogin = async () => {
           <div class="space-y-2">
             <div class="flex justify-between items-center ml-1">
               <label class="text-sm font-bold text-gray-700">Kata Sandi</label>
-              <a href="#" class="text-sm font-bold text-primary hover:text-primary/80 transition-colors">Lupa Password?</a>
+              <a href="#" class="text-sm font-bold text-primary hover:text-[#005530] transition-colors duration-300 ease-out">Lupa Password?</a>
             </div>
             <div class="relative group">
-              <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">
+              <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors duration-300 ease-out">
                 lock
               </span>
               <input 
                 v-model="password"
                 :type="showPassword ? 'text' : 'password'" 
                 placeholder="masukkan kata sandi"
-                class="w-full pl-12 pr-12 py-3.5 rounded-2xl border border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-gray-300"
+                class="w-full pl-12 pr-12 py-3.5 rounded-lg border border-gray-200/70 hover:border-primary/20 focus:border-primary/50 focus:ring-2 focus:ring-primary/10 outline-none transition-all duration-300 ease-out placeholder:text-gray-300"
                 required
               />
               <button 
                 type="button"
                 @click="showPassword = !showPassword"
-                class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-300 ease-out"
               >
                 <span class="material-symbols-outlined">{{ showPassword ? 'visibility_off' : 'visibility' }}</span>
               </button>
             </div>
           </div>
 
-          <div class="flex items-center gap-3 ml-1">
-            <input type="checkbox" id="remember" class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary" />
-            <label for="remember" class="text-sm text-gray-600 cursor-pointer">Ingat saya di perangkat ini</label>
-          </div>
-
           <button 
             type="submit" 
-            class="w-full bg-primary text-white py-4 rounded-2xl font-bold text-lg shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:opacity-90 transition-all active:scale-95"
+            class="w-full bg-primary text-white py-4 rounded-lg font-bold text-lg shadow-lg shadow-primary/20 hover:bg-[#005530] hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 ease-out active:scale-98 cursor-pointer"
           >
             Masuk Sekarang
           </button>

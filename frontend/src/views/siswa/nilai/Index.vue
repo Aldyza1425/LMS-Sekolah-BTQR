@@ -2,6 +2,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import api from '@/api'
+import SkeletonLoader from '@/components/SkeletonLoader.vue'
 
 const router = useRouter()
 
@@ -108,7 +109,7 @@ onMounted(() => {
     
     <!-- No large header, just a clean title -->
     <div class="flex items-center gap-4">
-      <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-sm border border-gray-100 text-[#006D3E]">
+      <div class="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm border border-gray-100 text-[#006D3E]">
         <span class="material-symbols-outlined text-2xl">workspace_premium</span>
       </div>
       <div>
@@ -117,9 +118,22 @@ onMounted(() => {
       </div>
     </div>
 
-    <div v-if="isLoading" class="flex flex-col items-center justify-center py-32 space-y-4">
-      <div class="animate-spin rounded-full h-12 w-12 border-4 border-[#006D3E] border-t-transparent"></div>
-      <p class="text-gray-400 font-bold text-sm animate-pulse uppercase tracking-widest">Memuat Transkrip Nilai...</p>
+    <!-- Skeleton Loading -->
+    <div v-if="isLoading" class="space-y-12">
+      <!-- Tryout skeleton -->
+      <div class="space-y-4">
+        <div class="skeleton-text h-5 w-40 rounded bg-gray-200 animate-pulse"></div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <SkeletonLoader type="list" :rows="3" />
+        </div>
+      </div>
+      <!-- Kuis skeleton -->
+      <div class="space-y-4">
+        <div class="skeleton-text h-5 w-40 rounded bg-gray-200 animate-pulse"></div>
+        <div class="bg-white rounded-xl border border-gray-100 overflow-hidden">
+          <SkeletonLoader type="list" :rows="4" />
+        </div>
+      </div>
     </div>
 
     <div v-else class="space-y-12">
@@ -131,7 +145,7 @@ onMounted(() => {
         </h2>
 
         <div v-if="tryoutGrades.length === 0" class="bg-white rounded-[2rem] p-10 text-center border-2 border-dashed border-gray-100">
-          <div class="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <div class="w-16 h-16 bg-gray-50 rounded-lg flex items-center justify-center mx-auto mb-4">
             <span class="material-symbols-outlined text-3xl text-gray-200">history_edu</span>
           </div>
           <h3 class="text-base font-bold text-gray-900 mb-1">Belum ada nilai Tryout</h3>
@@ -141,7 +155,7 @@ onMounted(() => {
         <div v-else class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div v-for="grade in tryoutGrades" :key="'to-'+grade.id" class="group bg-white rounded-[2rem] p-6 shadow-sm border border-gray-100 hover:bg-[#006D3E]/5 hover:border-[#006D3E]/20 transition-all duration-500 flex items-center gap-6">
             
-            <div class="w-16 h-16 rounded-2xl bg-gray-50 flex flex-col items-center justify-center border border-gray-100 shrink-0">
+            <div class="w-16 h-16 rounded-lg bg-gray-50 flex flex-col items-center justify-center border border-gray-100 shrink-0">
               <span class="text-2xl font-black text-gray-900 leading-none">{{ grade.nilai }}</span>
               <span class="text-[8px] font-bold text-gray-400 uppercase tracking-widest mt-1">Skor</span>
             </div>
@@ -155,7 +169,7 @@ onMounted(() => {
 
             <button 
               @click="router.push({ name: 'siswa.try-out.result', params: { id: grade.try_out_id } })"
-              class="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-[#006D3E] group-hover:text-white transition-all shrink-0 shadow-sm border border-gray-100"
+              class="w-12 h-12 rounded-lg bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-[#006D3E] group-hover:text-white transition-all shrink-0 shadow-sm border border-gray-100"
               title="Lihat Detail Ujian"
             >
               <span class="material-symbols-outlined">visibility</span>
@@ -174,7 +188,7 @@ onMounted(() => {
         </h2>
 
         <div v-if="groupedGrades.length === 0" class="bg-white rounded-[2rem] p-10 text-center border-2 border-dashed border-gray-100">
-          <div class="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <div class="w-16 h-16 bg-gray-50 rounded-lg flex items-center justify-center mx-auto mb-4">
             <span class="material-symbols-outlined text-3xl text-gray-200">history_edu</span>
           </div>
           <h3 class="text-base font-bold text-gray-900 mb-1">Belum ada nilai Kuis</h3>
@@ -194,7 +208,7 @@ onMounted(() => {
             <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
               <div v-for="grade in group.materis" :key="'kuis-'+grade.id" class="group bg-white rounded-[1.5rem] p-4 border border-gray-100 hover:bg-[#006D3E]/5 hover:border-[#006D3E]/20 transition-all flex items-center gap-5">
                 
-                <div class="w-14 h-14 rounded-2xl bg-gray-50 flex flex-col items-center justify-center border border-gray-100 shrink-0">
+                <div class="w-14 h-14 rounded-lg bg-gray-50 flex flex-col items-center justify-center border border-gray-100 shrink-0">
                   <span class="text-xl font-black text-gray-900 leading-none">{{ grade.skor }}</span>
                   <span class="text-[7px] font-bold text-gray-400 uppercase tracking-widest mt-0.5">Skor</span>
                 </div>

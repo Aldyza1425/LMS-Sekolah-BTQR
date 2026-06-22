@@ -36,8 +36,8 @@ api.interceptors.response.use(
       localStorage.removeItem('btqr_role')
       localStorage.removeItem('btqr_user')
       // Redirect ke login hanya jika belum di halaman login
-      if (!window.location.pathname.startsWith('/lms/login')) {
-        window.location.href = '/lms/login'
+      if (!window.location.pathname.startsWith('/login')) {
+        window.location.href = '/login'
       }
     }
     return Promise.reject(error)

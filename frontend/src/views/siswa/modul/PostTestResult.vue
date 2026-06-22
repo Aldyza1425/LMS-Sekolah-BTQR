@@ -3,6 +3,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import api from '@/api'
 import { usePageStore } from '@/stores/page'
+import SkeletonLoader from '@/components/SkeletonLoader.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -80,7 +81,7 @@ onMounted(() => {
         <div class="flex items-center gap-4">
           <button 
             @click="router.push({ name: 'siswa.modul.show', params: { slug: route.params.slug } })"
-            class="w-10 h-10 bg-white hover:bg-gray-50 rounded-2xl transition-all text-gray-400 shadow-sm border border-gray-100 flex items-center justify-center active:scale-95 flex-shrink-0 cursor-pointer"
+            class="w-10 h-10 bg-white hover:bg-gray-50 rounded-lg transition-all text-gray-400 shadow-sm border border-gray-100 flex items-center justify-center active:scale-95 flex-shrink-0 cursor-pointer"
           >
             <span class="material-symbols-outlined text-xl">arrow_back</span>
           </button>
@@ -95,9 +96,9 @@ onMounted(() => {
     <div class="flex-1 max-w-4xl mx-auto w-full px-6 py-10 space-y-8">
       
       <!-- Loading -->
-      <div v-if="isLoading" class="flex flex-col items-center justify-center py-32 space-y-4">
-        <div class="animate-spin rounded-full h-10 w-10 border-4 border-[#006D3E] border-t-transparent"></div>
-        <p class="text-gray-400 font-bold text-xs uppercase tracking-widest">Memuat Hasil...</p>
+      <div v-if="isLoading" class="space-y-6">
+        <SkeletonLoader type="stat" :cols="3" />
+        <SkeletonLoader type="detail" :rows="4" />
       </div>
 
       <template v-else-if="result">
@@ -115,14 +116,14 @@ onMounted(() => {
 
             <!-- Details Grid -->
             <div class="flex-1 grid grid-cols-2 sm:grid-cols-3 gap-5 w-full">
-              <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100">
+              <div class="p-4 bg-gray-50 rounded-lg border border-gray-100">
                 <p class="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-2">Soal Benar</p>
                 <p class="text-xl font-black">
                   <span :class="correctCount > 0 ? 'text-[#006D3E]' : 'text-gray-400'">{{ correctCount }}</span>
                   <span class="text-gray-300 text-base"> / {{ totalCount }}</span>
                 </p>
               </div>
-              <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100">
+              <div class="p-4 bg-gray-50 rounded-lg border border-gray-100">
                 <p class="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-2">Waktu Selesai</p>
                 <p class="text-xs font-black text-gray-700">{{ formatDate(result.created_at) }}</p>
               </div>
@@ -204,7 +205,7 @@ onMounted(() => {
 
       <!-- Error State -->
       <div v-else class="text-center py-24">
-        <div class="w-20 h-20 bg-gray-100 rounded-3xl flex items-center justify-center mx-auto mb-6">
+        <div class="w-20 h-20 bg-gray-100 rounded-xl flex items-center justify-center mx-auto mb-6">
           <span class="material-symbols-outlined text-4xl text-gray-300">error_outline</span>
         </div>
         <h3 class="text-lg font-black text-gray-400">Hasil Ujian Tidak Ditemukan</h3>

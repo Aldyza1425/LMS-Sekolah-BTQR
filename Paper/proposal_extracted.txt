@@ -1,0 +1,793 @@
+--- Page 1 ---
+PENGEMBANGAN LEARNING MANAGEMENT SY STEM  
+B IMB IN GAN  B AHAS A AR AB  B E R B AS IS  WE B 
+ME N GGUN AKAN  FRAMEWORK LARAVEL 
+PADA BAIT TAHFIZ AL – QURAN RIDHALLAH 
+ 
+PROPOSAL SKRIPSI 
+ 
+ 
+Diajukan Oleh 
+ 
+HANIF MAULANA ALDYZA  
+NIM: 230212058 
+ 
+REKAYASA PERANGKAT LUNAK 
+ 
+ 
+ 
+ 
+ 
+ 
+UNIVERSITAS ISLAM NEGERI AR-RANIRY 
+FAKULTAS TARBIYAH DAN KEGURUAN 
+PROGRAM STUDI PENDIDIKAN TEKNOLOGI INFORMASI  
+2026 M/ 1447 H  
+  
+
+--- Page 2 ---
+ 
+ii 
+ 
+LEMBAR PENGESAHAN PROPOSAL SKRIPSI 
+ 
+ 
+PENGEMBANGAN LEARNING MANAGEMENT SY STEM  
+B IMB IN GAN  B AHAS A AR AB  B E R B AS IS  WE B 
+ME N GGUN AKAN  FRAMEWORK LARAVEL 
+PADA BAIT TAHFIZ AL – QURAN RIDHALLAH 
+ 
+ 
+Oleh: 
+HANIF MAULANA ALDYZA 
+NIM: 230212058 
+ 
+REKAYASA PERANGKAT LUNAK 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Telah disetujui oleh : 
+Dosen Pembimbing Proposal 
+ 
+ 
+ 
+ 
+ 
+(Naz aru ddin Ah m ad, M.T.) 
+NIP: 198206052014031002 
+  
+--- Page 3 ---
+ 
+iii 
+ 
+KATA PENGANTAR 
+ 
+Segenap puji dan syukur penulis haturkan ke hadirat Allah SWT yang telah 
+mencurahkan rahmat serta karunia-Nya, sehingga penyusunan proposal skripsi ini 
+dapat dirampungkan dengan baik. Penulis juga ingin menyampaikan apresiasi yang 
+tulus kepada seluruh pihak yang telah memberikan sumbangsih, baik berupa 
+gagasan, motivasi, maupun dukungan material selama proses penulisan. Secara 
+khusus, ucapan terima kasih penulis sampaikan kepada:  
+1. Kedua orang tua, Bapak dan Ibu yang telah memberikan segalanya selama 
+menjalani Pendidikan 
+2. Ibu Mira Maisura, M.Sc  selaku Ketua Program Studi Pendidikan Teknologi 
+Informasi atas kesempatan dan bantuan yang diberikan kepada penulis dalam 
+melakukan penelitian dan memperoleh informasi yang diperlukan selama 
+penulisan proposal penelitian ini. 
+3. Bapak/Ibu Nazaruddin Ahmad , M.T.  sebagai Dosen Pembimbing Proposal 
+yang telah memberikan arahan dan semangat dalam penyusunan proposal 
+4. Bapak/Ibu Dosen program studi Pendidikan Teknologi Informasi yang telah 
+mendidik dan memberikan bimbingan selama masa perkuliahan. 
+5. Teman-teman seperjuangan, yang terus menjadi sumber energi positif, 
+menularkan antusiasme, serta saling menopang. 
+ 
+Penulis menyadari sepenuhnya bahwa proposal ini belum sempurna dan 
+masih menyimpan ruang untuk diperbaiki. Oleh sebab itu, masukan berupa kritik 
+yang membangun maupun saran penyempurnaan dari para pembaca sangat 
+dinantikan guna meningkatkan kualitas karya tulis ini di masa yang akan datang. 
+  
+--- Page 4 ---
+ 
+iv 
+ 
+Sebagai penutup, penulis berharap proposal skripsi ini mampu memberikan 
+kontribusi yang berarti, baik bagi komunitas akademik maupun pihak -pihak lain 
+yang berkepentingan. Semoga Allah SWT selalu mengaruniakan petunjuk serta 
+keberkahan-Nya bagi kita semua. Aamiin ya Rabbal 'Aalamiin. 
+ 
+ 
+ 
+Banda Aceh, 5 Mei 2026 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Hanif Maulana Aldyza  
+--- Page 5 ---
+ 
+v 
+ 
+DAFTAR ISI 
+ 
+ 
+LEMBAR PENGESAHAN PROPOSAL SKRIPSI .............................................. ii 
+KATA PENGANTAR ............................................................................................. iii 
+DAFTAR ISI ............................................................................................................. v 
+DAFTAR GAMBAR ................................................................................................ v 
+DAFTAR TABEL ..................................................................................................... v 
+BAB I PENDAHULUAN ......................................................................................... 1 
+1.1 Latar Belakang Masalah ................................................................................ 1 
+1.2 Rumusan Masalah ......................................................................................... 2 
+1.3 Tujuan Penelitian........................................................................................... 2 
+1.4 Batasan Penelitian ......................................................................................... 2 
+1.5 Manfaat Penelitian......................................................................................... 3 
+1.6 Relevansi Penelitian Terdahulu..................................................................... 4 
+1.7 Sistematika Penulisan.................................................................................... 5 
+BAB II LANDASAN TEORI................................................................................... 7 
+2.1 Pengertian Web.............................................................................................. 7 
+2.2 Jenis-jenis Framework .................................................................................. 7 
+2.3 Pengertian Backend dan Frontend ................................................................ 7 
+2.4 Pengertian Learning Management System .................................................... 8 
+2.5 Pengertian Laravel......................................................................................... 8 
+2.6 Pengertian Vue.js .......................................................................................... 8 
+2.7 Hubungan antara Laravel dan Vue.js ............................................................ 9 
+2.8 Bimbingan Bahasa Arab................................................................................ 9 
+BAB III METODOLOGI PENELITIAN ............................................................ 11 
+3.1 Tahapan Penelitian ...................................................................................... 11 
+3.2 Jenis dan Pendekatan Penelitian.................................................................. 15 
+3.3 Subjek Penelitian dan Sumber Data ............................................................ 15 
+3.4 Lokasi Penelitian ......................................................................................... 16 
+DAFTAR PUSTAKA .............................................................................................. 17 
+--- Page 6 ---
+ 
+v 
+ 
+LAMPIRAN 
+ 
+DAFTAR GAMBAR 
+ 
+Gambar 3.1 Diagram Alir Tahapan Penelitian ................................ ................................ .... 11 
+Gambar 3. 2 Usecase Diagram ................................ ................................ ............................  12 
+Gambar 3. 3 Entity Relationship Diagram ................................ ................................ ...........  13 
+ 
+  
+--- Page 7 ---
+ 
+v 
+ 
+DAFTAR TABEL 
+ 
+Tabel 1.1 Penelitian terkait .................................................................................................. 4 
+ 
+ 
+ 
+  
+--- Page 8 ---
+ 
+1  
+BAB I 
+PENDAHULUAN 
+ 
+1.1 Latar Belakang Masalah 
+Bidang pendidikan telah mengalami transformasi besar sebagai akibat dari 
+kemajuan teknologi informasi, terutama dengan masuknya metode pembelajaran 
+digital [1]. Learning Management System  (LMS) adalah sebuah sistem digital yang 
+dibuat untuk penyampaian materi pembelajaran secara jarak jauh dengan berbasis 
+web dan mengelola aktivitas pembelajaran serta pencapaian hasilnya . Melalui 
+pemanfaatan LMS, peserta memperoleh keleluasaan untuk menjangkau seluruh 
+bahan ajar tanpa terikat oleh batasan waktu maupun lokasi. 
+Bait Tahfizh Al-Qur'an Ridhallah (BTQR) adalah lembaga pendidikan yang 
+berfokus pada pengembangan Al-Qur'an dan bahasa Arab. Bait Tahfizh Al -Qur'an 
+Ridhallah memiliki sebuah program unggulan berupa bimbingan bahasa Arab untuk 
+persiapan studi ke Timur Tengah yang diberi nama program Non-Reguler. Program 
+bimbingan khusus ini sangat diminati oleh banyak peserta dari berbagai daerah di 
+luar daerah. Sayangnya, jarak lokasi yang sangat jauh membuat mereka kesulitan 
+untuk bisa rutin hadir mengiku ti kegiatan  pembelajaran secara tatap muka . 
+Keterbatasan jarak ini, banyak peserta yang akhirnya terpaksa membatalkan niat 
+peserta untuk bergabung ke dalam program tersebut. Oleh karena itu, pihak lembaga 
+sangat membutuhkan sebuah jalan keluar sehingga materi bimbingan tetap 
+tersampaikan tanpa harus datang ke lokasi [2]. 
+Penelitian ini bertujuan membangun sebuah sistem website belajar daring 
+yang bisa diakses dari mana saja. Agar mudah dipakai , pengembangan program 
+bekerja sama dengan Muhammad Faqih Sofyan yang bertugas meneliti keluhan 
+pengguna sekaligus merancang wujud tampilan aplikasinya. Hasil analisis dan 
+desain dari rekan kolaborator tersebut dipakai agar website yang dibangun nanti 
+benar-benar dijamin nyaman untuk para peserta awam. Berbekal acuan desain 
+antarmuka yang sudah lulus uji, tahap penulisan kode program untuk fitur belajar 
+ini dapat dikerjakan secara lebih terarah. Fokus utama dari pembuatan sistem ini 
+adalah memastikan seluruh kegiatan Program Non -Reguler dapat berjalan lancar 
+sepenuhnya secara jarak jauh.  
+--- Page 9 ---
+ 
+2  
+Sebagai solusinya, sistem yang dibangun akan berupa Learning Management 
+System (LMS) berbasis web dengan mengintegrasikan Framework Laravel pada sisi 
+backend dan Vue.js pad a sisi frontend. Pemilihan Laravel didasari oleh strukturnya 
+dengan kemampuan mengelola sistem yang mendalam , sementara Vue.js 
+digunakan untuk menciptakan antarmuka pengguna yang interaktif dan responsif. 
+Pengembangan sistem ini diharapkan dapat menyempurnakan proses bimbingan 
+belajar di BTQR dan memberikan aksesibilitas yang lebih luas bagi peserta dalam 
+mengikuti pembelajaran bahasa Arab secara efektif dan efisien. 
+Berdasarkan identifikasi masalah tersebut, penulis menetapkan penelitian ini 
+dengan judul " PENGEMBANGAN LEARNING MANAGEMENT SYSTEM  
+BIMBINGAN BAHASA ARAB BERBASIS WEB MENGGUNAKAN 
+FRAMEWORK LARAVEL PADA BAIT TAHFIZ AL -QURAN 
+RIDHALLAH". 
+ 
+1.2 Rumusan Masalah 
+Bagaimana merancang dan mengembangkan Learning Management System  
+(LMS) bimbingan bahasa Arab berbasis web pada Bait Tahfiz Al-Quran Ridhallah 
+menggunakan Framework Laravel dan Vue.js? 
+ 
+1.3 Tujuan Penelitian 
+Adapun tujuan pokok yang hendak dicapai melalui penelitian ini adalah 
+merancang dan mengembangkan Learning Management  System (LMS) untuk 
+mendukung kegiatan bimbingan bahasa Arab berbasis web pada Bait Tahfiz Al -
+Quran Ridhallah menggunakan Framework Laravel dan Vue.js. 
+ 
+1.4 Batasan Penelitian 
+Agar fokus kajian tetap terarah, maka penelitian ini dibatasi pada ruang 
+lingkup berikut: 
+1. Sistem yang dikembangkan hanya berbasis web. 
+2. Fokus pada program bimbingan bahasa Arab di BTQR. 
+3. Pengembangan arsitektur teknis mutlak mengandalkan Framework Laravel 
+untuk operasional backend dan Vue.js untuk kebutuhan frontend. 
+  
+--- Page 10 ---
+ 
+3  
+4. Ruang lingkup uji cob a website hanya difokuskan pada fungsionalitas 
+sistem. 
+ 
+ 
+1.5 Manfaat Penelitian 
+Manfaat dari sebuah penelitian pada dasarnya merupakan proyeksi dampak 
+positif yang dihasilkan ketika seluruh objektif kajian berhasil direalisasikan. Secara 
+fundamental, eksistensi suatu penelitian ilmiah memikul dua orientasi utama: 
+pertama, untuk memperkaya dan memperluas cakrawala keilmuan pada tataran 
+teoretis; kedua, sebagai instrumen pemecahan masalah ( problem-solving) yang 
+bersifat pragmatis terhadap kendala nyata di lapangan. Capaian akhir dari penelitian 
+ini akan dievaluasi berdasarkan keterkaitan antara luaran yang dihasilkan  dengan 
+rumusan per masalahan yang telah ditetapkan . Adapun implikasi dari temuan 
+penelitian ini diharapkan dapat memberikan kemanfaatan sebagai berikut: 
+Hasil penelitian dapat memberikan manfaat, antara lain : 
+1. Manfaat Teoritis 
+Memberikan kontribusi pada pe ngembangan teori pembelajaran berbasis 
+teknologi informasi, khususnya penerapan LMS untuk mata pelajaran 
+bahasa Arab di lembaga tahfizh 
+2. Manfaat Praktis 
+a. Memberikan solusi akses bimbingan bahasa Arab secara daring bagi 
+calon peserta dari luar daerah. 
+b. Memudahkan pengelola BTQR dalam mengelola materi, tugas, dan 
+evaluasi pembelajaran. 
+c. Dapat dijadikan referensi bagi lembaga pendidikan lain yang ingin 
+mengembangkan LMS serupa. 
+  
+--- Page 11 ---
+ 
+4  
+1.6 Relevansi Penelitian Terdahulu 
+ 
+Tabel 1.1 Penelitian terkait 
+No Judul Obyek penelitian Hasil Penelitian 
+1 Pengembangan Learning 
+Management System dengan 
+Framework Laravel dan 
+Tailwind CSS. 
+Pembelajaran 
+daring di tingkat 
+SMA. 
+Menghasilkan 
+LMS berbasis 
+Laravel dengan 
+fitur manajemen 
+materi, 
+penugasan, 
+penilaian, dan 
+tracking progres. 
+Validasi sistem 
+mencapai 90,95% 
+(kategori sangat 
+baik). 
+2 Pengembangan Media Learning 
+Management System (LMS) 
+Berbasis Kitab Al-‘Arabiyah Li 
+An-Nāsyi’īn. 
+Pembelajaran 
+bahasa Arab di 
+lembaga 
+pendidikan Islam. 
+Mengembangkan 
+LMS yang 
+mendukung 
+pembelajaran 
+bahasa Arab 
+dengan materi 
+berbasis kitab 
+klasik, 
+meningkatkan 
+aksesibilitas 
+pembelajaran. 
+--- Page 12 ---
+ 
+5  
+3 Pengembangan Model 
+Pembelajaran Bahasa Arab 
+Online Berbasis Learning 
+Management System. 
+Program Studi 
+Sastra Arab. 
+Menghasilkan 
+model LMS untuk 
+pembelajaran 
+bahasa Arab 
+daring yang 
+efektif dalam 
+meningkatkan 
+kemampuan 
+mahapeserta. 
+4 Pengembangan Learning 
+Management System Berbasis 
+Web untuk Pondok Tahfiz. 
+Lembaga tahfiz 
+Al-Qura’an. 
+Membangun LMS 
+yang mendukung 
+pengelolaan 
+kegiatan tahfiz 
+dan bimbingan 
+pendukung, 
+termasuk bahasa 
+Arab. 
+ 
+Berdasarkan Tabel 1 .1 di atas,  penelitian terdahulu telah mengembangkan 
+LMS di berbagai konteks. Penelitian pertama mengembangkan LMS menggunakan 
+Laravel sebagai pembelajaran jara k jauh tingkat SMA. Penelitian kedua juga 
+membangun LMS untuk pembelajaran bahasa Arab berbasis kitab klasik. Penelitian 
+ketiga membangun model LMS untuk program pendidikan sastra Arab, sedangkan 
+penelitian keempat merancang LMS sebagai pengelolaan kegiatan tahfiz di pondok 
+pasantren. Analisis alur bisnis dan penerapan fitur permainan melalui framework 
+tertentu juga menjadi bahan referensi penting dalam pengembangan sistem ini [3], 
+[4], [5]. 
+ 
+1.7 Sistematika Penulisan 
+Proposal skripsi ini terdiri atas lima bab yang d isusun secara sistematis. 
+Struktur dan isi setiap bab dapat diuraikan sebagai berikut: 
+  
+--- Page 13 ---
+ 
+6  
+Bab 1 Pendahuluan 
+Bagian ini menguraikan secara sistematis mengenai akar permasalahan yang 
+melatarbelakangi penelitian, rumusan masalah, tujuan yang ingin dicapai, batasan 
+ruang lingkup kajian, manfaat yang diharapkan, kajian terhadap penelitian relevan 
+sebelumnya, serta kerangka sistematika penulisan proposal. 
+Bab 2 Landasan Teori 
+Pada bab ini disajikan kerangka konseptual yang melandasi penelitian, meliputi 
+definisi web, tipologi Framework pengembangan, arsitektur backend dan frontend, 
+konsep dasar Learning Management System , karakteristik Framework Laravel dan 
+Vue.js, serta sinergi di antara keduanya dalam konteks pengembangan aplikasi. 
+Bab 3 Metodologi Penelitian 
+Bab ketiga merumuskan kerangka operasional penelitian, pendekatan metodologi  
+yang digunakan, penetapan  lokasi penelitian, spesifikasi partisipan, penentuan 
+sumber data, dan mekanisme penggalian informasi yang mendukung proses 
+rekayasa perangkat lunak. 
+Bab 4 Hasil Dan Pembahasan 
+Bab ini memaparkan luaran dari proses implementasi sistem, menganalisis capaian 
+pengujian yang telah dilaksanakan, sekaligus mendiskusikan temuan -temuan 
+signifikan yang muncul sepanjang siklus pengembangan  Learning Management 
+System. 
+Bab 5 Penutup 
+Bab penutup ini merangkum intisari dari keseluruhan proses dan temuan penelitian, 
+sekaligus merumuskan rekomendasi strategis yang dapat menjadi pijakan bagi 
+pengembangan sistem di masa depan.
+--- Page 14 ---
+ 
+7  
+BAB II 
+LANDASAN TEORI 
+ 
+2.1 Pengertian Web 
+Web adalah kumpulan halaman informasi yang saling terhubung melalui 
+jaringan internet dan bisa diakses dengan menggunakan peramban web [6]. 
+Sementara itu, aplikasi berbasis web didefinisikan sebagai suatu perangkat lunak 
+yang ditanamkan pada komputer server dan menjembatani penggunanya melalui 
+browser, sehingga memungkinkan pengguna melakukan interaksi dinamis dengan 
+sistem, termasuk pengolahan data serta pelaksanaan berbagai fungsi bisnis secara 
+real-time. 
+ 
+2.2 Jenis-jenis Framework 
+Sebuah Framework dapat diartikan sebagai fondasi arsitektur kerja yang 
+mendistribusikan pola struktur, fungsi, dan komponen -komponen siap pakai  [7]. 
+Keberadaannya dikonsepkan murni untuk mengakselerasi serta melunakkan 
+kompleksitas siklus rekayasa perangkat lunak. Berdasarkan fungsinya dalam 
+pengembangan teknologi informasi, framework ini dibagi dalam tiga kategori: 
+Framework backend, frontend, serta ekosistem full-stack. 
+Beberapa contoh Framework backend yang populer adalah Laravel (PHP), 
+CodeIgniter (PHP), Django (Python), Express.js (Node.js), dan Spring Boot (Java). 
+Sedangkan Framework frontend yang banyak digunakan meliputi Vue.js, React.js, 
+Angular, dan Svelte. Framework-Framework tersebut membantu developer dalam 
+menjaga konsistensi kode, meningkatkan keamanan aplikasi, 
+Serta mempercepat proses pengembangan. 
+ 
+2.3 Pengertian Backend dan Frontend 
+Backend merupakan komponen aplikasi web yang tidak terlihat langsung oleh 
+pengguna akhir. Bagian ini bertanggung jawab atas pemrosesan logika bisnis, 
+pengelolaan dan penyimpanan data, autentikasi, keamanan sistem, serta komunikasi 
+dengan basis data. Sementara itu, frontend adalah komponen yang berinteraksi 
+langsung dengan pengguna, mencakup UI/UX.  
+--- Page 15 ---
+ 
+8  
+Pemisahan antara backend dan frontend mengacu pada prinsip Separation of 
+Concerns dalam rekayasa perangkat lunak. Pendekatan ini memisahkan tanggung 
+jawab masing -masing komponen secara jelas, sehingga  menghasilkan 
+pengembangan yang lebih terstruktur, modular, mudah dipelihara, dan skalabel. 
+Dalam penelitian ini, penulis menggunakan Laravel sebagai framework backend 
+dan Vue.js sebagai framework frontend [8]. Pemilihan ini dilakukan karena Laravel 
+menawarkan arsitektur yang kuat dan fitur keamanan yang  lengkap, sedangkan 
+Vue.js memberikan fleksibilitas dalam membangun antarmuka yang responsif. 
+ 
+2.4 Pengertian Learning Management System 
+Learning Management System  (LMS) dapat diartikan sebagai sistem 
+perangkat lunak berbasis web yang dirancang secara khusus kepentingan tata kelola 
+akademik dan menyampaikan materi pendidikan atau program pelatihan  [9]. 
+Melalui LMS, pengajar dapat mengunggah materi ajar, memberikan tugas, 
+melakukan penilaian, dan memantau perkembangan peserta didik secara 
+terintegrasi dan sistematis [10]. 
+ 
+2.5 Pengertian Laravel 
+Laravel merupakan Framework pengembangan backend berwujud open 
+source yang disusun di atas bahasa PHP, berlandaskan paradigma pola arsitektur 
+Model-View-Controller (MVC). Framework ini dilengkapi dengan berbagai fitur 
+modern seperti Eloquent ORM untuk manipulasi database, routing yang elegan, 
+sistem autentikasi bawaan, serta dukungan middleware untuk meningkatkan 
+keamanan aplikasi. Laravel dikenal memiliki sintaks yang bersih, dan dokumentasi 
+yang lengkap [11], [12]. 
+ 
+2.6 Pengertian Vue.js 
+Vue.js merupakan Framework JavaScript yang bersifat modern dan 
+dirancang untuk membangun antarmuka pengguna yang ringan, cepat, serta 
+responsif. Vue.js memungkinkan pengembang untuk membuat komponen 
+antarmuka yang dapat digunakan ulang. Framework ini sangat sesuai untuk 
+membangun Single Page Application  (SPA) yang memberikan pengalaman 
+--- Page 16 ---
+ 
+9  
+pengguna yang mulus dan interaktif [13], [14]. 
+ 
+2.7 Hubungan antara Laravel dan Vue.js 
+Laravel dan Vue.js sering digunakan dalam pengembangan aplikasi web 
+modern secara bersamaan. Laravel berperan sebagai backend yang menangani 
+logika bisnis dan pengelolaan data, sementara Vue.js bertugas sebagai frontend 
+yang mengelola tampilan dan interaksi pengguna. Kedua Framework ini dapat 
+diintegrasikan melalui RESTful API  atau Inertia.js, sehingga menghasilkan sistem 
+yang aman, cepat, dan memiliki antarmuka yang modern serta user-friendly [15]. 
+ 
+2.8 Bimbingan Bahasa Arab 
+Bahasa Arab merupakan bahasa resmi agama Islam sekaligus bahasa suci Al-
+Qur'an. Penguasaan bahasa Arab menjadi kebutuhan mendasar bagi setiap Muslim, 
+terutama santri di lembaga pendidikan tahfiz Al-Qur'an. Bimbingan bahasa Arab di 
+pesantren tahfiz bukan sekadar pembelajaran bahasa asing biasa, melainkan upaya 
+sistematis untuk membekali santri agar mampu memahami, membaca, 
+menerjemahkan, serta menganalisis teks-teks keislaman, khususnya Al-Qur'an dan 
+Hadis, secara mandiri dan mendalam.  Program pembelajaran bahasa Arab di 
+pesantren dirancang secara terkelola melalui manajemen yang mencakup 
+perencanaan, pengorganisasian, pelaksanaan, dan evaluasi. Di lingkungan 
+pesantren, bimbingan bahasa Arab difokuskan pada peningkatan kompetensi santri 
+dalam memahami makna Al -Qur'an yang diha fal sehingga hafalan tidak hanya 
+bersifat tekstual, melainkan juga berdasarkan konteks dan menyeluruh [16], [17]. 
+Di lembaga Bait Tahfiz Al -Quran Ridhallah, bimbingan ini diintegrasikan dengan 
+pendekatan yang mendukung pencapaian pemahaman mendalam terhadap sumber 
+ajaran Islam. 
+  
+--- Page 17 ---
+ 
+10  
+Bimbingan bahasa Arab mencakup beberapa as pek keilmuan yang saling 
+terkait, yaitu: 
+1. Nahwu (Sintaksis) adalah Ilmu yang mempelajari susunan kata dalam 
+kalimat, kedudukan kata, serta perubahan akhiran kata berdasarkan 
+posisinya. Nahwu sangat penting untuk memahami struktur kalimat Al -
+Qur'an dan menghindari kesalahan penafsiran. 
+2. Sharaf (Morfologi) adalah ilmu yang membahas bentuk kata, perubahan 
+kata (tasrif), serta derivasi kata (ishtiqaq). Sharaf membantu santri 
+memahami akar kata dan variasi maknanya. 
+3. Mufradat (Kosa Kata)  adalah p enguasaan kosakata (mufradat) baik yang 
+bersifat umum maupun khas Al-Qur'an (Gharib al-Qur'an). 
+4. Qira’ah (Membaca Teks) yaitu k emampuan membaca teks Arab dengan 
+tartil, tajwid, serta disertai pemahaman makna (tarjamah). 
+5. Kitabah (Menulis) adalah kemampuan menulis kalimat dan paragraf dalam 
+bahasa Arab secara gramatikal benar. 
+6. Muhadatsah dan Istima’ (Berbicara dan Mendengar)  yaitu kemampuan 
+komunikasi lisan serta pemahaman terhadap percakapan bahasa Arab, 
+termasuk melalui bi’ah lughawiyyah dan muhadhoroh. 
+7. Balaghah (Retorika) adalah ilmu yang mempelajari keindahan bahasa Al -
+Qur'an, majas, serta gaya bahasa ilahi. 
+ 
+  
+--- Page 18 ---
+ 
+11  
+BAB III 
+METODOLOGI PENELITIAN 
+ 
+ 
+ 
+Gambar 3.1 Diagram Alir Tahapan Penelitian 
+ 
+3.1 Tahapan Penelitian 
+Penelitian ini menggunakan metode Waterfall, yang sangat identik dengan 
+aliran proses yang terstruktur secara bertahap. Setiap tahapan harus diselesaikan 
+secara menyeluruh sebelum melanjutkan ke tahapan berikutnya. Berikut adalah 
+penjelasan rinci setiap tahap: 
+1. Requirements (Pengumpulan & Analisis Kebutuhan Sistem) 
+Tahap awal dimulai dengan mengumpulkan kebutuhan sistem melalui 
+observasi dan wawancara di BTQR, serta memanfaatkan data analisis 
+UI/UX dari penelitian kolaborasi. Seluruh informasi tersebut kemudian 
+
+--- Page 19 ---
+ 
+12  
+disusun menjadi spesifikasi teknis platform LMS berbasis web, yang akan 
+menjadi landasan utama sebelum masuk ke tahap perancangan [18]. Daftar 
+fitur untuk sistem belajar daring ini tidak disusun dari nol, melainkan 
+langsung mengadaptasi hasil analisis riset desain milik Muhammad Faqih 
+Sofyan. Dari dokumen analisis tersebut, kita mengambil catatan mengenai 
+keluhan siswa dari luar kota serta solusi penyampaian materi yang sa ngat 
+diperlukan oleh pengajar. Langkah pembuatan website juga 
+diimplementasikan secara utuh berdasarkan peta rancangan navigasi yang 
+sudah diatur khusus untuk semua kelompok pengguna. Nantinya, wujud 
+tampilan layar yang akan dibuat harus persis seperti des ain prototipe 
+interaktif miliknya yang sebelumnya sudah lulus uji usability. Oleh karena 
+itu, tugas utama pengembang di sini adalah memastikan semua fungsi yang 
+dibuat benar-benar meniru rancangan yang telah disetujui lembaga. 
+2. System Design (Perancangan Arsitektur & Desain Sistem) 
+ 
+ 
+Gambar 3. 2 Usecase Diagram 
+  
+--- Page 20 ---
+ 
+13  
+Use Case Diagram  berfungsi sebagai peta utama yang memisahkan batasan 
+hak akses untuk tiga aktor penggerak di dalam sistem LMS BTQR. Pertama, 
+aktor Admin memegang kendali penuh atas pengelolaan data seluruh akun 
+pengguna. Kedua, aktor Pengajar memiliki tanggung jawab spes ifik dalam 
+meracik dan menyediakan modul materi pelajaran beserta soal ujian ( try 
+out). Terakhir, aktor Siswa berperan sebagai pengguna akhir yang diberikan 
+fasilitas untuk mengakses seluruh materi belajar sekaligus mengerjakan 
+evaluasi secara daring. 
+ 
+ 
+Gambar 3. 3 Entity Relationship Diagram  
+ 
+  
+
+--- Page 21 ---
+ 
+14  
+Entity Relationship Diagram  (ERD) ini dirancang khusus dengan pola 
+relasional untuk menjamin kecepatan dan keakuratan aliran data di dalam 
+sistem. Sebagai penyangga utamanya, sistem menggunakan kelompok tabel 
+master yang menyimpan identitas para aktor, yaitu admins , pengajars , 
+dan siswas . Kelompok tabel tersebut kemudian dihubungkan secara 
+sistematis dengan tabel operasional yang menampung kegiatan harian, 
+seperti moduls , materis , dan try_outs . Berkat penghubungan yang 
+rapi ini, setiap rekam jejak kemajuan belajar hingga hasil akhir ujian 
+(try_out_hasil ) dapat tersimpan dengan aman tanpa ada data yang 
+tercecer. 
+3. Implementation (Penulisan Kode & Pembuatan Unit Program) 
+Tahap implementasi merupakan tahap di mana seluruh rancangan visual 
+yang telah dibuat diwujudkan dalam bentuk kode program. Pada penelitian 
+ini, tahap ini dilakukan dengan menggunakan Framework Laravel untuk 
+mengembangkan sisi backend (logika bisnis dan database) dan Vue.js untuk 
+mengembangkan sisi frontend (antarmuka pengguna). Setiap modul atau 
+unit program dikembangkan secara bertahap dengan menyesuaikan desain 
+yang telah ditetapkan [19], [20]. 
+4. Testing (Pengujian & Verifikasi Sistem Secara Menyeluruh) 
+Tahap testing adalah serangkaian uji coba sistem yang rinci untuk 
+memastikan bahwa seluruh fitur berjalan dengan lancar.  Tahapan ini 
+menerapkan metode black-box testing guna mengecek kebenaran fungsi 
+dari masing-masing fitur[21]. 
+5. Deployment (Peluncuran & Distribusi Sistem ke Pengguna)  
+Sistem ini siap diluncurkan dan digunakan langsung oleh para pengguna di 
+lingkungan Bait Tahfiz Al-Quran Ridhallah. Proses peluncuran ini melipu ti 
+pemasangan aplikasi pada server utama, pengaturan konfigurasi sistem, dan 
+diakhiri dengan pelatihan singkat. Pelatihan ini bertujuan untuk memastikan 
+para pengguna dapat mengoperasikan sistem LMS ini secara optimal. 
+6. Maintenance (Pemeliharaan, Perbaikan Bug, & Peningkatan Sistem)  
+Tahap terakhir adalah pemeliharaan sistem setelah digunakan. Kegiatan 
+yang dilakukan meliputi perbaikan bug yang mungkin muncul, perbaikan 
+--- Page 22 ---
+ 
+15  
+sesuai masukan pengguna, serta peningkatan sistem agar tetap relevan dan 
+sesuai dengan perkembangan kebutuhan di masa mendatang. 
+ 
+3.2 Jenis dan Pendekatan Penelitian 
+Penelitian ini tergolong ke dalam jenis penelitian dan pengembangan 
+(Research and Development ) dengan menerapkan pendekatan sekuensial Waterfall. 
+Metode ini adalah salah satu model perancangan perangkat lunak yang memiliki 
+sifat linier dan berurutan. Metode ini memiliki konsep layaknya aliran air terjun, 
+yang berarti setiap tahapan harus diselesaikan dengan tuntas terlebih dahulu 
+sebelum beralih ke tahap berikutnya. Pendekatan ini sa ngat tepat digunakan pada 
+proyek yang memiliki kebutuhan yang sudah pasti, stabil, dan jarang mengalami 
+perubahan mendadak di tengah proses pengerjaan. 
+Keunggulan dari metode Waterfall terletak pada strukturnya yang sangat rapi, 
+dokumentasi yang detail di setiap fasenya, serta alur pengerjaannya yang mudah 
+dipantau. Di sisi lain, kelemahannya terletak pada kurangnya fleksibilitas jika 
+sewaktu-waktu terjadi perubahan rencana. Untuk penelitian pengembangan 
+Learning Management System  (LMS) ini menggunakan metode Waterfall karena 
+seluruh rancangan dan kebutuhan sistem sudah berhasil dipetakan secara matang 
+sejak awal penelitian. 
+ 
+3.3 Subjek Penelitian dan Sumber Data 
+Subjek dalam penelitian ini adalah lembaga Bait Tahfizh Al-Qur'an Ridhallah 
+(BTQR) yang berloka si di Banda Aceh. Secara lebih spesifik, pihak -pihak yang 
+menjadi sasaran analisis masalah sekaligus pengguna akhir dari sistem yang akan 
+dikembangkan meliputi pengelola lembaga (Admin), para tenaga pengajar 
+bimbingan bahasa Arab (Ustadz), serta para siswa atau peserta bimbingan. 
+Sementara itu, data yang digunakan dalam penelitian ini bersumber dari data 
+primer dan data sekunder. Data primer diperoleh secara langsung dari pihak 
+lembaga melalui proses wawancara dan observasi lapangan terkait mekanisme 
+kegiatan belajar mengajar serta kendala operasional yang dialami. Adapun data 
+sekunder diperoleh dari dokumen hasil riset kolaborasi perancangan User Interface 
+(UI) dan User Experience (UX) yang dikerjakan oleh Muhammad Faqih Sofyan. 
+--- Page 23 ---
+ 
+16  
+Data sekunder berupa hasil e lisitasi kebutuhan pengguna dan purwarupa antarmuka 
+(mockup) tersebut dijadikan sebagai acuan utama dalam memandu proses rekayasa 
+perangkat lunak pada tahap penulisan kode program serta perancangan basis data. 
+ 
+3.4 Lokasi Penelitian 
+Penelitian ini dilaksanakan di Bait Tahfiz Al-Quran Ridhallah yang berlokasi 
+di Kabupaten Aceh Besar, Provinsi Aceh. Pemilihan lokasi ini didasarkan pada 
+pertimbangan bahwa lembaga tersebut secara aktif menyelenggarakan program 
+bimbingan bahasa Arab bagi p ara santri, sehingga sangat relevan sebagai tempat 
+pengembangan dan pengujian sistem.
+--- Page 24 ---
+ 
+17  
+DAFTAR PUSTAKA 
+ 
+[1] A. Yauma, I. Fitri, and S. Ningsih, “Learning Management System (LMS) pada E-
+Learning Menggunakan Metode Agile dan Waterfall berbasis Website,” J. JTIK 
+(Jurnal Teknol. Inf. dan Komunikasi), vol. 5, no. 3, pp. 323–328, 2021, doi: 
+10.35870/jtik.v5i3.190. 
+[2] A. A. Fahmi and N. Kholid, “Manajemen Program Pembelajaran Bahasa Arab di 
+Pesantren Darul Quran Aceh (DQA),” Risalah, J. Pendidik. dan Stud. …, vol. 10, 
+no. 4, pp. 1519–1534, 2024, [Online]. Available: 
+http://www.jurnal.faiunwir.ac.id/index.php/Jurnal_Risalah/article/view/1172%0Ah
+ttp://www.jurnal.faiunwir.ac.id/index.php/Jurnal_Risalah/article/download/1172/6
+36 
+[3] Krisna, Arief Ichwani, Nizirwan Anwar, and Binastya Anggra Sekti, “Perancangan 
+Learning Management System Pada SMA Islam Tambora,” IKRA-ITH Inform.  J. 
+Komput. dan Inform., vol. 8, no. 1, pp. 201–212, 2024, doi: 10.37817/ikraith-
+informatika.v8i1.3214. 
+[4] M. R. Ridha, S. K. Ayuni, and M. J. Shodiq, “Pengembangan Media Learning 
+Management System (Lms) Berbasis Kitāb Al-‘Arabiyah Li an-Nāsyi’Īn,” Al 
+Mi’yar J. Ilm. Pembelajaran Bhs. Arab dan Kebahasaaraban, vol. 6, no. 1, p. 1, 
+2023, doi: 10.35931/am.v6i1.1842. 
+[5] M. E. Azril Delfrian Adi Putra; Aris Rakhmadi, S.T., “SISTEM MONITORING 
+TAHFIDZUL QUR’AN BERBASIS WEB Azril Delfrian Adi Putra; Aris 
+Rakhmadi, S.T., M.Eng. Program Studi Teknik Informatika, Fakultas Komunikasi 
+dan Informatika, Universitas Muhammadiyah Surakarta”. 
+[6] F. Sulianta, F. Rumaisa, Y. Puspitarani, S. Violina, and A. Rosita, “Abdimas 
+Galuh a Learning Platform in the Digital Era,” vol. 7, no. September, pp. 1720–
+1728, 2025. 
+[7] A. Baehaqi, M. S. Basit, R. E. Indrajit, and R. D. Kurniawan, “Front End Learning 
+Management System Development Using the Nextjs Framework,” J. Tek. Inform., 
+vol. 4, no. 4, pp. 899–911, 2023, doi: 10.52436/1.jutif.2023.4.4.1273. 
+[8] A. Syafitri, Ameyriya Angraeni, and Agung Wibowo, “Sistem Informasi 
+Manajemen Perpustakaan Digital Berbasis Web Menggunakan Framework 
+Laravel,” J. Inform. dan Kesehat., vol. 2, no. 2, pp. 89–98, 2025, doi: 
+10.35473/ikn.v2i2.3699. 
+[9] G. W. Wicaksono, G. A. Juliani, E. D. Wahyuni, Y. M. Cholily, H. W. Asrini, and 
+Budiono, “Analysis of Learning Management System Features based on 
+Indonesian Higher Education National Standards using the Feature-Oriented 
+Domain Analysis,” 2020 8th Int. Conf. Inf. Commun. Technol. ICoICT 2020, 2020, 
+doi: 10.1109/ICoICT49345.2020.9166459. 
+[10] R. Samihardjo, M. Murnawan, E. Amalia, and A. C. Pamungkas, “Analysis of 
+Web-Based E-Learning Management System Business Proccess to Increase 
+Learning Effectiveness at SMAABC Bandung,” Brill. Res. Artif. Intell., vol. 3, no. 
+2, pp. 329–337, 2023, doi: 10.47709/brilliance.v3i2.3274. 
+[11] F. S. Susilo, E. Hariyanto, and R. B. Utomo, “Design and Development of a 
+Learning Management System Information System using the Waterfall Method 
+with the Laravel Framework,” pp. 6084–6089. 
+[12] M. Musyary, A. Kurniati, and C. Damarjati, “Laravel Framework-Based 
+Information System of the Department of Information Technology of Universitas 
+Muhammadiyah Yogyakarta,” Emerg. Inf. Sci. Technol., vol. 4, no. 2, Dec. 2023, 
+--- Page 25 ---
+ 
+18  
+doi: 10.18196/eist.v4i2.20736. 
+[13] G. F. Daar, N. L. Supartini, N. M. A. Sulasmini, K. A. Ekasani, D. Lestari, and I. 
+A. G. Kesumayathi, “Students’ Perception of the Use of Learning Management 
+System in Learning English for Specific Purpose During the Pandemic: Evidence 
+From Rural Area in Indonesia,” J. Lang. Teach. Res., vol. 14, no. 2, pp. 403–409, 
+2023, doi: 10.17507/jltr.1402.16. 
+[14] Octa Selsa Is Anggraeni, Lilik Sugiarto, and Tinuk Agustin, “Studi Komparatif 
+Performa Framework Javascript Modern dalam Pengembangan Aplikasi Web,” 
+Modem  J. Inform. dan Sains Teknol., vol. 2, no. 4, pp. 162–177, Sep. 2024, doi: 
+10.62951/modem.v2i4.239. 
+[15] F. P. Perdana, E. Supratman, and D. R. Saputra, “Designing a Modern Web 
+Interface with Vue.js and Tailwind for University Information System,” Brill. Res. 
+Artif. Intell., vol. 4, no. 2, pp. 956–963, Dec. 2024, doi: 
+10.47709/brilliance.v4i2.5409. 
+[16] A. RAHMANI, I. H. Salistia, and N. Hizriani, “Metode Pembelajaran Bahasa Arab 
+Di Pondok Pesantren Nurul Hakim Kediri,” Tatsqifiy J. Pendidik. Bhs. Arab, vol. 
+4, no. 1, pp. 1–11, Jan. 2023, doi: 10.30997/tjpba.v4i1.7100. 
+[17] N. Mujahidah and B. Riyadhi, “MODEL PEMBELAJARAN BAHASA ARAB DI 
+PONDOK PESANTREN,” J. Pendidik. Islam AL-ILMI, vol. 6, no. 1, p. 22, Jan. 
+2023, doi: 10.32529/al-ilmi.v6i1.2031. 
+[18] A. N. Amanta and M. U. Dewi, “Design and Development of STEKOM Learning 
+Management System ( SIAKAD ) to Optimize User Experience,” vol. 5, no. 1, pp. 
+1–16, 2026. 
+[19] R. P. Nugroho, Y. Soepriyanto, and A. Wedi, “Development of Learning 
+Management System with Gamification Approach for Project-Based Learning,” 
+JTP - J. Teknol. Pendidik., vol. 26, no. 3, pp. 794–806, 2024, doi: 
+10.21009/jtp.v26i3.40873. 
+[20] R. N. Hasanah, “Rancang bangun Learning Management System berbasis 
+gamifikasi dengan menggunakan Mechanics, Dynamics, Aesthetics (MDA) 
+framework,” 2024. 
+[21] M. Hendra Admaja and A. Pramono, “Pengembangan Learning Management 
+System (Lms) Menggunakan Personal Extreme Programming (Pxp) Pada Smp 
+Negeri 1 Kedungadem,” JATI (Jurnal Mhs. Tek. Inform., vol. 9, no. 2, pp. 3484–
+3492, 2025, doi: 10.36040/jati.v9i2.13019. 
+ 
+  
+--- Page 26 ---
+ 
+19  
+Lampiran 
+ 
+No Bentuk 
+Kegiatan 
+Minggu Pelaksanaan 
+Mei Juni Juli Agustus November 
+1 2 3 4 1 2 3 4 1 2 3 4 1 2 3 4 1 2 3 4 
+1 Penyusunan  
+dan 
+uji proposal  
+                    
+2 Perbaikan 
+hasil 
+uji/seminar 
+proposal  
+                    
+3 Pembuatan 
+instrument 
+penelitian 
+                    
+4 Pengumpula
+n data 
+                    
+5 Analisis Data                     
+6 Penyusunan  
+isi skripsi 
+                    
+7 Penyelesaian  
+bimbingan 
+skripsi 
+                    
+8 Sidang 
+munaqasyah  
+                    
+9 Perbaikan 
+hasil sidang  
+munaqasyah  
+                    

@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import api from '@/api'
@@ -202,7 +202,7 @@ const savePostTest = async () => {
       <div v-if="flashMessage.show" class="fixed top-8 right-8 z-[100] w-full max-w-sm overflow-hidden rounded-[2rem] bg-white/80 backdrop-blur-xl border border-white/20 shadow-2xl shadow-blue-900/10 animate-in slide-in-from-right-8">
         <div class="p-6">
           <div class="flex items-center gap-4">
-            <div :class="flashMessage.type === 'success' ? 'bg-blue-500' : 'bg-red-500'" class="w-10 h-10 rounded-2xl flex items-center justify-center text-white shrink-0 shadow-lg">
+            <div :class="flashMessage.type === 'success' ? 'bg-blue-500' : 'bg-red-500'" class="w-10 h-10 rounded-lg flex items-center justify-center text-white shrink-0 shadow-lg">
               <span class="material-symbols-outlined text-xl">{{ flashMessage.type === 'success' ? 'verified_user' : 'error' }}</span>
             </div>
             <div class="flex-1">
@@ -224,7 +224,7 @@ const savePostTest = async () => {
     <!-- Header -->
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-4">
-        <button @click="router.back()" class="w-10 h-10 bg-white hover:bg-gray-50 rounded-2xl transition-all text-gray-400 shadow-sm border border-gray-100 flex items-center justify-center active:scale-95 flex-shrink-0 cursor-pointer">
+        <button @click="router.back()" class="w-10 h-10 bg-white hover:bg-gray-50 rounded-lg transition-all text-gray-400 shadow-sm border border-gray-100 flex items-center justify-center active:scale-95 flex-shrink-0 cursor-pointer">
           <span class="material-symbols-outlined text-xl">arrow_back</span>
         </button>
         <div>
@@ -237,7 +237,7 @@ const savePostTest = async () => {
          <button 
            @click="savePostTest"
            :disabled="isLoading"
-           class="bg-blue-600 text-white px-8 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl shadow-blue-900/20 hover:shadow-2xl transition-all disabled:opacity-50"
+           class="bg-blue-600 text-white px-8 py-3 rounded-lg font-black text-[10px] uppercase tracking-widest shadow-xl shadow-blue-900/20 hover:shadow-2xl transition-all disabled:opacity-50"
          >
            {{ isLoading ? 'Menyimpan...' : 'Simpan Kuis' }}
          </button>
@@ -256,12 +256,12 @@ const savePostTest = async () => {
          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div class="space-y-4">
                 <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Instruksi Pengerjaan</label>
-                <textarea v-model="form.content" rows="4" class="w-full px-8 py-6 rounded-3xl bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white transition-all font-medium text-gray-900 outline-none resize-none leading-relaxed" placeholder="Berikan instruksi atau arahan sebelum kuis dimulai..."></textarea>
+                <textarea v-model="form.content" rows="4" class="w-full px-8 py-6 rounded-xl bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white transition-all font-medium text-gray-900 outline-none resize-none leading-relaxed" placeholder="Berikan instruksi atau arahan sebelum kuis dimulai..."></textarea>
             </div>
             <div class="space-y-4">
                 <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Batas Waktu (Menit)</label>
                 <div class="relative">
-                    <input v-model.number="form.durasi" type="number" class="w-full px-8 py-6 rounded-3xl bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white transition-all font-black text-2xl text-gray-900 outline-none">
+                    <input v-model.number="form.durasi" type="number" class="w-full px-8 py-6 rounded-xl bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white transition-all font-black text-2xl text-gray-900 outline-none">
                     <span class="absolute right-8 top-1/2 -translate-y-1/2 font-black text-gray-300 text-[10px] uppercase">Menit</span>
                 </div>
                 <p class="text-[9px] text-gray-400 italic">Siswa akan memiliki waktu terbatas untuk menjawab semua pertanyaan.</p>
@@ -282,7 +282,7 @@ const savePostTest = async () => {
           <div v-for="(q, idx) in quizzes" :key="idx" class="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl shadow-blue-900/5 p-8 md:p-10 space-y-8 animate-in slide-in-from-bottom-4 duration-300">
               <div class="flex items-start justify-between gap-4">
                   <div class="flex items-center gap-4">
-                      <div class="w-12 h-12 rounded-2xl bg-gray-900 text-white flex items-center justify-center font-black text-lg shadow-lg">
+                      <div class="w-12 h-12 rounded-lg bg-gray-900 text-white flex items-center justify-center font-black text-lg shadow-lg">
                           {{ idx + 1 }}
                       </div>
                       <h4 class="font-black text-gray-400 text-[10px] uppercase tracking-widest">Pertanyaan Ke-{{ idx + 1 }}</h4>
@@ -295,26 +295,26 @@ const savePostTest = async () => {
               <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                   <!-- Left Side: Text and Options -->
                   <div class="lg:col-span-7 space-y-8">
-                    <textarea v-model="q.soal" placeholder="Tuliskan pertanyaan Anda di sini..." class="w-full px-8 py-6 rounded-3xl bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white transition-all font-bold text-lg text-gray-900 outline-none resize-none leading-relaxed min-h-[120px]"></textarea>
+                    <textarea v-model="q.soal" placeholder="Tuliskan pertanyaan Anda di sini..." class="w-full px-8 py-6 rounded-xl bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white transition-all font-bold text-lg text-gray-900 outline-none resize-none leading-relaxed min-h-[120px]"></textarea>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div v-for="opt in ['a', 'b', 'c', 'd']" :key="opt" class="relative group">
                             <div class="absolute left-6 top-1/2 -translate-y-1/2 flex items-center gap-3">
                                 <button @click="q.jawaban = opt" class="w-8 h-8 rounded-lg font-black text-[10px] uppercase border-2 flex items-center justify-center transition-all" :class="q.jawaban === opt ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-900/20' : 'bg-white text-gray-300 border-gray-100 group-hover:border-blue-200'">{{ opt }}</button>
                             </div>
-                            <input v-model="q[opt]" type="text" :placeholder="'Opsi ' + opt.toUpperCase()" class="w-full pl-20 pr-8 py-4 rounded-2xl bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white transition-all font-bold text-gray-900 outline-none shadow-sm">
+                            <input v-model="q[opt]" type="text" :placeholder="'Opsi ' + opt.toUpperCase()" class="w-full pl-20 pr-8 py-4 rounded-lg bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white transition-all font-bold text-gray-900 outline-none shadow-sm">
                         </div>
                     </div>
                   </div>
 
                   <!-- Right Side: Media Attachments -->
-                  <div class="lg:col-span-5 bg-gray-50/50 rounded-3xl p-6 border border-gray-100 space-y-6">
+                  <div class="lg:col-span-5 bg-gray-50/50 rounded-xl p-6 border border-gray-100 space-y-6">
                       <div class="flex items-center gap-2 mb-2">
                           <span class="material-symbols-outlined text-blue-500">attachment</span>
                           <span class="text-[10px] font-black uppercase tracking-widest text-gray-500">Lampiran Media Soal</span>
                       </div>
 
-                      <div class="flex gap-2 p-1 bg-white rounded-2xl border border-gray-100">
+                      <div class="flex gap-2 p-1 bg-white rounded-lg border border-gray-100">
                           <button v-for="type in ['None', 'Video', 'PDF']" :key="type" @click="q.media_type = type as any" class="flex-1 py-3 rounded-xl font-black text-[9px] uppercase transition-all flex items-center justify-center gap-2" :class="q.media_type === type ? 'bg-blue-600 text-white shadow-lg' : 'text-gray-400 hover:text-gray-600'">
                              <span class="material-symbols-outlined text-lg">{{ type === 'Video' ? 'movie' : (type === 'PDF' ? 'picture_as_pdf' : 'block') }}</span>
                              {{ type }}

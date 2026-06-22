@@ -1,0 +1,111 @@
+--- Page 1 ---
+ 
+1 
+ 
+Jurnal Pendidikan:  
+Teori, Penelitian, dan Pengembangan 
+Volume:  Number: Month-Year 
+Page:…..-….. 
+Available online  
+http://journal.um.ac.id/index.php/jptpp/ 
+EISSN: 2502-471X 
+DOAJ-SHERPA/RoMEO-Google Scholar-IPI 
+Article Title 
+1First Author, 2Second Author 
+1First affiliation, Address, City and Postcode, Country 
+2Second affiliation, Address, City and Postcode, Country 
+ 
+ARTICLE INFO  ABSTRACT 
+Article history: 
+Accepted: Date Month Year 
+Approved: Date Month Year 
+ 
+ The abstract should be clear, concise, and descriptive. This abstract should provide a brief 
+introduction to the problem, objective of paper, followed by a statement regarding the 
+methodology and a brief summary of results. The abstract should end with a comment on 
+the significance of the results or a brief conclusion. Please write abstract max 250 words 
+Keywords: 
+Keyword1 
+Keyword2 
+Keyword3 
+Author Correspondence: 
+Author,  
+Department  
+University 
+Address 
+E-mail: author@author.com  
+INTRODUCTION  
+The Introduction ought to give readers with the background data required to know your study, and the reasons why you 
+conducted your experiments. The Introduction ought to answer the question: what question/problem was studied? Please don’t 
+write a literature review in your Introduction, however, do cite reviews wherever readers will realize a lot of data if they need it. 
+Whereas writing the background, make certain your citations are relevant, well balanced, and current (not older than ten years). 
+Once you have got provided background material and expressed the matter or question for your study, tell the reader the aim o f 
+your study. Typically, the expl anation is to fill a niche within the information or to answer an antecedent unrequited question. 
+The ultimate factor to incorporate at the top of your Introduction could be a clear and precise statement of your study aims. 
+METHOD 
+Contains the type of research, time and place of research, targets, research subjects, procedures, instruments and data 
+analysis techniques as well as other matters related to the research method which can be written in sub -sections, with sub-sub-
+headings. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Figure  1. Design of ADDIE model 
+--- Page 2 ---
+2    Jurnal Pendidikan: Teori, Penelitian, dan Pengembangan, Vol..., No..., Month Year, Page....-.... 
+RESULTS 
+The results obtained from this development research are in the form of an articulate storyline -based learning multimedia 
+product used to support the learning process on the Material of Temperature and Heat for Class VII Junior High School. The 
+stages in development research include seeing potential problems, collecting data, product design stages, product validation,  
+product revision, and product testing. The model used in this development research is ADDIE: analysis, des ign, development, 
+implementation, and evaluation. The results showed that the learning multimedia developed was feasible to be used in the learning 
+process. This is based on the validity, effectiveness, and practicality of learning multimedia based on articulate storylines. Based 
+on the results of the validation obtained, the level of validity of learning multimedia is 0.78 with a valid category. Where the 
+aspects that are assessed are aspects of the construct and aspects of content, the validation data can be seen in Table 1. 
+ 
+Table 1. The results of the validation of learning multimedia based on the articulate Storyline 
+No Aspects of assessment Aikens (V) Category 
+1 Construct aspect 0,77 Valid 
+2 Content aspect 0,79 Valid 
+3 Average 0,78 Valid 
+ 
+DISCUSSION 
+Developing learning multimedia based on an articulate storyline on Temperature and Heat material has passed the 
+development stage using the ADDIE model, which includes the Analysis, Design, Development, Implementation, and Evaluation 
+stages. At the analysis stage, an initial analysis is carried out to determine the potential problems, the needs of students, and 
+curriculum analysis. The second stage is the design stage, where at this stage, the design of learning multimedia designs is carried 
+out, which will be developed in the form of storyboards and flowcharts. Furthermore, at the multimedia development stage, which 
+has been completed, it is designed, validated by experts, and implemented. But before that, the multimedia will be revised 
+according to the validator's suggestions and comments. A limited trial was conducted at the implementation stage using a one -
+group pretest-posttest research design. The last stage is the evaluation stage. Where at this stage, a formative and summative 
+evaluation is carried out. Formative evaluation is carried out at each stage of development due to the need for revision. While the 
+summative evaluation is carried out at the last stage, which aims to assess the feasibility of the multimedia developed at th e 
+implementation stage. 
+CONCLUSION AND SUGGESTION  
+Based on the results of the research obtained process of developing learning multimedia based on articulate storylines was 
+created using the ADDIE development model (Analysis, Design, Development, Implementation, and Evaluation), which includes 
+several stages, namely analyzing potential and problems, making multimedia designs, make multimedia according to the design, 
+implement multimedia and the last is to evaluate to revise multimedia at every stage of its manufacture. Articulate storyline-based 
+learning multimedia is said to be feasible with a level of validity of 0.78 with a valid category, the level of effectiveness obtained 
+from the n-gain test of 0.56 with a medium category, and the level of practicality of multimedia obtained from the results of the 
+questionnaire response of teachers by 90% and participants students by 86.87% in the very good category. 
+Based on the limitations of the research, there are several suggestions shown for the improvement of development research 
+at a further stage, including learning multimedia based on articulate storylines on Temperatu re and Heat material that has been 
+developed, which will be more interesting if it can be developed into complete multimedia, be it animation, simulation, video and 
+the addition of multimedia background. Articulate storyline -based learning multimedia can b e further formed on other physics 
+materials. Extensive trials can be carried out for further developers at the implementation stage. 
+ACKNOWLEDGMENT 
+The author would like to thank the Department of Physics Education for the support provided so that the stud y can be 
+completed on time. 
+REFERENCES 
+Agustin.,  & Zuhdi, U. (2021) Pengembangan Media Pembelajaran Interaktif Menggunakan Articulate Storyline 3 Pada Materi 
+Sifat Dan Perubahan Wujud Benda Untuk Meningkatkan Hasil Belajar Siswa Kelas V SD. Jurnal Penelitian Pendidikan 
+Guru Sekolah Dasar, 9(8), 1-9. 
+ 

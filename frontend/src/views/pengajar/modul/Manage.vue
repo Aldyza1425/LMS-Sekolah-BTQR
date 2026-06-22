@@ -2,6 +2,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import api from '@/api'
+import SkeletonLoader from '@/components/SkeletonLoader.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -160,7 +161,7 @@ const courses = computed(() => {
       <div v-if="flashMessage.show" class="fixed top-8 right-8 z-[100] w-full max-w-sm overflow-hidden rounded-[2rem] bg-white/80 backdrop-blur-xl border border-white/20 shadow-2xl shadow-red-900/10 animate-in slide-in-from-right-8">
         <div class="p-6">
           <div class="flex items-center gap-4">
-            <div :class="flashMessage.type === 'success' ? 'bg-green-500' : 'bg-[#8B2323]'" class="w-10 h-10 rounded-2xl flex items-center justify-center text-white shrink-0 shadow-lg">
+            <div :class="flashMessage.type === 'success' ? 'bg-green-500' : 'bg-[#006D3E]'" class="w-10 h-10 rounded-lg flex items-center justify-center text-white shrink-0 shadow-lg">
               <span class="material-symbols-outlined text-xl">{{ flashMessage.type === 'success' ? 'check_circle' : 'error' }}</span>
             </div>
             <div class="flex-1">
@@ -172,7 +173,7 @@ const courses = computed(() => {
         <div class="h-1 bg-gray-100 w-full overflow-hidden">
           <div 
             class="h-full transition-all duration-100 ease-linear"
-            :class="flashMessage.type === 'success' ? 'bg-green-500' : 'bg-[#8B2323]'"
+            :class="flashMessage.type === 'success' ? 'bg-green-500' : 'bg-[#006D3E]'"
             :style="{ width: flashMessage.progress + '%' }"
           ></div>
         </div>
@@ -181,9 +182,9 @@ const courses = computed(() => {
 
     <!-- Delete Confirm Modal (Materi) -->
     <div v-if="deleteConfirmMateri.show" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      <div class="absolute inset-0 bg-gray-900/40 backdrop-blur-sm" @click="closeDeleteConfirmMateri"></div>
+      <div class="absolute inset-0 bg-transparent" @click="closeDeleteConfirmMateri"></div>
       <div class="bg-white rounded-[2rem] p-8 max-w-md w-full relative z-10 shadow-2xl animate-in zoom-in-95 duration-300">
-        <div class="w-16 h-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+        <div class="w-16 h-16 bg-red-50 text-red-500 rounded-lg flex items-center justify-center mx-auto mb-6">
           <span class="material-symbols-outlined text-3xl">delete_forever</span>
         </div>
         <h3 class="text-xl font-black text-center text-gray-900 mb-2">Hapus Materi?</h3>
@@ -203,29 +204,24 @@ const courses = computed(() => {
     <!-- Header -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
       <div class="flex items-center gap-4">
-        <button @click="router.back()" class="w-10 h-10 bg-white hover:bg-gray-50 rounded-2xl transition-all text-gray-400 shadow-sm border border-gray-100 flex items-center justify-center active:scale-95 flex-shrink-0 cursor-pointer">
+        <button @click="router.back()" class="w-10 h-10 bg-white hover:bg-gray-50 rounded-lg transition-all text-gray-400 shadow-sm border border-gray-100 flex items-center justify-center active:scale-95 flex-shrink-0 cursor-pointer">
           <span class="material-symbols-outlined text-xl">arrow_back</span>
         </button>
         <div>
-          <div class="flex items-center gap-2 text-[9px] font-black text-gray-400 uppercase tracking-widest mb-0.5">
-            <span>Manajemen Modul</span>
-            <span class="material-symbols-outlined text-[9px]">chevron_right</span>
-            <span class="text-[#8B2323]">{{ moduleData.judul }}</span>
-          </div>
           <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight leading-none">Pengelolaan Modul</h2>
         </div>
       </div>
     </div>
 
     <!-- Tab Navigation -->
-    <div class="flex items-center gap-2 p-1.5 bg-gray-100/50 rounded-2xl w-fit">
+    <div class="flex items-center gap-2 p-1.5 bg-gray-100/50 rounded-lg w-fit">
       <button 
         v-for="tab in ['overview', 'content']" 
         :key="tab"
         @click="activeTab = tab"
         :class="[
           activeTab === tab 
-            ? 'bg-white text-[#8B2323] shadow-md' 
+            ? 'bg-white text-[#006D3E] shadow-md' 
             : 'text-gray-400 hover:text-gray-600'
         ]"
         class="px-8 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest transition-all"
@@ -234,25 +230,29 @@ const courses = computed(() => {
       </button>
     </div>
 
-    <div v-if="isLoading && moduleData.id === 0" class="flex flex-col items-center justify-center py-32 space-y-4">
-        <div class="w-12 h-12 border-4 border-gray-100 border-t-[#8B2323] rounded-full animate-spin"></div>
-        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 animate-pulse">Memuat Data Modul...</p>
+    <div v-if="isLoading && moduleData.id === 0" class="space-y-10">
+      <div class="bg-white rounded-xl shadow-xl border border-gray-100 p-8 md:p-12 space-y-8">
+        <SkeletonLoader type="form" :rows="3" />
+      </div>
+      <div class="bg-white rounded-xl shadow-xl border border-gray-100 p-8 md:p-12 space-y-6">
+        <SkeletonLoader type="list" :rows="3" />
+      </div>
     </div>
 
     <div v-else class="space-y-8">
       
       <!-- Overview Tab Content -->
       <div v-if="activeTab === 'overview'" class="animate-in fade-in slide-in-from-bottom-4 duration-500">
-         <div class="bg-white rounded-[2.5rem] shadow-xl shadow-red-900/5 border border-gray-50 p-8 md:p-12 space-y-8">
+         <div class="bg-white rounded-xl shadow-xl shadow-red-900/5 border border-gray-50 p-8 md:p-12 space-y-8">
             <div class="flex items-center justify-between">
                <h3 class="text-xl font-black text-gray-900 flex items-center gap-3">
-                  <span class="w-1.5 h-6 bg-[#8B2323] rounded-full"></span>
+                  <span class="w-1.5 h-6 bg-[#006D3E] rounded-lg"></span>
                   Overview Modul
                </h3>
                <button 
                  @click="updateOverview"
                  :disabled="isSaving"
-                 class="px-8 py-3 bg-[#8B2323] text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-black transition-all shadow-lg shadow-red-900/10 disabled:opacity-50"
+                 class="px-8 py-3 bg-[#006D3E] text-white rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-black transition-all shadow-lg shadow-red-900/10 disabled:opacity-50"
                >
                  {{ isSaving ? 'Menyimpan...' : 'Simpan Perubahan' }}
                </button>
@@ -261,11 +261,11 @@ const courses = computed(() => {
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                <div class="space-y-3">
                   <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Judul Modul</label>
-                  <input v-model="moduleData.judul" type="text" class="w-full px-6 py-4 rounded-2xl bg-gray-50 border-2 border-transparent focus:border-[#8B2323] focus:bg-white transition-all font-bold text-gray-900 outline-none">
+                  <input v-model="moduleData.judul" type="text" class="w-full px-6 py-4 rounded-lg bg-gray-50 border-2 border-transparent focus:border-[#006D3E] focus:bg-white transition-all font-bold text-gray-900 outline-none">
                </div>
                <div class="space-y-3">
                   <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Judul Bahasa Arab</label>
-                  <input v-model="moduleData.arabic_title" type="text" dir="rtl" class="w-full px-6 py-4 rounded-2xl bg-gray-50 border-2 border-transparent focus:border-[#8B2323] focus:bg-white transition-all font-bold text-gray-900 outline-none text-right">
+                  <input v-model="moduleData.arabic_title" type="text" dir="rtl" class="w-full px-6 py-4 rounded-lg bg-gray-50 border-2 border-transparent focus:border-[#006D3E] focus:bg-white transition-all font-bold text-gray-900 outline-none text-right">
                </div>
             </div>
 
@@ -274,7 +274,7 @@ const courses = computed(() => {
                <textarea 
                  v-model="moduleData.deskripsi" 
                  rows="10" 
-                 class="w-full px-8 py-6 rounded-3xl bg-gray-50 border-2 border-transparent focus:border-[#8B2323] focus:bg-white transition-all font-medium text-gray-900 outline-none resize-none leading-relaxed"
+                 class="w-full px-8 py-6 rounded-xl bg-gray-50 border-2 border-transparent focus:border-[#006D3E] focus:bg-white transition-all font-medium text-gray-900 outline-none resize-none leading-relaxed"
                  placeholder="Jelaskan apa yang akan dipelajari siswa di modul ini..."
                ></textarea>
             </div>
@@ -284,40 +284,60 @@ const courses = computed(() => {
       <!-- Course Content Tab Content -->
       <div v-if="activeTab === 'content'" class="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6">
             <div class="flex items-center justify-between">
-               <h3 class="text-xl font-black text-gray-900 mb-6 px-2 border-l-4 border-[#8B2323] pl-4">Materi Pembelajaran</h3>
-               <button @click="goToAddLesson" class="bg-[#8B2323] text-white px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-red-900/10 hover:shadow-xl transition-all flex items-center gap-2">
+               <h3 class="text-xl font-black text-gray-900 px-2 border-l-4 border-[#006D3E] pl-4">Materi Pembelajaran</h3>
+               <button @click="goToAddLesson" class="bg-[#006D3E] text-white px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-red-900/10 hover:shadow-xl transition-all flex items-center gap-2">
                   <span class="material-symbols-outlined text-sm">add</span>
                   Tambah Materi
                </button>
             </div>
             
-            <div class="space-y-4">
-              <div v-for="(lesson, i) in courses" :key="lesson.id" class="group bg-gray-50/50 p-5 rounded-3xl border border-gray-100 hover:bg-gray-100/50 hover:border-gray-200 transition-all flex flex-col sm:flex-row items-center justify-between gap-6">
-                <div class="flex items-center gap-6 flex-1 w-full">
-                  <div class="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-[#8B2323] shrink-0">
-                    <span class="material-symbols-outlined">{{ lesson.tipe === 'video' ? 'play_circle' : 'article' }}</span>
-                  </div>
-                  <div class="flex-1 min-w-0">
-                    <h4 class="font-bold text-gray-900 group-hover:text-[#8B2323] transition-colors truncate">{{ lesson.judul }}</h4>
-                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1">
-                      {{ lesson.tipe }}<span v-if="lesson.durasi && lesson.durasi > 0"> • {{ lesson.durasi }} Menit</span>
-                    </p>
-                  </div>
-                </div>
-                
-                <div class="flex items-center gap-3 shrink-0">
-                  <button @click="editMaterial(lesson)" class="p-3 rounded-xl bg-white text-gray-400 hover:bg-[#8B2323] hover:text-white transition-all shadow-sm">
-                    <span class="material-symbols-outlined text-lg">edit</span>
-                  </button>
-                  <button @click="deleteMaterial(lesson.id, lesson.judul)" class="p-3 rounded-xl bg-white text-gray-400 hover:bg-black hover:text-white transition-all shadow-sm">
-                    <span class="material-symbols-outlined text-lg">delete</span>
-                  </button>
-                </div>
-              </div>
-
-              <div v-if="courses.length === 0" class="py-20 text-center border-2 border-dashed border-gray-100 rounded-3xl">
-                 <span class="material-symbols-outlined text-4xl text-gray-200 mb-2">post_add</span>
-                 <p class="text-gray-400 font-bold text-sm">Belum ada materi pembelajaran.</p>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                  <thead>
+                    <tr class="border-b border-gray-200 bg-gray-50/75">
+                      <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest text-gray-400 w-16 text-center">No</th>
+                      <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest text-gray-400">Judul Materi</th>
+                      <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest text-gray-400 w-32">Tipe</th>
+                      <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest text-gray-400 w-32">Durasi</th>
+                      <th class="py-4 px-6 text-[10px] font-black uppercase tracking-widest text-gray-400 w-32 text-center">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-gray-100">
+                    <tr v-for="(lesson, i) in courses" :key="lesson.id" class="hover:bg-gray-50/50 transition-colors">
+                      <td class="py-4 px-6 text-center font-bold text-gray-600">{{ i + 1 }}</td>
+                      <td class="py-4 px-6">
+                        <div class="flex items-center gap-4">
+                          <span class="material-symbols-outlined text-gray-400">{{ lesson.tipe === 'video' ? 'play_circle' : 'article' }}</span>
+                          <span class="font-bold text-gray-900">{{ lesson.judul }}</span>
+                        </div>
+                      </td>
+                      <td class="py-4 px-6">
+                        <span class="px-2.5 py-1 rounded-md text-[9px] font-bold uppercase tracking-widest" :class="lesson.tipe === 'video' ? 'bg-amber-50 text-amber-600' : 'bg-blue-50 text-blue-600'">
+                          {{ lesson.tipe }}
+                        </span>
+                      </td>
+                      <td class="py-4 px-6 font-semibold text-gray-600">
+                        {{ lesson.durasi && lesson.durasi > 0 ? lesson.durasi + ' Menit' : '-' }}
+                      </td>
+                      <td class="py-4 px-6">
+                        <div class="flex items-center justify-center gap-2">
+                          <button @click="editMaterial(lesson)" class="p-2 rounded-lg bg-gray-50 text-gray-400 hover:bg-[#006D3E] hover:text-white transition-all border border-gray-200 shadow-sm" title="Edit">
+                            <span class="material-symbols-outlined text-sm">edit</span>
+                          </button>
+                          <button @click="deleteMaterial(lesson.id, lesson.judul)" class="p-2 rounded-lg bg-gray-50 text-gray-400 hover:bg-red-500 hover:text-white transition-all border border-gray-200 shadow-sm" title="Hapus">
+                            <span class="material-symbols-outlined text-sm">delete</span>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr v-if="courses.length === 0">
+                      <td colspan="5" class="py-12 text-center text-gray-400 font-bold text-sm">
+                        Belum ada materi pembelajaran.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
          </div>

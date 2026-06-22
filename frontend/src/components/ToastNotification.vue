@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { useToast } from '@/composables/useToast'
 const { toasts, icons, remove } = useToast()
 
@@ -49,7 +49,7 @@ const titleMap = {
         <div
           v-for="toast in toasts"
           :key="toast.id"
-          class="pointer-events-auto flex flex-col overflow-hidden rounded-2xl shadow-2xl shadow-black/10"
+          class="pointer-events-auto flex flex-col overflow-hidden rounded-lg shadow-2xl shadow-black/10"
           :class="colorMap[toast.type].bg"
         >
           <!-- Main Content -->

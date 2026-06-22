@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
 import TransparentLogo from './TransparentLogo.vue';
@@ -37,13 +37,13 @@ onUnmounted(() => {
 
       <!-- Desktop Menu / Button -->
       <div class="hidden md:flex items-center gap-6">
-        <RouterLink 
-          to="/lms/login"
-          class="px-7 py-2.5 rounded-full font-bold text-sm transition-all duration-300 active:scale-95 shadow-lg"
+        <a 
+          href="/login"
+          class="px-7 py-2.5 rounded-lg font-bold text-sm transition-all duration-300 active:scale-95 shadow-lg"
           :class="(isScrolled || !isHomePage) ? 'bg-primary text-white shadow-primary/20 hover:opacity-80' : 'bg-white text-primary hover:bg-primary hover:text-white'"
         >
           LMS
-        </RouterLink>
+        </a>
       </div>
 
       <!-- Mobile Toggle -->
@@ -72,13 +72,13 @@ onUnmounted(() => {
         class="absolute top-full left-0 right-0 bg-white shadow-xl border-t border-gray-100 md:hidden overflow-hidden"
       >
         <div class="flex flex-col p-6 gap-4">
-          <RouterLink 
-            to="/lms/login"
+          <a 
+            href="/login"
             class="text-lg font-bold text-center px-6 py-3 rounded-[25px] transition-all duration-300 bg-primary text-white shadow-lg shadow-primary/20 active:scale-95 hover:opacity-80"
             @click="isMobileMenuOpen = false"
           >
             LMS
-          </RouterLink>
+          </a>
         </div>
       </div>
     </Transition>

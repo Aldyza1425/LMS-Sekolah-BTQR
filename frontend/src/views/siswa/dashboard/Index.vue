@@ -39,7 +39,7 @@ onMounted(() => {
   <div class="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 font-['Plus_Jakarta_Sans']">
 
     <!-- Hero Banner -->
-    <section class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#006D3E] to-[#00955A] p-8 md:p-10 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
+    <section class="relative overflow-hidden rounded-lg bg-gradient-to-br from-[#006D3E] to-[#00955A] p-8 md:p-10 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6">
       <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle at 80% 50%, white 0%, transparent 60%)"></div>
       <div class="relative z-10 space-y-2">
         <h2 class="text-2xl md:text-3xl font-extrabold leading-tight">
@@ -55,77 +55,81 @@ onMounted(() => {
     </section>
 
     <!-- Stat Cards -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       <!-- Mata Pelajaran Aktif -->
-      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:border-green-300/40 hover:bg-green-50/30 transition-all duration-300">
-        <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center mb-4">
-          <span class="material-symbols-outlined text-[#006D3E] text-xl">menu_book</span>
+      <div class="bg-white p-5 rounded-lg shadow-[0_12px_32px_-4px_rgba(0,109,62,0.08)] flex items-center gap-4 border border-gray-100 hover:border-green-300/40 hover:bg-green-50/30 transition-all duration-300">
+        <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center text-[#006D3E] shrink-0">
+          <span class="material-symbols-outlined text-2xl">menu_book</span>
         </div>
-        <p class="text-2xl font-extrabold text-gray-900 leading-none mb-1">{{ stats.active_courses }}</p>
-        <p class="text-xs text-gray-400 font-medium">Mata Pelajaran Aktif</p>
+        <div>
+          <p class="text-gray-400 text-[9px] font-bold uppercase tracking-widest leading-none mb-1">Mata Pelajaran Aktif</p>
+          <p class="text-2xl font-headline font-extrabold text-gray-900 leading-none">{{ stats.active_courses }}</p>
+        </div>
       </div>
 
       <!-- Modul Selesai -->
-      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:border-orange-300/40 hover:bg-orange-50/30 transition-all duration-300">
-        <div class="w-10 h-10 rounded-xl bg-orange-50 flex items-center justify-center mb-4">
-          <span class="material-symbols-outlined text-orange-500 text-xl">check_circle</span>
+      <div class="bg-white p-5 rounded-lg shadow-[0_12px_32px_-4px_rgba(0,109,62,0.08)] flex items-center gap-4 border border-gray-100 hover:border-orange-300/40 hover:bg-orange-50/30 transition-all duration-300">
+        <div class="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-orange-600 shrink-0">
+          <span class="material-symbols-outlined text-2xl">check_circle</span>
         </div>
-        <p class="text-2xl font-extrabold text-gray-900 leading-none mb-1">{{ stats.completed_modules }}</p>
-        <p class="text-xs text-gray-400 font-medium">Modul Selesai</p>
+        <div>
+          <p class="text-gray-400 text-[9px] font-bold uppercase tracking-widest leading-none mb-1">Modul Selesai</p>
+          <p class="text-2xl font-headline font-extrabold text-gray-900 leading-none">{{ stats.completed_modules }}</p>
+        </div>
       </div>
 
       <!-- Waktu Belajar -->
-      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:border-blue-300/40 hover:bg-blue-50/30 transition-all duration-300">
-        <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center mb-4">
-          <span class="material-symbols-outlined text-blue-500 text-xl">schedule</span>
+      <div class="bg-white p-5 rounded-lg shadow-[0_12px_32px_-4px_rgba(0,109,62,0.08)] flex items-center gap-4 border border-gray-100 hover:border-blue-300/40 hover:bg-blue-50/30 transition-all duration-300">
+        <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
+          <span class="material-symbols-outlined text-2xl">schedule</span>
         </div>
-        <p class="text-2xl font-extrabold text-gray-900 leading-none mb-1">{{ stats.learning_time }}</p>
-        <p class="text-xs text-gray-400 font-medium">Waktu Belajar (Jam Online)</p>
+        <div>
+          <p class="text-gray-400 text-[9px] font-bold uppercase tracking-widest leading-none mb-1">Waktu Belajar (Jam Online)</p>
+          <p class="text-2xl font-headline font-extrabold text-gray-900 leading-none">{{ stats.learning_time }}</p>
+        </div>
       </div>
 
       <!-- Rata-rata Nilai -->
-      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:border-red-300/40 hover:bg-red-50/30 transition-all duration-300">
-        <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center mb-4">
-          <span class="material-symbols-outlined text-red-400 text-xl">workspace_premium</span>
+      <div class="bg-white p-5 rounded-lg shadow-[0_12px_32px_-4px_rgba(0,109,62,0.08)] flex items-center gap-4 border border-gray-100 hover:border-red-300/40 hover:bg-red-50/30 transition-all duration-300">
+        <div class="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center text-red-500 shrink-0">
+          <span class="material-symbols-outlined text-2xl">workspace_premium</span>
         </div>
-        <p class="text-2xl font-extrabold text-gray-900 leading-none mb-1">{{ stats.average_score || '-' }}</p>
-        <p class="text-xs text-gray-400 font-medium">Rata-rata Nilai</p>
+        <div>
+          <p class="text-gray-400 text-[9px] font-bold uppercase tracking-widest leading-none mb-1">Rata-rata Nilai</p>
+          <p class="text-2xl font-headline font-extrabold text-gray-900 leading-none">{{ stats.average_score || '-' }}</p>
+        </div>
       </div>
     </div>
 
     <!-- Main Content Row -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <!-- Progres Mata Pelajaran -->
-      <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <div class="flex items-center justify-between px-6 py-5 border-b border-gray-50">
-          <h3 class="font-bold text-gray-900 flex items-center gap-2 text-sm">
-            <span class="material-symbols-outlined text-base text-[#006D3E]">menu_book</span>
-            Progres Mata Pelajaran
-          </h3>
-          <a href="/lms/siswa/modul" class="text-[#006D3E] font-bold text-xs hover:underline flex items-center gap-1">
+      <div class="lg:col-span-2 space-y-6">
+        <div class="flex justify-between items-end">
+          <h3 class="text-2xl font-headline font-bold text-gray-900">Progres Mata Pelajaran</h3>
+          <RouterLink to="/siswa/modul" class="text-[#006D3E] font-bold text-xs hover:underline flex items-center gap-1">
             Lihat Semua <span class="material-symbols-outlined text-sm">arrow_forward</span>
-          </a>
+          </RouterLink>
         </div>
 
         <!-- Loading Skeleton -->
-        <div v-if="loading" class="divide-y divide-gray-50">
-          <div v-for="i in 2" :key="i" class="flex items-center gap-4 px-6 py-5 animate-pulse">
+        <div v-if="loading" class="bg-white rounded-xl shadow-lg border border-gray-100 p-6 md:p-8 space-y-4">
+          <div v-for="i in 2" :key="i" class="flex items-center gap-4 animate-pulse">
             <div class="w-16 h-12 bg-gray-100 rounded-xl flex-shrink-0"></div>
             <div class="flex-1 space-y-2">
               <div class="h-3.5 bg-gray-100 rounded w-1/2"></div>
               <div class="h-2.5 bg-gray-50 rounded w-1/3"></div>
-              <div class="h-1.5 bg-gray-100 rounded-full w-full mt-3"></div>
             </div>
           </div>
         </div>
 
         <!-- Module Progress List -->
-        <div v-else-if="modulProgress.length > 0" class="divide-y divide-gray-50">
-          <div
+        <div v-else-if="modulProgress.length > 0" class="bg-white rounded-xl p-6 md:p-8 space-y-4 shadow-lg border border-gray-100">
+          <RouterLink
             v-for="modul in modulProgress"
             :key="modul.id"
-            class="flex items-center gap-4 px-6 py-5 hover:bg-gray-50/50 transition-colors group"
+            :to="modul.slug ? `/siswa/modul/${modul.slug}` : '/siswa/modul'"
+            class="flex items-center gap-4 pb-4 last:pb-0 border-b border-gray-50 last:border-0 group cursor-pointer"
           >
             <!-- Thumbnail -->
             <div class="w-16 h-12 rounded-xl bg-gray-100 flex-shrink-0 overflow-hidden">
@@ -147,42 +151,44 @@ onMounted(() => {
                   <h4 class="text-sm font-bold text-gray-900 truncate group-hover:text-[#006D3E] transition-colors">{{ modul.title }}</h4>
                   <p class="text-xs text-gray-400 font-medium mt-0.5">{{ modul.subtitle }}</p>
                 </div>
-                <span class="text-sm font-extrabold text-[#006D3E] ml-4 flex-shrink-0">{{ modul.progress }}%</span>
+                <span
+                  class="text-sm font-extrabold ml-4 flex-shrink-0 flex items-center gap-1"
+                  :class="modul.progress === 100 ? 'text-emerald-600' : 'text-[#006D3E]'"
+                >
+                  <span v-if="modul.progress === 100" class="material-symbols-outlined text-base">check_circle</span>
+                  {{ modul.progress }}%
+                </span>
               </div>
-              <div class="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden mt-2">
+              <div class="w-full h-1.5 bg-gray-100 rounded-lg overflow-hidden mt-2">
                 <div
-                  class="h-full bg-[#006D3E] rounded-full transition-all duration-700"
+                  class="h-full rounded-lg transition-all duration-700"
+                  :class="modul.progress === 100 ? 'bg-emerald-500' : 'bg-[#006D3E]'"
                   :style="{ width: modul.progress + '%' }"
                 ></div>
               </div>
             </div>
-          </div>
+          </RouterLink>
         </div>
 
         <!-- Empty State -->
-        <div v-else class="py-16 text-center">
+        <div v-else class="bg-white rounded-xl p-8 shadow-lg border border-gray-100 py-16 text-center">
           <span class="material-symbols-outlined text-5xl text-gray-200 mb-3">auto_stories</span>
           <p class="text-gray-400 font-medium text-sm">Belum ada modul tersedia.</p>
         </div>
       </div>
 
       <!-- Jadwal Mendatang -->
-      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        <div class="flex items-center justify-between px-6 py-5 border-b border-gray-50">
-          <h3 class="font-bold text-gray-900 flex items-center gap-2 text-sm">
-            <span class="material-symbols-outlined text-base text-[#006D3E]">calendar_month</span>
-            Jadwal Mendatang
-          </h3>
-          <a href="#" class="text-[#006D3E] font-bold text-xs hover:underline flex items-center gap-1">
-            Semua <span class="material-symbols-outlined text-sm">arrow_forward</span>
-          </a>
+      <div class="space-y-6">
+        <div class="flex justify-between items-end">
+          <h3 class="text-2xl font-headline font-bold text-gray-900">Jadwal Mendatang</h3>
+          <span class="text-xs font-bold text-gray-400">Jadwal</span>
         </div>
 
-        <div class="divide-y divide-gray-50">
+        <div class="bg-white rounded-xl p-6 md:p-8 space-y-4 shadow-lg border border-gray-100">
           <div
             v-for="(item, i) in schedule"
             :key="i"
-            class="flex items-start gap-4 px-6 py-4 hover:bg-gray-50/50 transition-colors"
+            class="flex items-start gap-4 pb-4 last:pb-0 border-b border-gray-50 last:border-0"
           >
             <!-- Date Badge -->
             <div class="flex-shrink-0 text-center bg-green-50 rounded-xl px-3 py-2 min-w-[48px]">
@@ -195,11 +201,11 @@ onMounted(() => {
               <p class="text-xs text-gray-400 font-medium mt-1 leading-relaxed">{{ item.desc }}</p>
             </div>
           </div>
-        </div>
-
-        <div v-if="schedule.length === 0" class="py-12 text-center">
-          <span class="material-symbols-outlined text-4xl text-gray-200 mb-2">event_busy</span>
-          <p class="text-gray-400 text-xs font-medium">Tidak ada jadwal mendatang.</p>
+          
+          <div v-if="schedule.length === 0" class="py-12 text-center">
+            <span class="material-symbols-outlined text-4xl text-gray-200 mb-2">event_busy</span>
+            <p class="text-gray-400 text-xs font-medium">Tidak ada jadwal mendatang.</p>
+          </div>
         </div>
       </div>
     </div>

@@ -2,17 +2,21 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import api from '@/api'
+import SkeletonLoader from '@/components/SkeletonLoader.vue'
+import { useSkeletonCount } from '@/composables/useSkeletonCount'
 
 const router = useRouter()
 const tryouts = ref<any[]>([])
 const isLoading = ref(true)
+const { skeletonCount, updateSkeletonCount } = useSkeletonCount('siswa.tryout', 4)
 
 const fetchTryOuts = async () => {
   try {
     isLoading.value = true
     const response = await api.get('/siswa/try-out')
     if (response.data.success) {
-      tryouts.value = response.data.data
+       tryouts.value = response.data.data
+       updateSkeletonCount(tryouts.value.length)
     }
   } catch (error) {
     console.error('Error fetching tryouts:', error)
@@ -66,11 +70,12 @@ const formatDate = (dateString: string) => {
       <p class="text-outline">Evaluasi pemahaman bahasa Arab Anda melalui ujian online.</p>
     </div>
 
-    <div v-if="isLoading" class="flex justify-center items-center h-40">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#005344]"></div>
+    <!-- Skeleton Loading -->
+    <div v-if="isLoading" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <SkeletonLoader type="card" :cols="skeletonCount" />
     </div>
 
-    <div v-else-if="tryouts.length === 0" class="text-center py-20 bg-surface-container-lowest rounded-2xl border border-outline-variant/15">
+    <div v-else-if="tryouts.length === 0" class="text-center py-20 bg-surface-container-lowest rounded-lg border border-outline-variant/15">
       <span class="material-symbols-outlined text-6xl text-outline mb-4">quiz</span>
       <h3 class="text-xl font-bold text-on-surface">Belum ada Try Out</h3>
       <p class="text-on-surface-variant">Belum ada try out yang tersedia saat ini.</p>
@@ -80,13 +85,13 @@ const formatDate = (dateString: string) => {
       <div v-for="t in tryouts" :key="t.id" class="group bg-white rounded-[2rem] shadow-xl shadow-teal-900/5 border border-gray-100 hover:border-[#005344]/20 overflow-hidden flex flex-col hover:bg-[#005344]/5 transition-all duration-300">
         <div class="p-8 space-y-6 flex-1">
           <div class="flex justify-between items-start">
-            <div class="h-14 w-14 rounded-2xl bg-teal-50 flex items-center justify-center text-[#005344] group-hover:bg-[#005344] group-hover:text-white transition-colors duration-300">
+            <div class="h-14 w-14 rounded-lg bg-teal-50 flex items-center justify-center text-[#005344] group-hover:bg-[#005344] group-hover:text-white transition-colors duration-300">
               <span class="material-symbols-outlined text-3xl">quiz</span>
             </div>
-            <span v-if="t.sudah_dikerjakan" class="px-4 py-1.5 bg-gray-100 text-gray-500 text-[10px] font-black tracking-widest rounded-full uppercase border border-gray-200">Selesai</span>
-            <span v-else-if="t.status_jadwal === 'terjadwal'" class="px-4 py-1.5 bg-orange-50 text-orange-600 text-[10px] font-black tracking-widest rounded-full uppercase border border-orange-100">Terjadwal</span>
-            <span v-else-if="t.status_jadwal === 'kedaluwarsa'" class="px-4 py-1.5 bg-red-50 text-red-600 text-[10px] font-black tracking-widest rounded-full uppercase border border-red-100">Kedaluwarsa</span>
-            <span v-else class="px-4 py-1.5 bg-green-50 text-green-600 text-[10px] font-black tracking-widest rounded-full uppercase border border-green-100">Tersedia</span>
+            <span v-if="t.sudah_dikerjakan" class="px-4 py-1.5 bg-gray-100 text-gray-500 text-[10px] font-black tracking-widest rounded-lg uppercase border border-gray-200">Selesai</span>
+            <span v-else-if="t.status_jadwal === 'terjadwal'" class="px-4 py-1.5 bg-orange-50 text-orange-600 text-[10px] font-black tracking-widest rounded-lg uppercase border border-orange-100">Terjadwal</span>
+            <span v-else-if="t.status_jadwal === 'kedaluwarsa'" class="px-4 py-1.5 bg-red-50 text-red-600 text-[10px] font-black tracking-widest rounded-lg uppercase border border-red-100">Kedaluwarsa</span>
+            <span v-else class="px-4 py-1.5 bg-green-50 text-green-600 text-[10px] font-black tracking-widest rounded-lg uppercase border border-green-100">Tersedia</span>
           </div>
           <div>
             <h4 class="font-headline font-extrabold text-2xl text-gray-900 group-hover:text-[#005344] transition-colors">{{ t.judul }}</h4>
@@ -98,13 +103,13 @@ const formatDate = (dateString: string) => {
           </div>
           <div class="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
             <div class="flex items-center gap-3">
-              <div class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-teal-50 group-hover:text-[#005344] transition-colors">
+              <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-teal-50 group-hover:text-[#005344] transition-colors">
                 <span class="material-symbols-outlined text-sm">timer</span>
               </div>
               <span class="text-xs font-bold text-gray-600">{{ t.durasi_menit }} Menit</span>
             </div>
             <div class="flex items-center gap-3">
-              <div class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-teal-50 group-hover:text-[#005344] transition-colors">
+              <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-teal-50 group-hover:text-[#005344] transition-colors">
                 <span class="material-symbols-outlined text-sm">fact_check</span>
               </div>
               <span class="text-xs font-bold text-gray-600">{{ t.soals_count || 0 }} Soal</span>

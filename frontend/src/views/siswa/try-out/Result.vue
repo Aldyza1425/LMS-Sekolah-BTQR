@@ -3,6 +3,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import api from '@/api'
 import { usePageStore } from '@/stores/page'
+import SkeletonLoader from '@/components/SkeletonLoader.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -55,7 +56,7 @@ onMounted(() => {
         <div class="flex items-center gap-4">
           <button 
             @click="router.push({ name: 'siswa.try-out' })"
-            class="w-10 h-10 bg-white hover:bg-gray-50 rounded-2xl transition-all text-gray-400 shadow-sm border border-gray-100 flex items-center justify-center active:scale-95 flex-shrink-0 cursor-pointer"
+            class="w-10 h-10 bg-white hover:bg-gray-50 rounded-lg transition-all text-gray-400 shadow-sm border border-gray-100 flex items-center justify-center active:scale-95 flex-shrink-0 cursor-pointer"
           >
             <span class="material-symbols-outlined text-xl">arrow_back</span>
           </button>
@@ -70,9 +71,11 @@ onMounted(() => {
     <div class="flex-1 max-w-4xl mx-auto w-full px-6 py-10 space-y-8">
       
       <!-- Loading -->
-      <div v-if="isLoading" class="flex flex-col items-center justify-center py-32 space-y-4">
-        <div class="animate-spin rounded-full h-10 w-10 border-4 border-[#006D3E] border-t-transparent"></div>
-        <p class="text-gray-400 font-bold text-xs uppercase tracking-widest">Memuat Hasil...</p>
+      <div v-if="isLoading" class="space-y-6">
+        <div class="bg-white rounded-[2rem] p-8 border border-gray-100 shadow-xl">
+          <SkeletonLoader type="stat" :cols="3" />
+        </div>
+        <SkeletonLoader type="detail" :rows="4" />
       </div>
 
       <template v-else-if="result">
@@ -90,14 +93,14 @@ onMounted(() => {
 
             <!-- Details Grid -->
             <div class="flex-1 grid grid-cols-2 sm:grid-cols-3 gap-5 w-full">
-              <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100">
+              <div class="p-4 bg-gray-50 rounded-lg border border-gray-100">
                 <p class="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-2">Soal Benar</p>
                 <p class="text-xl font-black">
                   <span :class="correctCount > 0 ? 'text-[#006D3E]' : 'text-gray-400'">{{ correctCount }}</span>
                   <span class="text-gray-300 text-base"> / {{ totalCount }}</span>
                 </p>
               </div>
-              <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100">
+              <div class="p-4 bg-gray-50 rounded-lg border border-gray-100">
                 <p class="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-2">Waktu Selesai</p>
                 <p class="text-xs font-black text-gray-700">{{ formatDate(result.created_at) }}</p>
               </div>
@@ -140,7 +143,7 @@ onMounted(() => {
 
                 <!-- Gambar Soal -->
                 <div v-if="qr.soal?.gambar" class="my-4">
-                  <img :src="qr.soal.gambar" alt="Gambar Soal" class="max-w-full max-h-64 rounded-2xl shadow-md border border-gray-100 object-contain" />
+                  <img :src="qr.soal.gambar" alt="Gambar Soal" class="max-w-full max-h-64 rounded-lg shadow-md border border-gray-100 object-contain" />
                 </div>
 
                 <!-- All Options -->

@@ -24,7 +24,8 @@ class TryOutSoalController extends Controller
             'pilihan_d' => 'nullable|string',
             'jawaban' => 'required|string|size:1',
             'bobot' => 'nullable|integer|min:1',
-            'urutan' => 'nullable|integer'
+            'urutan' => 'nullable|integer',
+            'is_arabic' => 'nullable|boolean'
         ]);
 
         if ($validator->fails()) {
@@ -48,7 +49,8 @@ class TryOutSoalController extends Controller
             'pilihan_d' => $request->pilihan_d,
             'jawaban' => strtolower($request->jawaban),
             'bobot' => $request->bobot ?? 1,
-            'urutan' => $urutan
+            'urutan' => $urutan,
+            'is_arabic' => filter_var($request->is_arabic, FILTER_VALIDATE_BOOLEAN)
         ]);
 
         $this->recalculateBobot($id);
@@ -74,6 +76,7 @@ class TryOutSoalController extends Controller
             'soals.*.pilihan_c' => 'nullable|string',
             'soals.*.pilihan_d' => 'nullable|string',
             'soals.*.jawaban' => 'required|string|size:1',
+            'soals.*.is_arabic' => 'nullable|boolean'
         ]);
 
         if ($validator->fails()) {
@@ -98,7 +101,8 @@ class TryOutSoalController extends Controller
                 'pilihan_d' => $item['pilihan_d'],
                 'jawaban' => strtolower($item['jawaban']),
                 'bobot' => 1,
-                'urutan' => $urutanMaks + $index + 1
+                'urutan' => $urutanMaks + $index + 1,
+                'is_arabic' => filter_var($item['is_arabic'] ?? false, FILTER_VALIDATE_BOOLEAN)
             ]);
         }
 
@@ -125,7 +129,8 @@ class TryOutSoalController extends Controller
             'pilihan_d' => 'nullable|string',
             'jawaban' => 'required|string|size:1',
             'bobot' => 'nullable|integer|min:1',
-            'urutan' => 'nullable|integer'
+            'urutan' => 'nullable|integer',
+            'is_arabic' => 'nullable|boolean'
         ]);
 
         if ($validator->fails()) {
@@ -146,7 +151,8 @@ class TryOutSoalController extends Controller
             'pilihan_d' => $request->pilihan_d,
             'jawaban' => strtolower($request->jawaban),
             'bobot' => $request->bobot ?? $soal->bobot,
-            'urutan' => $request->urutan ?? $soal->urutan
+            'urutan' => $request->urutan ?? $soal->urutan,
+            'is_arabic' => filter_var($request->is_arabic ?? $soal->is_arabic, FILTER_VALIDATE_BOOLEAN)
         ]);
 
         $this->recalculateBobot($id);

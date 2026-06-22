@@ -109,6 +109,7 @@ class ModulController extends Controller
                 'has_tugas' => $materi->has_tugas,
                 'tugas_instruction' => $materi->tugas_instruction,
                 'has_posttest' => $materi->has_posttest,
+                'is_arabic' => $materi->is_arabic,
 
                 'pre_tests' => $materi->has_pretest ? $materi->soals->where('tipe_soal', 'pre_test')->values() : [],
                 'post_tests' => $materi->has_posttest ? $materi->soals->where('tipe_soal', 'post_test')->values() : [],

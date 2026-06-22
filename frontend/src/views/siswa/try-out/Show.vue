@@ -3,11 +3,23 @@ import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import api from '@/api'
 import { useToast } from '@/composables/useToast'
+import SkeletonLoader from '@/components/SkeletonLoader.vue'
 
 const router = useRouter()
 const route = useRoute()
 const examId = route.params.id
 const { error } = useToast()
+
+const isArabicMode = ref(false)
+const getArabicLabel = (opt: string) => {
+  const map: Record<string, string> = {
+    a: 'أ',
+    b: 'ب',
+    c: 'ج',
+    d: 'د'
+  }
+  return map[opt] || opt
+}
 
 const isLoading = ref(true)
 const isSubmitting = ref(false)
@@ -154,15 +166,22 @@ const cancelSubmit = () => {
       </div>
     </header>
 
-    <div v-if="isLoading" class="flex-1 flex justify-center items-center">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#005344]"></div>
+    <div v-if="isLoading" class="flex-1 max-w-[1200px] w-full mx-auto px-6 py-8 flex gap-8">
+      <aside class="w-72 flex-shrink-0 hidden lg:block">
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100 space-y-6">
+          <SkeletonLoader type="list" :rows="2" />
+        </div>
+      </aside>
+      <div class="flex-1 bg-white rounded-xl p-8 shadow-sm border border-gray-100">
+        <SkeletonLoader type="detail" :rows="3" />
+      </div>
     </div>
 
     <main v-else class="flex-1 max-w-[1200px] w-full mx-auto px-6 py-8 flex gap-8">
       
       <!-- Left Sidebar: Question Navigator -->
       <aside class="w-72 flex-shrink-0 space-y-6 hidden lg:block">
-        <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
           <h3 class="text-xs font-black uppercase tracking-widest text-gray-400 mb-6">Navigasi Soal</h3>
           <div class="grid grid-cols-5 gap-3">
             <button 
@@ -198,20 +217,20 @@ const cancelSubmit = () => {
 
       <!-- Main Content: Current Question -->
       <div class="flex-1 space-y-6">
-        <div v-if="currentQuestion" class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 min-h-[400px] flex flex-col">
+        <div v-if="currentQuestion" class="bg-white rounded-xl p-8 shadow-sm border border-gray-100 min-h-[400px] flex flex-col">
           <div class="flex items-center gap-3 mb-8">
             <span class="px-4 py-1.5 bg-gray-50 text-gray-600 rounded-lg text-[10px] font-black uppercase tracking-widest border border-gray-100">
               Soal Ke-{{ currentQuestionIndex + 1 }}
             </span>
           </div>
 
-          <p class="text-xl text-gray-900 font-medium leading-relaxed mb-6">
+          <p class="text-xl text-gray-900 font-medium leading-relaxed mb-6" :dir="currentQuestion.is_arabic ? 'rtl' : 'ltr'">
             {{ currentQuestion.pertanyaan }}
           </p>
 
           <!-- Gambar Soal -->
           <div v-if="currentQuestion.gambar" class="mb-8">
-            <img :src="currentQuestion.gambar" alt="Gambar Soal" class="max-w-full max-h-72 rounded-2xl shadow-md border border-gray-100 object-contain" />
+            <img :src="currentQuestion.gambar" alt="Gambar Soal" class="max-w-full max-h-72 rounded-lg shadow-md border border-gray-100 object-contain" />
           </div>
 
           <div class="space-y-4 flex-1">
@@ -219,12 +238,13 @@ const cancelSubmit = () => {
               v-for="opt in ['a', 'b', 'c', 'd']" 
               :key="opt"
               @click="selectAnswer(opt)"
-              class="w-full text-left p-5 rounded-2xl border-2 transition-all group flex items-start gap-4"
+              class="w-full text-left p-5 rounded-lg border-2 transition-all group flex items-start gap-4"
               :class="answers[currentQuestion.id] === opt ? 'border-[#005344] bg-teal-50 shadow-md' : 'border-gray-100 hover:border-[#005344]/30 hover:bg-gray-50'"
+              :dir="currentQuestion.is_arabic ? 'rtl' : 'ltr'"
             >
-              <div class="w-8 h-8 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors"
+              <div class="w-8 h-8 rounded-lg border-2 flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors"
                    :class="answers[currentQuestion.id] === opt ? 'border-[#005344] bg-[#005344] text-white' : 'border-gray-300 text-gray-400 group-hover:border-[#005344]/50'">
-                <span class="text-xs font-black uppercase">{{ opt }}</span>
+                <span class="text-xs font-black uppercase">{{ currentQuestion.is_arabic ? getArabicLabel(opt) : opt }}</span>
               </div>
               <span class="text-gray-700 font-medium leading-relaxed">{{ currentQuestion['pilihan_' + opt] }}</span>
             </button>
@@ -265,7 +285,7 @@ const cancelSubmit = () => {
     <div v-if="showConfirmModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
       <div class="absolute inset-0 bg-gray-900/40 backdrop-blur-sm" @click="cancelSubmit"></div>
       <div class="bg-white rounded-[2rem] p-8 max-w-md w-full relative z-10 shadow-2xl animate-in zoom-in-95 duration-300">
-        <div class="w-16 h-16 bg-orange-50 text-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+        <div class="w-16 h-16 bg-orange-50 text-orange-500 rounded-lg flex items-center justify-center mx-auto mb-6">
           <span class="material-symbols-outlined text-3xl">help</span>
         </div>
         <h3 class="text-xl font-black text-center text-gray-900 mb-2">Selesaikan Ujian?</h3>
@@ -277,7 +297,7 @@ const cancelSubmit = () => {
             Kembali
           </button>
           <button @click="submitExam" :disabled="isSubmitting" class="flex-1 py-3.5 rounded-xl font-bold text-sm text-white bg-[#005344] hover:bg-teal-900 transition-all shadow-md disabled:opacity-50 flex items-center justify-center gap-2">
-            <span v-if="isSubmitting" class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+            <span v-if="isSubmitting" class="w-4 h-4 border-2 border-white/30 border-t-white rounded-lg animate-spin"></span>
             Selesai
           </button>
         </div>

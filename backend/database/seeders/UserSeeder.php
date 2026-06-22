@@ -12,24 +12,22 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Admin::create([
-            'name' => 'Admin BTQR',
-            'email' => 'admin@btqr.com',
-            'password' => \Illuminate\Support\Facades\Hash::make('password'),
-        ]);
+        \App\Models\Siswa::firstOrCreate(
+            ['email' => 'siswa@btqr.com'],
+            [
+                'name' => 'Siswa BTQR',
+                'password' => \Illuminate\Support\Facades\Hash::make('password'),
+                'is_active' => true,
+            ]
+        );
 
-        \App\Models\Siswa::create([
-            'name' => 'Siswa BTQR',
-            'email' => 'siswa@btqr.com',
-            'password' => \Illuminate\Support\Facades\Hash::make('password'),
-            'is_active' => true,
-        ]);
-
-        \App\Models\Pengajar::create([
-            'name' => 'Pengajar BTQR',
-            'email' => 'pengajar@btqr.com',
-            'password' => \Illuminate\Support\Facades\Hash::make('password'),
-            'is_active' => true,
-        ]);
+        \App\Models\Pengajar::firstOrCreate(
+            ['email' => 'pengajar@btqr.com'],
+            [
+                'name' => 'Pengajar BTQR',
+                'password' => \Illuminate\Support\Facades\Hash::make('password'),
+                'is_active' => true,
+            ]
+        );
     }
 }

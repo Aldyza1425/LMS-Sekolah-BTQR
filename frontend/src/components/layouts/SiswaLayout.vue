@@ -33,7 +33,7 @@ const handleLogout = async () => {
     console.error('Logout error:', e)
   } finally {
     localStorage.removeItem('btqr_token')
-    router.push('/lms/login')
+    router.push('/login')
   }
 }
 
@@ -64,53 +64,53 @@ onMounted(() => {
       <div class="mb-10 px-4 flex justify-between items-center">
         <div>
           <h1 class="text-white font-['Plus_Jakarta_Sans'] italic text-2xl">BTQR</h1>
-          <p class="text-white/60 text-xs font-normal mt-1 uppercase tracking-widest">Siswa Portal</p>
+          <p class="text-white/60 text-xs font-normal mt-1 uppercase tracking-widest">Portal Siswa</p>
         </div>
         <button @click="isSidebarOpen = false" class="text-white md:hidden">
           <span class="material-symbols-outlined">close</span>
         </button>
       </div>
-
+ 
       <nav class="flex-1 space-y-2">
         <RouterLink 
-          to="/lms/siswa" 
+          to="/siswa" 
           @click="isSidebarOpen = false"
-          class="flex items-center gap-3 px-4 py-3 rounded-full transition-all group"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all group"
           exact-active-class="bg-white text-[#006D3E] md:-mr-4 shadow-sm"
           :class="currentRouteName !== 'siswa.dashboard' ? 'text-white/80 hover:bg-white/10 hover:text-white' : ''"
         >
           <span class="material-symbols-outlined" :style="currentRouteName === 'siswa.dashboard' ? 'font-variation-settings: \'FILL\' 1' : ''">dashboard</span>
           <span>Dashboard</span>
         </RouterLink>
-
-
+ 
+ 
         <RouterLink 
-          to="/lms/siswa/modul" 
+          to="/siswa/modul" 
           @click="isSidebarOpen = false"
-          class="flex items-center gap-3 px-4 py-3 rounded-full transition-all group"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all group"
           exact-active-class="bg-white text-[#006D3E] md:-mr-4 shadow-sm"
           :class="currentRouteName !== 'siswa.modul' ? 'text-white/80 hover:bg-white/10 hover:text-white' : ''"
         >
           <span class="material-symbols-outlined" :style="currentRouteName === 'siswa.modul' ? 'font-variation-settings: \'FILL\' 1' : ''">menu_book</span>
           <span>Modul Saya</span>
         </RouterLink>
-
+ 
         <RouterLink 
-          to="/lms/siswa/nilai" 
+          to="/siswa/nilai" 
           @click="isSidebarOpen = false"
-          class="flex items-center gap-3 px-4 py-3 rounded-full transition-all group"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all group"
           exact-active-class="bg-white text-[#006D3E] md:-mr-4 shadow-sm"
           :class="currentRouteName !== 'siswa.nilai' ? 'text-white/80 hover:bg-white/10 hover:text-white' : ''"
         >
           <span class="material-symbols-outlined" :style="currentRouteName === 'siswa.nilai' ? 'font-variation-settings: \'FILL\' 1' : ''">workspace_premium</span>
           <span>Nilai Saya</span>
         </RouterLink>
-
-
+ 
+ 
         <RouterLink 
-          to="/lms/siswa/try-out" 
+          to="/siswa/try-out" 
           @click="isSidebarOpen = false"
-          class="flex items-center gap-3 px-4 py-3 rounded-full transition-all group"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all group"
           exact-active-class="bg-white text-[#006D3E] md:-mr-4 shadow-sm"
           :class="currentRouteName !== 'siswa.try-out' ? 'text-white/80 hover:bg-white/10 hover:text-white' : ''"
         >
@@ -118,37 +118,37 @@ onMounted(() => {
           <span>Try Out</span>
         </RouterLink>
       </nav>
-
+ 
       <div class="mt-auto pt-6 border-t border-white/10 space-y-1 text-white">
         <RouterLink 
-          to="/lms/siswa/profile" 
+          to="/siswa/profile" 
           @click="isSidebarOpen = false"
-          class="flex items-center gap-3 px-4 py-2.5 rounded-full text-sm transition-all"
+          class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all"
           :class="currentRouteName === 'siswa.profile' ? 'bg-white/15 text-white' : 'text-white/80 hover:bg-white/10 hover:text-white'"
         >
           <span class="material-symbols-outlined text-xl">account_circle</span>
-          <span>Profile Saya</span>
+          <span>Profil Saya</span>
         </RouterLink>
         <button 
           @click="handleLogout"
-          class="w-full flex items-center gap-3 px-4 py-2.5 rounded-full text-white/80 text-sm transition-all hover:bg-white/10 hover:text-white"
+          class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-white/80 text-sm transition-all hover:bg-white/10 hover:text-white"
         >
           <span class="material-symbols-outlined text-xl">logout</span>
-          <span>Logout</span>
+          <span>Keluar</span>
         </button>
-
+ 
         <div class="px-2 mt-4 pt-4 border-t border-white/10 flex items-center gap-3">
-          <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white overflow-hidden shadow-inner">
+          <div class="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center text-white overflow-hidden shadow-inner">
              <span class="material-symbols-outlined">account_circle</span>
           </div>
           <div class="overflow-hidden">
-            <p class="text-xs font-bold text-white truncate">{{ user?.name || 'Loading...' }}</p>
+            <p class="text-xs font-bold text-white truncate">{{ user?.name || 'Memuat...' }}</p>
             <p class="text-[10px] text-white/50 uppercase tracking-tighter">Siswa</p>
           </div>
         </div>
       </div>
     </aside>
-
+ 
     <!-- Main Canvas -->
     <main class="min-h-screen bg-white transition-all duration-300 md:ml-64">
       <!-- TopAppBar -->
@@ -157,16 +157,11 @@ onMounted(() => {
           <button @click="toggleSidebar" class="p-2 -ml-2 text-[#006D3E] md:hidden">
             <span class="material-symbols-outlined">menu</span>
           </button>
-          <span class="text-xs font-bold uppercase tracking-widest opacity-40 hidden sm:inline">Siswa</span>
-          <span class="material-symbols-outlined text-xs hidden sm:inline">chevron_right</span>
-          <span class="text-[#006D3E] font-bold border-b-2 border-[#006D3E] capitalize text-sm">
-            {{ pageStore.title || route.meta.title || route.path.split('/').pop() || 'Dashboard' }}
-          </span>
         </div>
         <div class="flex items-center gap-4 md:gap-6">
-          <div class="relative flex items-center bg-gray-50 rounded-full px-4 py-2 w-48 lg:w-64 focus-within:ring-2 focus-within:ring-[#006D3E]/20 transition-all group">
+          <div class="relative flex items-center bg-gray-50 rounded-lg px-4 py-2 w-48 lg:w-64 focus-within:ring-2 focus-within:ring-[#006D3E]/20 transition-all group">
             <span class="material-symbols-outlined text-gray-400 group-focus-within:text-[#006D3E] text-lg">search</span>
-            <input class="bg-transparent border-none focus:ring-0 text-sm w-full font-medium" placeholder="Search lessons..." type="text"/>
+            <input class="bg-transparent border-none focus:ring-0 text-sm w-full font-medium" placeholder="Cari pelajaran..." type="text"/>
           </div>
           <NotificationBell 
             themeColor="#006D3E" 

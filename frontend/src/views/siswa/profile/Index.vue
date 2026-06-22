@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import api from '@/api'
+import SkeletonLoader from '@/components/SkeletonLoader.vue'
 
 const user = ref<any>(null)
 const isLoading = ref(true)
@@ -36,10 +37,10 @@ onMounted(() => {
       <h2 class="font-headline text-3xl font-black text-[#006D3E]">Profil Saya</h2>
     </div>
 
-    <!-- Loading state -->
-    <div v-if="isLoading" class="bg-white rounded-3xl border border-gray-100 p-12 text-center shadow-lg">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#006D3E] mx-auto"></div>
-      <p class="text-gray-400 font-bold text-xs uppercase tracking-widest mt-4">Memuat Profil...</p>
+    <!-- Skeleton Loading -->
+    <div v-if="isLoading" class="bg-white rounded-xl border border-gray-100 shadow-lg overflow-hidden">
+      <div class="h-40 bg-gray-100 animate-pulse"></div>
+      <SkeletonLoader type="profile" :rows="4" />
     </div>
 
     <div v-else-if="user" class="bg-white rounded-[2.5rem] shadow-xl border border-gray-100 overflow-hidden">
@@ -48,7 +49,7 @@ onMounted(() => {
       
       <div class="px-8 md:px-12 pb-12 relative">
         <!-- Avatar -->
-        <div class="absolute -top-16 left-8 md:left-12 h-32 w-32 rounded-3xl border-4 border-white shadow-xl overflow-hidden bg-gray-50 flex items-center justify-center">
+        <div class="absolute -top-16 left-8 md:left-12 h-32 w-32 rounded-xl border-4 border-white shadow-xl overflow-hidden bg-gray-50 flex items-center justify-center">
           <img 
             v-if="user.photo" 
             :src="getPhotoUrl(user.photo)" 
@@ -83,7 +84,7 @@ onMounted(() => {
             <div class="space-y-6">
               <div>
                 <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-1">Peran / Role</label>
-                <span class="inline-block px-4 py-1.5 bg-green-50 text-[#006D3E] text-xs font-black rounded-full uppercase tracking-wider border border-green-100">
+                <span class="inline-block px-4 py-1.5 bg-green-50 text-[#006D3E] text-xs font-black rounded-lg uppercase tracking-wider border border-green-100">
                   Peserta Didik
                 </span>
               </div>
@@ -94,7 +95,7 @@ onMounted(() => {
               <div>
                 <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-1">Status Akun</label>
                 <p class="flex items-center gap-2 text-green-600 font-bold text-sm">
-                  <span class="h-2.5 w-2.5 rounded-full bg-green-500 animate-pulse"></span>
+                  <span class="h-2.5 w-2.5 rounded-lg bg-green-500 animate-pulse"></span>
                   {{ user.is_active ? 'Aktif' : 'Menunggu Verifikasi' }}
                 </p>
               </div>

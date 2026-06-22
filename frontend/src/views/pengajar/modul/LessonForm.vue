@@ -43,6 +43,21 @@ const postTests = ref<QuizQuestion[]>([
   { soal: '', a: '', b: '', c: '', d: '', jawaban: 'a' }
 ])
 
+const isArabicMode = ref(false)
+const t = (indonesian: string, arabic: string) => {
+  return isArabicMode.value ? arabic : indonesian
+}
+
+const getArabicLabel = (opt: string) => {
+  const map: Record<string, string> = {
+    a: 'أ',
+    b: 'ب',
+    c: 'ج',
+    d: 'د'
+  }
+  return map[opt] || opt
+}
+
 // Removed 'Teks' from buttons, it's now the default state
 const optionalTypes = ['Video', 'PDF'] 
 const isLoading = ref(false)
@@ -99,6 +114,7 @@ const saveDraft = () => {
     videoType: videoType.value,
     preTests: preTests.value,
     postTests: postTests.value,
+    isArabicMode: isArabicMode.value,
     timestamp: Date.now()
   }
   localStorage.setItem(draftKey, JSON.stringify(draftData))
@@ -114,6 +130,7 @@ const loadDraft = () => {
       videoType.value = draftData.videoType || 'Link'
       preTests.value = draftData.preTests || []
       postTests.value = draftData.postTests || []
+      isArabicMode.value = draftData.isArabicMode || false
       
       nextTick(() => {
         if (editorRef.value) {
@@ -138,6 +155,7 @@ const discardDraftAndReset = async () => {
   clearDraft()
   isDraftRestored.value = false
   isLoaded.value = false
+  isArabicMode.value = false
   
   if (isEdit) {
     await fetchMateri()
@@ -164,7 +182,7 @@ const discardDraftAndReset = async () => {
 
 // Watch for deep updates to form fields and auto-save
 watch(
-  [form, videoLink, videoType, preTests, postTests],
+  [form, videoLink, videoType, preTests, postTests, isArabicMode],
   () => {
     saveDraft()
   },
@@ -181,6 +199,7 @@ const fetchMateri = async () => {
       form.value.title = data.judul
       form.value.content = data.deskripsi || ''
       form.value.durasi = data.durasi || 0
+      isArabicMode.value = !!data.is_arabic
       
       if (editorRef.value) {
         editorRef.value.innerHTML = form.value.content
@@ -241,7 +260,7 @@ const fetchMateri = async () => {
     }
   } catch (error) {
     console.error('Error fetching materi:', error)
-    showFlash('Gagal memuat materi', 'error')
+    showFlash(t('Gagal memuat materi', 'فشل في تحميل المادة'), 'error')
   } finally {
     isLoading.value = false
   }
@@ -317,31 +336,75 @@ const updateContent = () => {
 
 const handlePaste = async (e: ClipboardEvent) => {
   const items = e.clipboardData?.items
-  if (!items) return
-  
-  for (let i = 0; i < items.length; i++) {
-    const item = items[i]
-    if (item && item.type.indexOf('image') !== -1) {
-      e.preventDefault()
-      const blob = item.getAsFile()
-      if (blob) {
-        const formData = new FormData()
-        formData.append('image', blob)
-        try {
-          const res = await api.post('/pengajar/upload', formData, {
-            headers: { 'Content-Type': 'multipart/form-data' }
-          })
-          if (res.data.success) {
-            const imageUrl = res.data.url
-            const img = `<img src="${imageUrl}" class="resizable-image rounded-2xl my-4 shadow-lg border border-gray-100 cursor-pointer transition-all" style="width: 300px; display: block; margin-left: 0; margin-right: auto;">`
-            document.execCommand('insertHTML', false, img)
-            updateContent()
+  if (items) {
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i]
+      if (item && item.type.indexOf('image') !== -1) {
+        e.preventDefault()
+        const blob = item.getAsFile()
+        if (blob) {
+          const formData = new FormData()
+          formData.append('image', blob)
+          try {
+            const res = await api.post('/pengajar/upload', formData, {
+              headers: { 'Content-Type': 'multipart/form-data' }
+            })
+            if (res.data.success) {
+              const imageUrl = res.data.url
+              const img = `<img src="${imageUrl}" class="resizable-image rounded-lg my-4 shadow-lg border border-gray-100 cursor-pointer transition-all" style="width: 300px; display: block; margin-left: 0; margin-right: auto;">`
+              document.execCommand('insertHTML', false, img)
+              updateContent()
+            }
+          } catch (err) {
+            console.error('Image upload failed:', err)
           }
-        } catch (err) {
-          console.error('Image upload failed:', err)
+        }
+        return
+      }
+    }
+  }
+
+  // Handle plain text paste specifically for stripping PDF linebreaks and soft-hyphens/unicode artifacts
+  const text = e.clipboardData?.getData('text')
+  if (text) {
+    e.preventDefault()
+    let cleaned = text
+      .replace(/[\u00ad\u200b\u200c\u200d\u200e\u200f]/g, '') // strip soft hyphens and zero-width spaces/joiners
+      .replace(/\r\n/g, '\n')
+      .replace(/\r/g, '\n')
+    
+    const lines = cleaned.split('\n')
+    let reconstructed = ''
+    let currentParagraph = ''
+    
+    for (let line of lines) {
+      const trimmed = line.trim()
+      if (trimmed === '') {
+        if (currentParagraph) {
+          reconstructed += currentParagraph + '\n\n'
+          currentParagraph = ''
+        }
+      } else {
+        if (currentParagraph) {
+          currentParagraph += ' ' + trimmed
+        } else {
+          currentParagraph = trimmed
         }
       }
     }
+    if (currentParagraph) {
+      reconstructed += currentParagraph
+    }
+    
+    reconstructed = reconstructed.replace(/ +/g, ' ')
+    
+    const htmlSnippet = reconstructed
+      .split('\n\n')
+      .map(para => `<p>${para.replace(/\n/g, '<br>')}</p>`)
+      .join('')
+      
+    document.execCommand('insertHTML', false, htmlSnippet)
+    updateContent()
   }
 }
 
@@ -465,7 +528,7 @@ const handleFileChange = (e: any) => {
 const saveLesson = async () => {
   updateContent()
   if (!form.value.title) {
-    showFlash('Judul materi wajib diisi!', 'error')
+    showFlash(t('Judul materi wajib diisi!', 'عنوان المادة مطلوب!'), 'error')
     return
   }
 
@@ -474,6 +537,7 @@ const saveLesson = async () => {
     const formData = new FormData()
     formData.append('judul', form.value.title)
     formData.append('deskripsi', form.value.content)
+    formData.append('is_arabic', isArabicMode.value ? '1' : '0')
     
     let backendType = 'teks'
     if (form.value.type === 'Video') backendType = 'video'
@@ -540,7 +604,7 @@ const saveLesson = async () => {
     })
     if (response.data.success) {
       clearDraft()
-      showFlash('Materi berhasil disimpan')
+      showFlash(t('Materi berhasil disimpan', 'تم حفظ المادة بنجاح'))
       setTimeout(() => router.back(), 500)
     }
   } catch (error: any) {
@@ -548,7 +612,7 @@ const saveLesson = async () => {
     if (error.response?.data?.message) {
       showFlash(error.response.data.message, 'error')
     } else {
-      showFlash('Gagal menyimpan materi', 'error')
+      showFlash(t('Gagal menyimpan materi', 'فشل في حفظ المادة'), 'error')
     }
   } finally {
     isLoading.value = false
@@ -585,22 +649,22 @@ onUnmounted(() => {
       leave-from-class="opacity-100"
       leave-to-class="opacity-0"
     >
-      <div v-if="flashMessage.show" class="fixed top-8 right-8 z-[100] w-full max-w-sm overflow-hidden rounded-[2rem] bg-white/80 backdrop-blur-xl border border-white/20 shadow-2xl shadow-red-900/10 animate-in slide-in-from-right-8">
+      <div v-if="flashMessage.show" class="fixed top-8 right-8 z-[100] w-full max-w-sm overflow-hidden rounded-xl bg-white/80 backdrop-blur-xl border border-white/20 shadow-2xl shadow-red-900/10 animate-in slide-in-from-right-8">
         <div class="p-6">
           <div class="flex items-center gap-4">
-            <div :class="flashMessage.type === 'success' ? 'bg-green-500' : 'bg-[#8B2323]'" class="w-10 h-10 rounded-2xl flex items-center justify-center text-white shrink-0 shadow-lg">
+            <div :class="flashMessage.type === 'success' ? 'bg-green-500' : 'bg-[#006D3E]'" class="w-10 h-10 rounded-lg flex items-center justify-center text-white shrink-0 shadow-lg">
               <span class="material-symbols-outlined text-xl">{{ flashMessage.type === 'success' ? 'check_circle' : 'error' }}</span>
             </div>
-            <div class="flex-1">
-              <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-0.5">Notification</p>
-              <p class="text-sm font-bold text-gray-900">{{ flashMessage.message }}</p>
+            <div class="flex-grow">
+               <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-0.5">{{ t('Notification', 'إشعار') }}</p>
+               <p class="text-sm font-bold text-gray-900">{{ flashMessage.message }}</p>
             </div>
           </div>
         </div>
         <div class="h-1 bg-gray-100 w-full overflow-hidden">
           <div 
             class="h-full transition-all duration-100 ease-linear"
-            :class="flashMessage.type === 'success' ? 'bg-green-500' : 'bg-[#8B2323]'"
+            :class="flashMessage.type === 'success' ? 'bg-green-500' : 'bg-[#006D3E]'"
             :style="{ width: flashMessage.progress + '%' }"
           ></div>
         </div>
@@ -610,20 +674,27 @@ onUnmounted(() => {
     <!-- Header -->
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-4">
-        <button @click="goBackAndClearDraft" class="w-10 h-10 bg-white hover:bg-gray-50 rounded-2xl transition-all text-gray-400 shadow-sm border border-gray-100 flex items-center justify-center active:scale-95 flex-shrink-0 cursor-pointer">
+        <button @click="goBackAndClearDraft" class="w-10 h-10 bg-white hover:bg-gray-50 rounded-lg transition-all text-gray-400 shadow-sm border-2 border-gray-300 flex items-center justify-center active:scale-95 flex-shrink-0 cursor-pointer">
           <span class="material-symbols-outlined text-xl">arrow_back</span>
         </button>
         <div>
-          <div class="text-[9px] font-black text-[#8B2323] uppercase tracking-widest mb-0.5">Premium Content Editor</div>
-          <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight">{{ isEdit ? 'Edit Materi' : 'Buat Materi Baru' }}</h2>
+          <h2 class="text-2xl font-extrabold text-gray-900 tracking-tight">{{ isEdit ? t('Edit Materi', 'تعديل المادة') : t('Buat Materi Baru', 'إنشاء مادة جديدة') }}</h2>
         </div>
       </div>
 
       <div class="flex items-center gap-3">
          <button 
+           @click="isArabicMode = !isArabicMode"
+           class="h-11 px-5 rounded-lg font-black text-[10px] uppercase tracking-widest transition-all cursor-pointer shadow-md flex items-center justify-center gap-2 border-2"
+           :class="isArabicMode ? 'bg-[#006D3E] text-white border-2 border-[#006D3E]' : 'bg-white text-[#006D3E] border-2 border-[#006D3E]'"
+         >
+           <span class="material-symbols-outlined text-sm">language</span>
+           {{ isArabicMode ? 'Bahasa: Arab' : 'Bahasa: Indo' }}
+         </button>
+         <button 
            @click="saveLesson"
            :disabled="isLoading"
-           class="bg-[#8B2323] text-white px-8 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl shadow-red-900/20 hover:shadow-2xl transition-all disabled:opacity-50"
+           class="bg-[#006D3E] text-white h-11 px-5 rounded-lg font-black text-[10px] uppercase tracking-widest shadow-md hover:shadow-lg transition-all disabled:opacity-50 border-2 border-[#006D3E] flex items-center justify-center"
          >
            {{ isLoading ? 'Menyimpan...' : 'Simpan Materi' }}
          </button>
@@ -639,19 +710,19 @@ onUnmounted(() => {
       leave-from-class="opacity-100"
       leave-to-class="opacity-0"
     >
-      <div v-if="isDraftRestored" class="bg-amber-50 border border-amber-200 rounded-[2rem] p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-in slide-in-from-top-4 duration-300">
+      <div v-if="isDraftRestored" class="bg-amber-50 border-2 border-amber-300 rounded-xl p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 animate-in slide-in-from-top-4 duration-300">
         <div class="flex items-center gap-4">
-          <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
+          <div class="w-12 h-12 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
             <span class="material-symbols-outlined text-2xl">history</span>
           </div>
           <div>
-            <p class="text-sm font-extrabold text-amber-900 font-['Plus_Jakarta_Sans']">Draf Pemulihan Otomatis Aktif</p>
-            <p class="text-xs text-amber-700 font-medium font-['Plus_Jakarta_Sans']">Kami memulihkan perubahan yang belum disimpan dari sesi terakhir Anda.</p>
+            <p class="text-sm font-extrabold text-amber-900 font-['Plus_Jakarta_Sans']">{{ t('Draf Pemulihan Otomatis Aktif', 'مسودة الاسترداد التلقائي نشطة') }}</p>
+            <p class="text-xs text-amber-700 font-medium font-['Plus_Jakarta_Sans']">{{ t('Kami memulihkan perubahan yang belum disimpan dari sesi terakhir Anda.', 'قمنا باستعادة التغييرات غير المحفوظة من جلستك الأخيرة.') }}</p>
           </div>
         </div>
         <div class="flex items-center gap-3">
-          <button @click="discardDraftAndReset" class="px-6 py-2.5 bg-amber-100 hover:bg-amber-200 active:scale-95 transition-all text-amber-900 rounded-xl font-black text-[9px] uppercase tracking-widest border border-amber-300 cursor-pointer">Abaikan Draf</button>
-          <button @click="isDraftRestored = false" class="px-6 py-2.5 bg-amber-800 hover:bg-amber-900 active:scale-95 transition-all text-white rounded-xl font-black text-[9px] uppercase tracking-widest cursor-pointer shadow-lg shadow-amber-950/20">Gunakan Draf</button>
+          <button @click="discardDraftAndReset" class="px-6 py-2.5 bg-amber-100 hover:bg-amber-200 active:scale-95 transition-all text-amber-900 rounded-xl font-black text-[9px] uppercase tracking-widest border border-amber-300 cursor-pointer">{{ t('Abaikan Draf', 'تجاهل المسودة') }}</button>
+          <button @click="isDraftRestored = false" class="px-6 py-2.5 bg-amber-800 hover:bg-amber-900 active:scale-95 transition-all text-white rounded-xl font-black text-[9px] uppercase tracking-widest cursor-pointer shadow-lg shadow-amber-950/20">{{ t('Gunakan Draf', 'استخدام المسودة') }}</button>
         </div>
       </div>
     </transition>
@@ -660,26 +731,26 @@ onUnmounted(() => {
     <div class="space-y-8">
       
       <!-- Editor Card -->
-      <div class="bg-white rounded-[3rem] shadow-2xl shadow-red-900/5 border border-gray-100 overflow-hidden">
+      <div class="bg-white rounded-2xl shadow-2xl shadow-red-900/5 border-2 border-gray-300 overflow-hidden">
         
         <!-- Advanced Toolbar -->
-        <div class="px-8 py-4 bg-gray-50/50 border-b border-gray-100 flex items-center gap-2 flex-wrap relative">
-           <div class="flex items-center gap-1 bg-white p-1 rounded-xl shadow-sm border border-gray-100">
-              <button @click="execCommand('bold')" class="p-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-400 hover:text-[#8B2323]"><span class="material-symbols-outlined text-xl">format_bold</span></button>
-              <button @click="execCommand('italic')" class="p-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-400 hover:text-[#8B2323]"><span class="material-symbols-outlined text-xl">format_italic</span></button>
-              <button @click="execCommand('underline')" class="p-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-400 hover:text-[#8B2323]"><span class="material-symbols-outlined text-xl">format_underlined</span></button>
+        <div class="px-8 py-4 bg-gray-50/50 border-b-2 border-gray-200 flex items-center gap-2 flex-wrap relative">
+           <div class="flex items-center gap-1 bg-white p-1 rounded-xl shadow-sm border-2 border-gray-200">
+              <button @click="execCommand('bold')" class="p-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-400 hover:text-[#006D3E]"><span class="material-symbols-outlined text-xl">format_bold</span></button>
+              <button @click="execCommand('italic')" class="p-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-400 hover:text-[#006D3E]"><span class="material-symbols-outlined text-xl">format_italic</span></button>
+              <button @click="execCommand('underline')" class="p-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-400 hover:text-[#006D3E]"><span class="material-symbols-outlined text-xl">format_underlined</span></button>
            </div>
 
            <div class="w-px h-6 bg-gray-200 mx-1"></div>
 
-           <div class="flex items-center gap-1 bg-white p-1 rounded-xl shadow-sm border border-gray-100">
-              <button @click="execCommand('justifyLeft')" class="p-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-400 hover:text-[#8B2323]"><span class="material-symbols-outlined text-xl">format_align_left</span></button>
-              <button @click="execCommand('justifyCenter')" class="p-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-400 hover:text-[#8B2323]"><span class="material-symbols-outlined text-xl">format_align_center</span></button>
+           <div class="flex items-center gap-1 bg-white p-1 rounded-xl shadow-sm border-2 border-gray-200">
+              <button @click="execCommand('justifyLeft')" class="p-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-400 hover:text-[#006D3E]"><span class="material-symbols-outlined text-xl">format_align_left</span></button>
+              <button @click="execCommand('justifyCenter')" class="p-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-400 hover:text-[#006D3E]"><span class="material-symbols-outlined text-xl">format_align_center</span></button>
            </div>
 
            <div class="w-px h-6 bg-gray-200 mx-1"></div>
 
-           <div class="flex items-center gap-1 bg-white p-1 rounded-xl shadow-sm border border-gray-100 relative">
+           <div class="flex items-center gap-1 bg-white p-1 rounded-xl shadow-sm border-2 border-gray-200 relative">
               <button @click="insertTable" class="p-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-400 hover:text-blue-600"><span class="material-symbols-outlined text-xl">table_chart</span></button>
               <button @click="addRow" class="p-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-400 hover:text-blue-600"><span class="material-symbols-outlined text-xl">playlist_add</span></button>
               <button @click="addColumn" class="p-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-400 hover:text-blue-600"><span class="material-symbols-outlined text-xl">view_column</span></button>
@@ -688,7 +759,7 @@ onUnmounted(() => {
                 <button @click="showTableDeleteDropdown = !showTableDeleteDropdown" class="p-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-400 hover:text-red-500">
                   <span class="material-symbols-outlined text-xl">delete_sweep</span>
                 </button>
-                <div v-if="showTableDeleteDropdown" class="absolute left-0 top-full mt-2 bg-white rounded-xl shadow-2xl border border-gray-100 py-2 w-40 z-[100]">
+                <div v-if="showTableDeleteDropdown" class="absolute left-0 top-full mt-2 bg-white rounded-xl shadow-2xl border-2 border-gray-200 py-2 w-40 z-[100]">
                    <button @click="deleteRow" class="w-full px-4 py-2 text-left text-[10px] font-black uppercase tracking-widest text-gray-600 hover:bg-red-50 hover:text-red-600 flex items-center gap-2">Hapus Baris</button>
                    <button @click="deleteColumn" class="w-full px-4 py-2 text-left text-[10px] font-black uppercase tracking-widest text-gray-600 hover:bg-red-50 hover:text-red-600 flex items-center gap-2">Hapus Kolom</button>
                 </div>
@@ -698,18 +769,18 @@ onUnmounted(() => {
            <div class="w-px h-6 bg-gray-200 mx-1"></div>
 
            <!-- Image Alignment Tools -->
-           <div class="flex items-center gap-1 bg-white p-1 rounded-xl shadow-sm border border-gray-100">
-              <button @click="alignImage('left')" class="p-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-400 hover:text-[#8B2323]" title="Align Image Left"><span class="material-symbols-outlined text-xl">align_horizontal_left</span></button>
-              <button @click="alignImage('center')" class="p-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-400 hover:text-[#8B2323]" title="Center Image"><span class="material-symbols-outlined text-xl">align_horizontal_center</span></button>
+           <div class="flex items-center gap-1 bg-white p-1 rounded-xl shadow-sm border-2 border-gray-200">
+              <button @click="alignImage('left')" class="p-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-400 hover:text-[#006D3E]" title="Align Image Left"><span class="material-symbols-outlined text-xl">align_horizontal_left</span></button>
+              <button @click="alignImage('center')" class="p-2 hover:bg-gray-50 rounded-lg transition-colors text-gray-400 hover:text-[#006D3E]" title="Center Image"><span class="material-symbols-outlined text-xl">align_horizontal_center</span></button>
            </div>
 
            <div class="ml-auto flex items-center gap-2 px-4">
-              <span class="text-[8px] font-black text-gray-300 uppercase tracking-widest">Klik Gambar lalu tekan Align Center untuk ke tengah</span>
+              <span class="text-[8px] font-black text-gray-300 uppercase tracking-widest">{{ t('Klik Gambar lalu tekan Align Center untuk ke tengah', 'انقر على الصورة ثم اضغط على محاذاة الوسط للتوسيط') }}</span>
            </div>
         </div>
 
         <div class="p-8 md:p-14 space-y-10">
-          <input v-model="form.title" type="text" placeholder="Judul Materi..." class="w-full text-4xl font-black text-gray-900 placeholder:text-gray-100 outline-none border-none bg-transparent tracking-tight">
+          <input v-model="form.title" type="text" :dir="isArabicMode ? 'rtl' : 'ltr'" :placeholder="isArabicMode ? 'عنوان المادة...' : 'Judul Materi...'" class="w-full text-4xl font-black text-gray-900 placeholder:text-gray-100 outline-none border-none bg-transparent tracking-tight">
 
           <div 
             @mousedown="handleEditorMouseDown"
@@ -717,116 +788,136 @@ onUnmounted(() => {
             contenteditable="true"
             @input="updateContent"
             @paste="handlePaste"
+            :dir="isArabicMode ? 'rtl' : 'ltr'"
             class="w-full min-h-[500px] outline-none text-xl text-gray-700 leading-[1.8] font-medium placeholder:text-gray-200 prose prose-red max-w-none"
-            placeholder="Mulai menulis materi pelajaran..."
+            :placeholder="t('Mulai menulis materi pelajaran...', 'ابدأ كتابة المادة الدراسية...')"
           ></div>
         </div>
       </div>
 
       <!-- Pre Test Area -->
-      <div class="bg-white rounded-[2.5rem] p-10 border border-gray-100 shadow-xl shadow-red-900/5 space-y-8">
-          <div class="flex items-center justify-between border-b border-gray-50 pb-4">
+      <div class="bg-white rounded-2xl p-10 border-2 border-gray-300 shadow-xl shadow-red-900/5 space-y-8">
+          <div class="flex items-center justify-between border-b-2 border-gray-200 pb-4">
              <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center animate-pulse">
+                <div class="w-12 h-12 rounded-lg bg-orange-50 text-orange-600 flex items-center justify-center animate-pulse">
                    <span class="material-symbols-outlined text-2xl">assignment_turned_in</span>
                 </div>
                 <div>
-                   <h3 class="font-black text-gray-900 text-lg">Pre-Test Materi</h3>
-                   <p class="text-xs text-gray-400 font-medium mt-1">Ujian awal untuk mengukur pemahaman awal siswa</p>
+                   <h3 class="font-black text-gray-900 text-lg">{{ t('Pre-Test Materi', 'الاختبار القبلي للمادة') }}</h3>
+                   <p class="text-xs text-gray-400 font-medium mt-1">{{ t('Ujian awal untuk mengukur pemahaman awal siswa', 'اختبار أولي لقياس الفهم المبدئي للطلاب') }}</p>
                 </div>
              </div>
           </div>
 
           <div class="space-y-8 animate-in fade-in slide-in-from-top-4 duration-300">
-             <div v-for="(q, idx) in preTests" :key="'pre_'+idx" class="p-8 rounded-[2.5rem] bg-gray-50 border border-gray-100 hover:bg-gray-100/50 hover:border-gray-200 transition-all duration-300 space-y-6 relative group">
+             <div v-for="(q, idx) in preTests" :key="'pre_'+idx" class="p-8 rounded-2xl bg-gray-50 border-2 border-gray-200 hover:bg-gray-100/50 hover:border-gray-300 transition-all duration-300 space-y-6 relative group">
                 <div class="flex justify-between items-center">
-                  <span class="text-[10px] font-black text-orange-600 bg-orange-100/50 px-3.5 py-1.5 rounded-xl uppercase tracking-wider">Soal {{ idx + 1 }}</span>
+                  <span class="text-[10px] font-black text-orange-600 bg-orange-100/50 px-3.5 py-1.5 rounded-xl uppercase tracking-wider">{{ t('Soal', 'السؤال') }} {{ idx + 1 }}</span>
                   <button @click="removePreTestQuestion(idx)" class="text-gray-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100">
                     <span class="material-symbols-outlined text-xl">delete</span>
                   </button>
                 </div>
-                <textarea v-model="q.soal" placeholder="Pertanyaan Pre-Test..." class="w-full px-6 py-4 rounded-xl bg-white border-2 border-transparent text-gray-900 placeholder:text-gray-300 hover:bg-gray-100 hover:border-gray-300 focus:bg-white focus:text-gray-900 focus:border-orange-500 outline-none font-bold resize-none transition-all duration-300"></textarea>
+                <textarea v-model="q.soal" :dir="isArabicMode ? 'rtl' : 'ltr'" :placeholder="t('Pertanyaan Pre-Test...', 'سؤال الاختبار القبلي...')" class="w-full px-6 py-4 rounded-xl bg-white border-2 border-gray-300 text-gray-900 placeholder:text-gray-300 hover:bg-gray-100 hover:border-gray-400 focus:bg-white focus:text-gray-900 focus:border-orange-500 outline-none font-bold resize-none transition-all duration-300"></textarea>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div v-for="opt in ['a', 'b', 'c', 'd']" :key="opt" class="relative">
-                    <input v-model="q[opt]" type="text" :placeholder="'Opsi ' + opt.toUpperCase()" class="w-full pl-12 pr-4 py-3 rounded-xl bg-white border-2 border-transparent text-gray-900 placeholder:text-gray-300 hover:bg-gray-100 hover:border-gray-300 focus:bg-white focus:text-gray-900 focus:border-orange-500 outline-none font-bold text-sm transition-all duration-300">
-                    <button @click="q.jawaban = opt" class="absolute left-3 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg font-black text-[10px] uppercase border-2 flex items-center justify-center" :class="q.jawaban === opt ? 'bg-orange-500 text-white border-orange-500' : 'bg-white text-gray-200 border-gray-50'">{{ opt }}</button>
+                    <input v-model="q[opt]" type="text" :dir="isArabicMode ? 'rtl' : 'ltr'" :placeholder="t('Opsi ' + opt.toUpperCase(), 'الخيار ' + getArabicLabel(opt))" class="w-full pl-12 pr-4 py-3 rounded-xl bg-white border-2 border-gray-300 text-gray-900 placeholder:text-gray-300 hover:bg-gray-100 hover:border-gray-400 focus:bg-white focus:text-gray-900 focus:border-orange-500 outline-none font-bold text-sm transition-all duration-300">
+                    <button @click="q.jawaban = opt" class="absolute left-3 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg font-black text-[10px] uppercase border-2 flex items-center justify-center" :class="q.jawaban === opt ? 'bg-orange-500 text-white border-orange-500' : 'bg-white text-gray-300 border-gray-200'">
+                      {{ isArabicMode ? getArabicLabel(opt) : opt }}
+                    </button>
                   </div>
                 </div>
              </div>
-             <button @click="addPreTestQuestion" class="w-full py-5 border-2 border-dashed border-gray-200 rounded-3xl text-gray-300 font-black text-[10px] uppercase tracking-[0.2em] hover:bg-orange-50 hover:border-orange-500 hover:text-orange-600 transition-all">TAMBAH PERTANYAAN PRE-TEST</button>
+             <button @click="addPreTestQuestion" class="w-full py-5 border-2 border-dashed border-gray-400 rounded-xl text-gray-400 font-black text-[10px] uppercase tracking-[0.2em] hover:bg-orange-50 hover:border-orange-500 hover:text-orange-600 transition-all">{{ t('TAMBAH PERTANYAAN PRE-TEST', 'إضافة سؤال للاختبار القبلي') }}</button>
           </div>
       </div>
 
 
       <!-- Post Test Area -->
-      <div class="bg-white rounded-[2.5rem] p-10 border border-gray-100 shadow-xl shadow-red-900/5 space-y-8">
-          <div class="flex items-center justify-between border-b border-gray-50 pb-4">
+      <div class="bg-white rounded-2xl p-10 border-2 border-gray-300 shadow-xl shadow-red-900/5 space-y-8">
+          <div class="flex items-center justify-between border-b-2 border-gray-200 pb-4">
              <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-2xl bg-green-50 text-green-600 flex items-center justify-center animate-pulse">
+                <div class="w-12 h-12 rounded-lg bg-green-50 text-green-600 flex items-center justify-center animate-pulse">
                    <span class="material-symbols-outlined text-2xl">quiz</span>
                 </div>
                 <div>
-                   <h3 class="font-black text-gray-900 text-lg">Post-Test Materi</h3>
-                   <p class="text-xs text-gray-400 font-medium mt-1">Ujian kecil sebelum materi dianggap selesai</p>
+                   <h3 class="font-black text-gray-900 text-lg">{{ t('Post-Test Materi', 'الاختبار البعدي للمادة') }}</h3>
+                   <p class="text-xs text-gray-400 font-medium mt-1">{{ t('Ujian kecil sebelum materi dianggap selesai', 'اختبار قصير قبل اعتبار المادة منتهية') }}</p>
                 </div>
              </div>
           </div>
 
           <div class="space-y-8 animate-in fade-in slide-in-from-top-4 duration-300">
-             <div v-for="(q, idx) in postTests" :key="'post_'+idx" class="p-8 rounded-[2.5rem] bg-gray-50 border border-gray-100 hover:bg-gray-100/50 hover:border-gray-200 transition-all duration-300 space-y-6 relative group">
+             <div v-for="(q, idx) in postTests" :key="'post_'+idx" class="p-8 rounded-2xl bg-gray-50 border-2 border-gray-200 hover:bg-gray-100/50 hover:border-gray-300 transition-all duration-300 space-y-6 relative group">
                 <div class="flex justify-between items-center">
-                  <span class="text-[10px] font-black text-green-600 bg-green-100/50 px-3.5 py-1.5 rounded-xl uppercase tracking-wider">Soal {{ idx + 1 }}</span>
+                  <span class="text-[10px] font-black text-green-600 bg-green-100/50 px-3.5 py-1.5 rounded-xl uppercase tracking-wider">{{ t('Soal', 'السؤال') }} {{ idx + 1 }}</span>
                   <button @click="removePostTestQuestion(idx)" class="text-gray-300 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100">
                     <span class="material-symbols-outlined text-xl">delete</span>
                   </button>
                 </div>
-                <textarea v-model="q.soal" placeholder="Pertanyaan Post-Test..." class="w-full px-6 py-4 rounded-xl bg-white border-2 border-transparent text-gray-900 placeholder:text-gray-300 hover:bg-gray-100 hover:border-gray-300 focus:bg-white focus:text-gray-900 focus:border-green-500 outline-none font-bold resize-none transition-all duration-300"></textarea>
+                <textarea v-model="q.soal" :dir="isArabicMode ? 'rtl' : 'ltr'" :placeholder="t('Pertanyaan Post-Test...', 'سؤال الاختبار البعدي...')" class="w-full px-6 py-4 rounded-xl bg-white border-2 border-gray-300 text-gray-900 placeholder:text-gray-300 hover:bg-gray-100 hover:border-gray-400 focus:bg-white focus:text-gray-900 focus:border-green-500 outline-none font-bold resize-none transition-all duration-300"></textarea>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div v-for="opt in ['a', 'b', 'c', 'd']" :key="opt" class="relative">
-                    <input v-model="q[opt]" type="text" :placeholder="'Opsi ' + opt.toUpperCase()" class="w-full pl-12 pr-4 py-3 rounded-xl bg-white border-2 border-transparent text-gray-900 placeholder:text-gray-300 hover:bg-gray-100 hover:border-gray-300 focus:bg-white focus:text-gray-900 focus:border-green-500 outline-none font-bold text-sm transition-all duration-300">
-                    <button @click="q.jawaban = opt" class="absolute left-3 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg font-black text-[10px] uppercase border-2 flex items-center justify-center" :class="q.jawaban === opt ? 'bg-green-500 text-white border-green-500' : 'bg-white text-gray-200 border-gray-50'">{{ opt }}</button>
+                    <input v-model="q[opt]" type="text" :dir="isArabicMode ? 'rtl' : 'ltr'" :placeholder="t('Opsi ' + opt.toUpperCase(), 'الخيار ' + getArabicLabel(opt))" class="w-full pl-12 pr-4 py-3 rounded-xl bg-white border-2 border-gray-300 text-gray-900 placeholder:text-gray-300 hover:bg-gray-100 hover:border-gray-400 focus:bg-white focus:text-gray-900 focus:border-green-500 outline-none font-bold text-sm transition-all duration-300">
+                    <button @click="q.jawaban = opt" class="absolute left-3 top-1/2 -translate-y-1/2 w-7 h-7 rounded-lg font-black text-[10px] uppercase border-2 flex items-center justify-center" :class="q.jawaban === opt ? 'bg-green-500 text-white border-green-500' : 'bg-white text-gray-300 border-gray-200'">
+                      {{ isArabicMode ? getArabicLabel(opt) : opt }}
+                    </button>
                   </div>
                 </div>
              </div>
-             <button @click="addPostTestQuestion" class="w-full py-5 border-2 border-dashed border-gray-200 rounded-3xl text-gray-300 font-black text-[10px] uppercase tracking-[0.2em] hover:bg-green-50 hover:border-green-500 hover:text-green-600 transition-all">TAMBAH PERTANYAAN POST-TEST</button>
+             <button @click="addPostTestQuestion" class="w-full py-5 border-2 border-dashed border-gray-400 rounded-xl text-gray-400 font-black text-[10px] uppercase tracking-[0.2em] hover:bg-green-50 hover:border-green-500 hover:text-green-600 transition-all">{{ t('TAMBAH PERTANYAAN POST-TEST', 'إضافة سؤال للاختبار البعدي') }}</button>
           </div>
       </div>
 
 
 
       <!-- Advanced Settings Area (Bottom) -->
-      <div class="bg-white rounded-[2.5rem] p-10 border border-gray-100 shadow-xl shadow-red-900/5 space-y-10">
+      <div class="bg-white rounded-2xl p-10 border-2 border-gray-300 shadow-xl shadow-red-900/5 space-y-10">
           <div class="flex items-center gap-4">
-              <div class="w-12 h-12 rounded-2xl bg-gray-50 text-gray-400 flex items-center justify-center">
-                  <span class="material-symbols-outlined text-2xl">settings</span>
+              <div class="w-12 h-12 rounded-lg bg-gray-50 text-gray-400 flex items-center justify-center">
+                  <span class="material-symbols-outlined text-xl">settings</span>
               </div>
-              <h3 class="font-black text-gray-900 text-lg">Pengaturan Tambahan</h3>
+              <h3 class="font-black text-gray-900 text-lg">{{ t('Pengaturan Tambahan', 'إعدادات إضافية') }}</h3>
           </div>
 
           <div>
               <!-- Optional Attachment Selection -->
               <div class="space-y-6 max-w-xl">
-                  <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Lampiran Materi (Opsional)</label>
+                  <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">{{ t('Lampiran Materi (Opsional)', 'مرفق المادة (اختياري)') }}</label>
                   <div class="grid grid-cols-2 gap-3">
-                      <button v-for="t in optionalTypes" :key="t" @click="toggleType(t)" class="py-4 px-6 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all text-center flex flex-col items-center gap-2 border-2" :class="form.type === t ? 'bg-[#8B2323] text-white border-[#8B2323] shadow-lg shadow-red-900/20' : 'bg-white text-gray-400 border-gray-50 hover:border-gray-200'">
+                      <button v-for="t in optionalTypes" :key="t" @click="toggleType(t)" class="py-4 px-6 rounded-lg font-black text-[10px] uppercase tracking-widest transition-all text-center flex flex-col items-center gap-2 border-2" :class="form.type === t ? 'bg-[#006D3E] text-white border-2 border-[#006D3E] shadow-lg shadow-red-900/20' : 'bg-white text-gray-400 border-2 border-gray-200 hover:border-gray-300'">
                           <span class="material-symbols-outlined text-xl">{{ t === 'Video' ? 'movie' : 'picture_as_pdf' }}</span>
                           {{ t }}
                       </button>
                   </div>
 
+                  <!-- Durasi Pre-Test & Post-Test -->
+                  <div class="space-y-2 mt-4">
+                      <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">{{ t('Durasi Pre-Test & Post-Test (Menit)', 'مدة الاختبار القبلي والبعدي (بالدقائق)') }}</label>
+                      <div class="relative max-w-[200px]">
+                          <input 
+                              v-model.number="form.durasi" 
+                              type="number" 
+                              min="0" 
+                              class="w-full px-5 py-3 pr-20 rounded-xl bg-white border-2 border-gray-300 outline-none font-bold text-sm focus:border-[#006D3E] transition-all"
+                              placeholder="0"
+                          >
+                          <span class="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-black text-gray-400 uppercase tracking-widest pointer-events-none">{{ t('Menit', 'دقيقة') }}</span>
+                      </div>
+                  </div>
+
                   <!-- Conditional PDF/Video Uploads -->
-                  <div v-if="form.type !== 'Teks'" class="mt-6 p-6 rounded-3xl bg-gray-50 border border-gray-100 animate-in fade-in slide-in-from-top-4 duration-300">
+                  <div v-if="form.type !== 'Teks'" class="mt-6 p-6 rounded-xl bg-gray-50 border-2 border-gray-200 animate-in fade-in slide-in-from-top-4 duration-300">
                       <div v-if="form.type === 'Video'" class="space-y-4">
                           <div class="flex gap-2">
-                             <button @click="videoType = 'Link'" class="flex-1 py-3 rounded-xl font-black text-[9px] uppercase border-2 transition-all" :class="videoType === 'Link' ? 'bg-white border-[#8B2323] text-[#8B2323]' : 'bg-transparent border-transparent text-gray-400'">Link URL</button>
-                             <button @click="videoType = 'Upload'" class="flex-1 py-3 rounded-xl font-black text-[9px] uppercase border-2 transition-all" :class="videoType === 'Upload' ? 'bg-white border-[#8B2323] text-[#8B2323]' : 'bg-transparent border-transparent text-gray-400'">Upload File</button>
+                             <button @click="videoType = 'Link'" class="flex-1 py-3 rounded-xl font-black text-[9px] uppercase border-2 transition-all" :class="videoType === 'Link' ? 'bg-white border-[#006D3E] text-[#006D3E]' : 'bg-transparent border-transparent text-gray-400'">{{ t('Link URL', 'رابط URL') }}</button>
+                             <button @click="videoType = 'Upload'" class="flex-1 py-3 rounded-xl font-black text-[9px] uppercase border-2 transition-all" :class="videoType === 'Upload' ? 'bg-white border-[#006D3E] text-[#006D3E]' : 'bg-transparent border-transparent text-gray-400'">{{ t('Upload File', 'رفع ملف') }}</button>
                           </div>
-                          <input v-if="videoType === 'Link'" v-model="videoLink" type="text" placeholder="https://youtube.com/..." class="w-full px-5 py-3 rounded-xl bg-white border border-gray-200 outline-none font-bold text-sm">
-                          <input v-else @change="handleFileChange" type="file" accept="video/*" class="w-full px-5 py-3 rounded-xl bg-white border border-gray-200 outline-none font-bold text-sm">
+                          <input v-if="videoType === 'Link'" v-model="videoLink" type="text" placeholder="https://youtube.com/..." class="w-full px-5 py-3 rounded-xl bg-white border-2 border-gray-300 outline-none font-bold text-sm">
+                          <input v-else @change="handleFileChange" type="file" accept="video/*" class="w-full px-5 py-3 rounded-xl bg-white border-2 border-gray-300 outline-none font-bold text-sm">
                       </div>
                       <div v-if="form.type === 'PDF'" class="space-y-4">
-                          <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest">Lampirkan File PDF</label>
-                          <input @change="handleFileChange" type="file" accept="application/pdf" class="w-full px-5 py-3 rounded-xl bg-white border border-gray-200 outline-none font-bold text-sm">
+                          <label class="text-[9px] font-black text-gray-400 uppercase tracking-widest">{{ t('Lampirkan File PDF', 'إرفاق ملف PDF') }}</label>
+                          <input @change="handleFileChange" type="file" accept="application/pdf" class="w-full px-5 py-3 rounded-xl bg-white border-2 border-gray-300 outline-none font-bold text-sm">
                       </div>
                   </div>
               </div>
@@ -847,7 +938,7 @@ onUnmounted(() => {
     <button
       v-if="showScrollTop"
       @click="scrollToTop"
-      class="fixed bottom-8 right-8 z-50 w-12 h-12 bg-[#8B2323] text-white rounded-2xl shadow-2xl shadow-red-900/30 flex items-center justify-center hover:bg-red-900 active:scale-95 transition-all"
+      class="fixed bottom-8 right-8 z-50 w-12 h-12 bg-[#006D3E] text-white rounded-lg shadow-2xl shadow-red-900/30 flex items-center justify-center hover:bg-red-900 active:scale-95 transition-all"
       title="Scroll ke atas"
     >
       <span class="material-symbols-outlined text-xl">arrow_upward</span>
@@ -867,7 +958,7 @@ onUnmounted(() => {
   user-select: none;
 }
 :deep(.resizable-image:hover) {
-  outline: 4px solid #8B2323;
+  outline: 4px solid #006D3E;
   outline-offset: 4px;
 }
 :deep(.resizable-image:active) {

@@ -2,11 +2,14 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import api from '@/api'
+import SkeletonLoader from '@/components/SkeletonLoader.vue'
+import { useSkeletonCount } from '@/composables/useSkeletonCount'
 
 const router = useRouter()
 
 const modules = ref<any[]>([])
 const isLoading = ref(false)
+const { skeletonCount, updateSkeletonCount } = useSkeletonCount('pengajar.modul', 3)
 
 // Flash Message State
 const flashMessage = ref({
@@ -46,6 +49,7 @@ const fetchModules = async () => {
 
     if (response.data.success) {
       modules.value = response.data.data
+      updateSkeletonCount(modules.value.length)
     }
   } catch (error) {
     console.error('Error fetching modules:', error)
@@ -136,7 +140,7 @@ const confirmDeleteModule = async () => {
       <div v-if="flashMessage.show" class="fixed top-8 right-8 z-[100] w-full max-w-sm overflow-hidden rounded-[2rem] bg-white/80 backdrop-blur-xl border border-white/20 shadow-2xl shadow-red-900/10 animate-in slide-in-from-right-8">
         <div class="p-6">
           <div class="flex items-center gap-4">
-            <div :class="flashMessage.type === 'success' ? 'bg-green-500' : 'bg-[#8B2323]'" class="w-10 h-10 rounded-2xl flex items-center justify-center text-white shrink-0 shadow-lg">
+            <div :class="flashMessage.type === 'success' ? 'bg-green-500' : 'bg-[#006D3E]'" class="w-10 h-10 rounded-lg flex items-center justify-center text-white shrink-0 shadow-lg">
               <span class="material-symbols-outlined text-xl">{{ flashMessage.type === 'success' ? 'check_circle' : 'error' }}</span>
             </div>
             <div class="flex-1">
@@ -149,7 +153,7 @@ const confirmDeleteModule = async () => {
         <div class="h-1 bg-gray-100 w-full overflow-hidden">
           <div 
             class="h-full transition-all duration-100 ease-linear"
-            :class="flashMessage.type === 'success' ? 'bg-green-500' : 'bg-[#8B2323]'"
+            :class="flashMessage.type === 'success' ? 'bg-green-500' : 'bg-[#006D3E]'"
             :style="{ width: flashMessage.progress + '%' }"
           ></div>
         </div>
@@ -158,9 +162,9 @@ const confirmDeleteModule = async () => {
 
     <!-- Delete Confirm Modal -->
     <div v-if="deleteConfirm.show" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      <div class="absolute inset-0 bg-gray-900/40 backdrop-blur-sm" @click="closeDeleteConfirm"></div>
+      <div class="absolute inset-0 bg-transparent" @click="closeDeleteConfirm"></div>
       <div class="bg-white rounded-[2rem] p-8 max-w-md w-full relative z-10 shadow-2xl animate-in zoom-in-95 duration-300">
-        <div class="w-16 h-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+        <div class="w-16 h-16 bg-red-50 text-red-500 rounded-lg flex items-center justify-center mx-auto mb-6">
           <span class="material-symbols-outlined text-3xl">delete_forever</span>
         </div>
         <h3 class="text-xl font-black text-center text-gray-900 mb-2">Hapus Modul?</h3>
@@ -180,12 +184,12 @@ const confirmDeleteModule = async () => {
     <!-- Hero Header Section -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
       <div>
-        <h3 class="font-headline text-3xl md:text-4xl font-extrabold text-[#8B2323] mb-2 tracking-tight">Modul</h3>
+        <h3 class="font-headline text-3xl md:text-4xl font-extrabold text-[#006D3E] mb-2 tracking-tight">Modul</h3>
         <p class="text-gray-500 max-w-2xl font-body text-sm md:text-base leading-relaxed">Mengelola modul belajar bahasa Arab, dan bahan bacaan untuk siswa secara praktis</p>
       </div>
       <button 
         @click="goToCreate"
-        class="w-full md:w-auto bg-[#8B2323] text-white px-8 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl shadow-red-900/20 hover:shadow-2xl active:scale-95 transition-all text-center flex items-center justify-center gap-2"
+        class="w-full md:w-auto bg-[#006D3E] text-white px-8 py-4 rounded-lg font-black text-[10px] uppercase tracking-widest shadow-xl shadow-red-900/20 hover:shadow-2xl active:scale-95 transition-all text-center flex items-center justify-center gap-2"
       >
         <span class="material-symbols-outlined text-lg">add_circle</span>
         Tambah Modul
@@ -194,22 +198,7 @@ const confirmDeleteModule = async () => {
 
     <!-- Loading State (Skeleton Cards) -->
     <div v-if="isLoading && modules.length === 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <div v-for="i in 3" :key="i" class="bg-white rounded-[2.5rem] overflow-hidden border-t-4 border-[#8B2323] animate-pulse">
-        <div class="h-56 bg-gray-100"></div>
-        <div class="p-8 space-y-4">
-          <div class="h-4 bg-gray-100 rounded-full w-3/4"></div>
-          <div class="h-3 bg-gray-100 rounded-full w-1/2"></div>
-          <div class="h-3 bg-gray-100 rounded-full w-full"></div>
-          <div class="h-3 bg-gray-100 rounded-full w-2/3"></div>
-          <div class="flex justify-between items-center pt-4 border-t border-gray-50">
-            <div class="h-3 bg-gray-100 rounded-full w-1/4"></div>
-            <div class="flex gap-2">
-              <div class="w-10 h-10 bg-gray-100 rounded-xl"></div>
-              <div class="w-10 h-10 bg-gray-100 rounded-xl"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <SkeletonLoader type="card" :cols="skeletonCount" />
     </div>
 
     <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-10">
@@ -217,28 +206,28 @@ const confirmDeleteModule = async () => {
         v-for="(mod, i) in modules" 
         :key="i" 
         @click="goToManage(mod.id)"
-        class="bg-white rounded-[2.5rem] overflow-hidden shadow-[0_20px_50px_-12px_rgba(139,35,35,0.08)] flex flex-col group transition-all hover:bg-red-50/30 border border-gray-100 hover:border-[#8B2323]/20 cursor-pointer"
+        class="bg-white rounded-[2.5rem] overflow-hidden shadow-[0_20px_50px_-12px_rgba(0,109,62,0.08)] flex flex-col group transition-all hover:bg-red-50/30 border border-gray-100 hover:border-[#006D3E]/20 cursor-pointer"
       >
         <div class="relative h-56 w-full bg-gray-50 p-6 overflow-hidden">
-          <img v-if="mod.thumbnail_url" :src="mod.thumbnail_url" :alt="mod.judul" class="w-full h-full object-cover rounded-3xl shadow-lg transition-opacity duration-300 group-hover:opacity-90">
-          <div v-else class="w-full h-full flex items-center justify-center bg-gray-50 border-2 border-dashed border-gray-200 rounded-3xl">
+          <img v-if="mod.thumbnail_url" :src="mod.thumbnail_url" :alt="mod.judul" class="w-full h-full object-cover rounded-xl shadow-lg transition-opacity duration-300 group-hover:opacity-90">
+          <div v-else class="w-full h-full flex items-center justify-center bg-gray-50 border-2 border-dashed border-gray-200 rounded-xl">
             <span class="material-symbols-outlined text-4xl text-gray-200">menu_book</span>
           </div>
-          <div class="absolute top-8 right-8 text-white text-[9px] font-black px-4 py-2 rounded-xl uppercase tracking-widest bg-[#8B2323]/80 backdrop-blur-md shadow-xl">{{ mod.level }}</div>
+          <div class="absolute top-8 right-8 text-white text-[9px] font-black px-4 py-2 rounded-xl uppercase tracking-widest bg-[#006D3E]/80 backdrop-blur-md shadow-xl">{{ mod.level }}</div>
         </div>
         <div class="p-8 flex flex-col flex-1">
-          <h4 class="font-headline text-xl font-black text-gray-900 mb-2 group-hover:text-[#8B2323] transition-colors leading-tight">{{ mod.judul }}</h4>
+          <h4 class="font-headline text-xl font-black text-gray-900 mb-2 group-hover:text-[#006D3E] transition-colors leading-tight">{{ mod.judul }}</h4>
           <div class="mb-5">
-            <span class="text-[#8B2323] font-black text-2xl" dir="rtl">{{ mod.arabic_title }}</span>
+            <span class="text-[#006D3E] font-black text-2xl" dir="rtl">{{ mod.arabic_title }}</span>
           </div>
           <p class="text-gray-400 text-sm mb-8 flex-1 line-clamp-3 leading-relaxed">{{ mod.deskripsi }}</p>
           <div class="flex items-center justify-between mt-auto pt-6 border-t border-gray-50">
-            <div class="flex items-center gap-3 text-[#8B2323]/40 text-[10px] font-black uppercase tracking-widest">
+            <div class="flex items-center gap-3 text-[#006D3E]/40 text-[10px] font-black uppercase tracking-widest">
               <span class="material-symbols-outlined text-lg">auto_stories</span>
               <span>{{ mod.materis_count || 0 }} Materi</span>
             </div>
             <div class="flex gap-2">
-              <button class="bg-gray-50 w-10 h-10 rounded-xl text-gray-400 hover:bg-[#8B2323] hover:text-white transition-all shadow-sm flex items-center justify-center">
+              <button class="bg-gray-50 w-10 h-10 rounded-xl text-gray-400 hover:bg-[#006D3E] hover:text-white transition-all shadow-sm flex items-center justify-center">
                 <span class="material-symbols-outlined text-xl">edit</span>
               </button>
               <button @click.stop="openDeleteConfirm(mod.id, mod.judul)" class="bg-gray-50 w-10 h-10 rounded-xl text-gray-400 hover:bg-black hover:text-white transition-all shadow-sm flex items-center justify-center">

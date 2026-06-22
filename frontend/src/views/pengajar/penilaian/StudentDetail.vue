@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import api from '@/api'
@@ -196,7 +196,7 @@ onMounted(() => {
 <template>
   <div class="space-y-6">
     <div class="flex items-center gap-4">
-      <button @click="router.back()" class="w-10 h-10 bg-white hover:bg-gray-50 rounded-2xl transition-all text-gray-400 shadow-sm border border-gray-100 flex items-center justify-center active:scale-95 flex-shrink-0 cursor-pointer">
+      <button @click="router.back()" class="w-10 h-10 bg-white hover:bg-gray-50 rounded-lg transition-all text-gray-400 shadow-sm border border-gray-100 flex items-center justify-center active:scale-95 flex-shrink-0 cursor-pointer">
         <span class="material-symbols-outlined text-xl">arrow_back</span>
       </button>
       <div>
@@ -212,7 +212,7 @@ onMounted(() => {
     <div v-else class="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
       
       <!-- 1. PRE-TEST TABLE -->
-      <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+      <div class="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
         <div class="px-6 py-5 bg-gray-50/50 border-b border-gray-100 flex items-center justify-between">
           <h3 class="text-lg font-bold text-gray-800 font-headline flex items-center gap-2">
             <span class="material-symbols-outlined text-orange-500">assignment</span>
@@ -251,7 +251,7 @@ onMounted(() => {
                 <td class="px-6 py-4 text-center font-black text-base text-gray-800">{{ test.score }}</td>
                 <td class="px-6 py-4 text-center">
                   <span 
-                    class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border"
+                    class="px-2.5 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest border"
                     :class="test.passed ? 'bg-green-50 text-green-600 border-green-100' : 'bg-red-50 text-red-600 border-red-100'"
                   >
                     {{ test.passed ? 'Lulus' : 'Remedi' }}
@@ -283,7 +283,7 @@ onMounted(() => {
       </div>
 
       <!-- 2. POST-TEST TABLE -->
-      <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+      <div class="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
         <div class="px-6 py-5 bg-gray-50/50 border-b border-gray-100 flex items-center justify-between">
           <h3 class="text-lg font-bold text-gray-800 font-headline flex items-center gap-2">
             <span class="material-symbols-outlined text-teal-600">assignment_turned_in</span>
@@ -322,7 +322,7 @@ onMounted(() => {
                 <td class="px-6 py-4 text-center font-black text-base text-gray-800">{{ test.score }}</td>
                 <td class="px-6 py-4 text-center">
                   <span 
-                    class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border"
+                    class="px-2.5 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest border"
                     :class="test.passed ? 'bg-green-50 text-green-600 border-green-100' : 'bg-red-50 text-red-600 border-red-100'"
                   >
                     {{ test.passed ? 'Lulus' : 'Remedi' }}
@@ -354,10 +354,10 @@ onMounted(() => {
       </div>
 
       <!-- 3. TRY OUT TABLE -->
-      <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+      <div class="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
         <div class="px-6 py-5 bg-gray-50/50 border-b border-gray-100 flex items-center justify-between">
           <h3 class="text-lg font-bold text-gray-800 font-headline flex items-center gap-2">
-            <span class="material-symbols-outlined text-[#8B2323]">quiz</span>
+            <span class="material-symbols-outlined text-[#006D3E]">quiz</span>
             Penilaian Try Out
           </h3>
           <button 
@@ -391,7 +391,7 @@ onMounted(() => {
                 <td class="px-6 py-4 text-center font-black text-base text-gray-800">{{ hasil.nilai }}</td>
                 <td class="px-6 py-4 text-center">
                   <span 
-                    class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border"
+                    class="px-2.5 py-0.5 rounded-lg text-[9px] font-black uppercase tracking-widest border"
                     :class="hasil.lulus ? 'bg-green-50 text-green-600 border-green-100' : 'bg-red-50 text-red-600 border-red-100'"
                   >
                     {{ hasil.lulus ? 'Lulus' : 'Remedi' }}
@@ -440,7 +440,7 @@ onMounted(() => {
       v-if="isKuisModalOpen" 
       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in"
     >
-      <div class="bg-white rounded-3xl w-full max-w-md overflow-hidden border border-gray-100 shadow-2xl animate-scale-in">
+      <div class="bg-white rounded-xl w-full max-w-md overflow-hidden border border-gray-100 shadow-2xl animate-scale-in">
         <div class="px-6 py-5 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
           <div class="flex items-center gap-2">
             <span class="material-symbols-outlined text-primary text-xl">assignment</span>
@@ -451,7 +451,7 @@ onMounted(() => {
               </span>
             </h3>
           </div>
-          <button @click="isKuisModalOpen = false" class="text-gray-400 hover:text-gray-600 p-1.5 rounded-full transition-all cursor-pointer">
+          <button @click="isKuisModalOpen = false" class="text-gray-400 hover:text-gray-600 p-1.5 rounded-lg transition-all cursor-pointer">
             <span class="material-symbols-outlined text-lg">close</span>
           </button>
         </div>
@@ -510,7 +510,7 @@ onMounted(() => {
       v-if="isTryOutModalOpen" 
       class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in"
     >
-      <div class="bg-white rounded-3xl w-full max-w-md overflow-hidden border border-gray-100 shadow-2xl animate-scale-in">
+      <div class="bg-white rounded-xl w-full max-w-md overflow-hidden border border-gray-100 shadow-2xl animate-scale-in">
         <div class="px-6 py-5 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
           <div class="flex items-center gap-2">
             <span class="material-symbols-outlined text-primary text-xl">quiz</span>
@@ -518,7 +518,7 @@ onMounted(() => {
               {{ isEditMode ? 'Edit Nilai Try Out' : 'Tambah Nilai Try Out' }}
             </h3>
           </div>
-          <button @click="isTryOutModalOpen = false" class="text-gray-400 hover:text-gray-600 p-1.5 rounded-full transition-all cursor-pointer">
+          <button @click="isTryOutModalOpen = false" class="text-gray-400 hover:text-gray-600 p-1.5 rounded-lg transition-all cursor-pointer">
             <span class="material-symbols-outlined text-lg">close</span>
           </button>
         </div>

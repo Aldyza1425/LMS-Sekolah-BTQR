@@ -2,16 +2,19 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import api from '@/api'
+import SkeletonLoader from '@/components/SkeletonLoader.vue'
+import { useSkeletonCount } from '@/composables/useSkeletonCount'
 
 const router = useRouter()
-
 const siswaList = ref<any[]>([])
 const isLoading = ref(true)
+const { skeletonCount, updateSkeletonCount } = useSkeletonCount('pengajar.penilaian', 5)
 
 const fetchPenilaian = async () => {
   try {
     const response = await api.get('/pengajar/penilaian')
     siswaList.value = response.data
+    updateSkeletonCount(siswaList.value.length)
   } catch (error) {
     console.error('Failed to fetch penilaian:', error)
   } finally {
@@ -32,7 +35,7 @@ onMounted(() => {
       <p class="text-gray-500 font-medium mt-1">Pantau dan evaluasi pencapaian belajar santri BTQR.</p>
     </div>
 
-    <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+    <div class="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
           <thead>
@@ -44,13 +47,7 @@ onMounted(() => {
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-50">
-            <!-- Loading Skeleton -->
-            <tr v-if="isLoading" v-for="i in 4" :key="i" class="animate-pulse">
-              <td class="px-6 py-5"><div class="h-4 bg-gray-100 rounded-full w-40"></div></td>
-              <td class="px-6 py-5"><div class="h-4 bg-gray-100 rounded-full w-52"></div></td>
-              <td class="px-6 py-5 text-center"><div class="h-6 bg-gray-100 rounded-full w-16 mx-auto"></div></td>
-              <td class="px-6 py-5 text-right"><div class="h-9 bg-gray-100 rounded-xl w-10 ml-auto"></div></td>
-            </tr>
+            <SkeletonLoader v-if="isLoading" type="table" :rows="skeletonCount" />
             <!-- Empty State -->
             <tr v-else-if="siswaList.length === 0">
               <td colspan="4" class="px-6 py-20 text-center">
@@ -66,10 +63,10 @@ onMounted(() => {
             >
               <td class="px-6 py-5">
                 <div class="flex items-center gap-3">
-                  <div class="w-9 h-9 rounded-full bg-red-50 flex items-center justify-center text-[#8B2323] font-black text-sm shadow-sm shrink-0">
+                  <div class="w-9 h-9 rounded-lg bg-red-50 flex items-center justify-center text-[#006D3E] font-black text-sm shadow-sm shrink-0">
                     {{ siswa.name?.charAt(0).toUpperCase() }}
                   </div>
-                  <p class="font-bold text-gray-900 group-hover:text-[#8B2323] transition-colors">{{ siswa.name }}</p>
+                  <p class="font-bold text-gray-900 group-hover:text-[#006D3E] transition-colors">{{ siswa.name }}</p>
                 </div>
               </td>
               <td class="px-6 py-5">
@@ -79,7 +76,7 @@ onMounted(() => {
                 </div>
               </td>
               <td class="px-6 py-5 text-center">
-                <span :class="siswa.is_active ? 'bg-green-50 text-green-600 border-green-100' : 'bg-orange-50 text-orange-600 border-orange-100'" class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border">
+                <span :class="siswa.is_active ? 'bg-green-50 text-green-600 border-green-100' : 'bg-orange-50 text-orange-600 border-orange-100'" class="px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border">
                   {{ siswa.is_active ? 'Aktif' : 'Tidak Aktif' }}
                 </span>
               </td>

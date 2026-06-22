@@ -3,6 +3,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import api from '@/api'
 import { usePageStore } from '@/stores/page'
+import SkeletonLoader from '@/components/SkeletonLoader.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -63,14 +64,19 @@ const navigateToMateri = (materi: any, index: string | number) => {
         Kembali ke Daftar Modul
       </button>
       <div v-if="modul" class="flex items-center gap-4">
-         <span class="px-4 py-1.5 bg-[#006D3E]/5 text-[#006D3E] rounded-full text-[10px] font-black uppercase tracking-widest border border-[#006D3E]/10">
+         <span class="px-4 py-1.5 bg-[#006D3E]/5 text-[#006D3E] rounded-lg text-[10px] font-black uppercase tracking-widest border border-[#006D3E]/10">
            {{ modul.level }}
          </span>
       </div>
     </div>
 
-    <div v-if="isLoading" class="flex justify-center py-20">
-      <div class="animate-spin rounded-full h-12 w-12 border-4 border-[#006D3E] border-t-transparent"></div>
+    <div v-if="isLoading" class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+      <div class="lg:col-span-4 bg-white rounded-[2.5rem] p-8 border border-gray-100 shadow-sm">
+        <SkeletonLoader type="profile" :rows="2" />
+      </div>
+      <div class="lg:col-span-8 bg-white rounded-[2.5rem] p-8 border border-gray-100 shadow-sm">
+        <SkeletonLoader type="detail" :rows="4" />
+      </div>
     </div>
 
     <div v-else-if="modul" class="grid grid-cols-1 lg:grid-cols-12 gap-10">
@@ -97,7 +103,7 @@ const navigateToMateri = (materi: any, index: string | number) => {
       <!-- Main Content Area -->
       <div class="lg:col-span-8 space-y-8">
         <!-- Tab Navigation -->
-        <div class="flex items-center gap-2 p-1.5 bg-gray-100/50 rounded-2xl w-fit">
+        <div class="flex items-center gap-2 p-1.5 bg-gray-100/50 rounded-lg w-fit">
           <button 
             v-for="tab in ['overview', 'content']" 
             :key="tab"
@@ -120,7 +126,7 @@ const navigateToMateri = (materi: any, index: string | number) => {
           <div v-if="activeTab === 'overview'" class="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-8">
              <div class="bg-white rounded-[2.5rem] p-10 shadow-sm border border-gray-50">
                 <h3 class="text-xl font-black text-gray-900 mb-6 flex items-center gap-3">
-                   <span class="w-1.5 h-6 bg-[#006D3E] rounded-full"></span>
+                   <span class="w-1.5 h-6 bg-[#006D3E] rounded-lg"></span>
                    Tentang Pelatihan
                 </h3>
                 <p class="text-gray-600 leading-relaxed font-medium whitespace-pre-wrap">{{ modul.deskripsi || 'Belum ada deskripsi untuk modul ini.' }}</p>
@@ -131,9 +137,9 @@ const navigateToMateri = (materi: any, index: string | number) => {
           <div v-if="activeTab === 'content'" class="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6">
              <div v-for="(materi, index) in courseContent" :key="materi.id" 
                   @click="navigateToMateri(materi, index)"
-                  class="bg-white rounded-3xl p-6 flex items-center gap-6 shadow-sm border border-gray-50 hover:bg-[#006D3E]/5 hover:border-[#006D3E]/20 transition-all group cursor-pointer"
+                  class="bg-white rounded-xl p-6 flex items-center gap-6 shadow-sm border border-gray-50 hover:bg-[#006D3E]/5 hover:border-[#006D3E]/20 transition-all group cursor-pointer"
              >
-                <div class="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center font-black text-gray-300 group-hover:bg-[#006D3E] group-hover:text-white transition-all shrink-0">
+                <div class="w-12 h-12 rounded-lg bg-gray-50 flex items-center justify-center font-black text-gray-300 group-hover:bg-[#006D3E] group-hover:text-white transition-all shrink-0">
                   {{ Number(index) + 1 }}
                 </div>
                 <div class="flex-1 min-w-0">

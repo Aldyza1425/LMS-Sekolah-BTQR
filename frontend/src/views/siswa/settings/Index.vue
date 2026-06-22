@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import api from '@/api'
 
@@ -83,7 +83,7 @@ onMounted(() => {
     <!-- Feedback Message -->
     <div v-if="message.text" 
          :class="message.type === 'success' ? 'bg-green-50 text-green-700 border-green-100' : 'bg-red-50 text-red-700 border-red-100'"
-         class="p-4 rounded-2xl border font-bold text-sm flex items-center gap-3 animate-in zoom-in duration-300">
+         class="p-4 rounded-lg border font-bold text-sm flex items-center gap-3 animate-in zoom-in duration-300">
       <span class="material-symbols-outlined">{{ message.type === 'success' ? 'check_circle' : 'error' }}</span>
       {{ message.text }}
     </div>
@@ -93,7 +93,7 @@ onMounted(() => {
       <div class="lg:col-span-2 space-y-6">
         <section class="bg-white rounded-[2.5rem] p-8 md:p-10 shadow-sm border border-gray-100 space-y-8">
           <h3 class="text-xl font-extrabold text-gray-900 flex items-center gap-3">
-            <span class="w-1.5 h-6 bg-[#006D3E] rounded-full"></span>
+            <span class="w-1.5 h-6 bg-[#006D3E] rounded-lg"></span>
             Informasi Profil
           </h3>
 
@@ -103,7 +103,7 @@ onMounted(() => {
               <input 
                 v-model="form.name"
                 type="text" 
-                class="w-full px-5 py-4 bg-gray-50/50 border border-gray-100 rounded-2xl focus:bg-white focus:border-[#006D3E] focus:ring-4 focus:ring-[#006D3E]/5 outline-none transition-all text-sm font-semibold"
+                class="w-full px-5 py-4 bg-gray-50/50 border border-gray-100 rounded-lg focus:bg-white focus:border-[#006D3E] focus:ring-4 focus:ring-[#006D3E]/5 outline-none transition-all text-sm font-semibold"
                 required
               />
             </div>
@@ -113,7 +113,7 @@ onMounted(() => {
               <input 
                 v-model="form.email"
                 type="email" 
-                class="w-full px-5 py-4 bg-gray-50/50 border border-gray-100 rounded-2xl focus:bg-white focus:border-[#006D3E] focus:ring-4 focus:ring-[#006D3E]/5 outline-none transition-all text-sm font-semibold"
+                class="w-full px-5 py-4 bg-gray-50/50 border border-gray-100 rounded-lg focus:bg-white focus:border-[#006D3E] focus:ring-4 focus:ring-[#006D3E]/5 outline-none transition-all text-sm font-semibold"
                 required
               />
             </div>
@@ -123,7 +123,7 @@ onMounted(() => {
               <input 
                 v-model="form.phone"
                 type="tel" 
-                class="w-full px-5 py-4 bg-gray-50/50 border border-gray-100 rounded-2xl focus:bg-white focus:border-[#006D3E] focus:ring-4 focus:ring-[#006D3E]/5 outline-none transition-all text-sm font-semibold"
+                class="w-full px-5 py-4 bg-gray-50/50 border border-gray-100 rounded-lg focus:bg-white focus:border-[#006D3E] focus:ring-4 focus:ring-[#006D3E]/5 outline-none transition-all text-sm font-semibold"
               />
             </div>
 
@@ -131,7 +131,7 @@ onMounted(() => {
               <button 
                 type="submit" 
                 :disabled="loading"
-                class="px-8 py-4 bg-[#006D3E] text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-[#005a33] transition-all shadow-xl shadow-[#006D3E]/20 active:scale-95 disabled:opacity-50"
+                class="px-8 py-4 bg-[#006D3E] text-white rounded-lg font-black uppercase tracking-widest text-xs hover:bg-[#005a33] transition-all shadow-xl shadow-[#006D3E]/20 active:scale-95 disabled:opacity-50"
               >
                 Simpan Perubahan
               </button>
@@ -142,7 +142,7 @@ onMounted(() => {
         <!-- Security Section -->
         <section class="bg-white rounded-[2.5rem] p-8 md:p-10 shadow-sm border border-gray-100 space-y-8">
           <h3 class="text-xl font-extrabold text-gray-900 flex items-center gap-3">
-            <span class="w-1.5 h-6 bg-[#006D3E] rounded-full"></span>
+            <span class="w-1.5 h-6 bg-[#006D3E] rounded-lg"></span>
             Keamanan Akun
           </h3>
 
@@ -153,7 +153,7 @@ onMounted(() => {
                 v-model="form.current_password"
                 type="password" 
                 placeholder="••••••••"
-                class="w-full px-5 py-4 bg-gray-50/50 border border-gray-100 rounded-2xl focus:bg-white focus:border-[#006D3E] focus:ring-4 focus:ring-[#006D3E]/5 outline-none transition-all text-sm font-semibold"
+                class="w-full px-5 py-4 bg-gray-50/50 border border-gray-100 rounded-lg focus:bg-white focus:border-[#006D3E] focus:ring-4 focus:ring-[#006D3E]/5 outline-none transition-all text-sm font-semibold"
                 required
               />
             </div>
@@ -165,7 +165,7 @@ onMounted(() => {
                   v-model="form.new_password"
                   type="password" 
                   placeholder="••••••••"
-                  class="w-full px-5 py-4 bg-gray-50/50 border border-gray-100 rounded-2xl focus:bg-white focus:border-[#006D3E] focus:ring-4 focus:ring-[#006D3E]/5 outline-none transition-all text-sm font-semibold"
+                  class="w-full px-5 py-4 bg-gray-50/50 border border-gray-100 rounded-lg focus:bg-white focus:border-[#006D3E] focus:ring-4 focus:ring-[#006D3E]/5 outline-none transition-all text-sm font-semibold"
                   required
                 />
               </div>
@@ -175,7 +175,7 @@ onMounted(() => {
                   v-model="form.new_password_confirmation"
                   type="password" 
                   placeholder="••••••••"
-                  class="w-full px-5 py-4 bg-gray-50/50 border border-gray-100 rounded-2xl focus:bg-white focus:border-[#006D3E] focus:ring-4 focus:ring-[#006D3E]/5 outline-none transition-all text-sm font-semibold"
+                  class="w-full px-5 py-4 bg-gray-50/50 border border-gray-100 rounded-lg focus:bg-white focus:border-[#006D3E] focus:ring-4 focus:ring-[#006D3E]/5 outline-none transition-all text-sm font-semibold"
                   required
                 />
               </div>
@@ -185,7 +185,7 @@ onMounted(() => {
               <button 
                 type="submit" 
                 :disabled="loading"
-                class="px-8 py-4 bg-gray-900 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-black transition-all shadow-xl shadow-black/10 active:scale-95 disabled:opacity-50"
+                class="px-8 py-4 bg-gray-900 text-white rounded-lg font-black uppercase tracking-widest text-xs hover:bg-black transition-all shadow-xl shadow-black/10 active:scale-95 disabled:opacity-50"
               >
                 Ganti Password
               </button>
@@ -197,9 +197,9 @@ onMounted(() => {
       <!-- Right Column: Sidebar info -->
       <div class="space-y-8">
         <div class="bg-[#006D3E] rounded-[2.5rem] p-10 text-white shadow-2xl shadow-[#006D3E]/20 relative overflow-hidden">
-          <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/5 rounded-full blur-3xl"></div>
+          <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/5 rounded-lg blur-3xl"></div>
           <div class="relative z-10 space-y-6">
-            <div class="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-md">
+            <div class="w-16 h-16 rounded-lg bg-white/20 flex items-center justify-center backdrop-blur-md">
               <span class="material-symbols-outlined text-3xl">shield</span>
             </div>
             <h4 class="text-2xl font-extrabold leading-tight">Privasi & Keamanan</h4>

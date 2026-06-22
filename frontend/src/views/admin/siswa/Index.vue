@@ -2,10 +2,13 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import api from '@/api'
+import SkeletonLoader from '@/components/SkeletonLoader.vue'
+import { useSkeletonCount } from '@/composables/useSkeletonCount'
 
 const router = useRouter()
 const students = ref<any[]>([])
-const loading = ref(false)
+const loading = ref(true)
+const { skeletonCount, updateSkeletonCount } = useSkeletonCount('admin.siswa', 5)
 const pagination = ref({
   current_page: 1,
   last_page: 1
@@ -59,6 +62,7 @@ const fetchStudents = async (page = 1) => {
   try {
     const response = await api.get(`/admin/siswa?page=${page}`)
     students.value = response.data.data
+    updateSkeletonCount(students.value.length)
     pagination.value = {
       current_page: response.data.current_page,
       last_page: response.data.last_page
@@ -114,7 +118,7 @@ onMounted(() => {
       <div v-if="flashMessage.show" class="fixed top-8 right-8 z-[100] w-full max-w-sm overflow-hidden rounded-[2rem] bg-white/80 backdrop-blur-xl border border-white/20 shadow-2xl shadow-blue-900/10">
         <div class="p-6">
           <div class="flex items-center gap-4">
-            <div :class="flashMessage.type === 'success' ? 'bg-[#2563EB]' : 'bg-red-500'" class="w-10 h-10 rounded-2xl flex items-center justify-center text-white shrink-0 shadow-lg">
+            <div :class="flashMessage.type === 'success' ? 'bg-[#006D3E]' : 'bg-red-500'" class="w-10 h-10 rounded-lg flex items-center justify-center text-white shrink-0 shadow-lg">
               <span class="material-symbols-outlined text-xl">{{ flashMessage.type === 'success' ? 'check_circle' : 'error' }}</span>
             </div>
             <div class="flex-1">
@@ -126,7 +130,7 @@ onMounted(() => {
         <div class="h-1 bg-gray-100 w-full overflow-hidden">
           <div
             class="h-full transition-all duration-100 ease-linear"
-            :class="flashMessage.type === 'success' ? 'bg-[#2563EB]' : 'bg-red-500'"
+            :class="flashMessage.type === 'success' ? 'bg-[#006D3E]' : 'bg-red-500'"
             :style="{ width: flashMessage.progress + '%' }"
           ></div>
         </div>
@@ -135,9 +139,9 @@ onMounted(() => {
 
     <!-- Delete Confirm Modal -->
     <div v-if="deleteConfirm.show" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      <div class="absolute inset-0 bg-gray-900/40 backdrop-blur-sm" @click="closeDeleteConfirm"></div>
+      <div class="absolute inset-0 bg-transparent" @click="closeDeleteConfirm"></div>
       <div class="bg-white rounded-[2rem] p-8 max-w-md w-full relative z-10 shadow-2xl animate-in zoom-in-95 duration-300">
-        <div class="w-16 h-16 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+        <div class="w-16 h-16 bg-red-50 text-red-500 rounded-lg flex items-center justify-center mx-auto mb-6">
           <span class="material-symbols-outlined text-3xl">delete_forever</span>
         </div>
         <h3 class="text-xl font-black text-center text-gray-900 mb-2">Hapus Siswa?</h3>
@@ -163,14 +167,14 @@ onMounted(() => {
       </div>
       <button 
         @click="router.push({ name: 'admin.siswa.create' })"
-        class="flex items-center gap-2 px-6 py-3.5 bg-[#2563EB] text-white rounded-2xl font-bold hover:shadow-lg hover:shadow-blue-600/20 hover:opacity-90 transition-all cursor-pointer active:scale-95 self-start md:self-auto"
+        class="flex items-center gap-2 px-6 py-3.5 bg-[#006D3E] text-white rounded-lg font-bold hover:shadow-lg hover:shadow-blue-600/20 hover:opacity-90 transition-all cursor-pointer active:scale-95 self-start md:self-auto"
       >
         <span class="material-symbols-outlined">person_add</span>
         Tambah Siswa
       </button>
     </div>
 
-    <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
+    <div class="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
           <thead>
@@ -182,9 +186,7 @@ onMounted(() => {
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-50">
-            <tr v-if="loading" v-for="i in 3" :key="i" class="animate-pulse">
-              <td colspan="4" class="px-6 py-8"><div class="h-4 bg-gray-100 rounded w-full"></div></td>
-            </tr>
+            <SkeletonLoader v-if="loading" type="table" :rows="skeletonCount" />
             <tr v-else-if="students.length === 0">
               <td colspan="4" class="px-6 py-20 text-center">
                 <span class="material-symbols-outlined text-5xl text-gray-200 mb-2">person_off</span>
@@ -194,11 +196,11 @@ onMounted(() => {
             <tr v-for="siswa in students" :key="siswa.id" class="hover:bg-gray-50/50 transition-colors group">
               <td class="px-6 py-5">
                 <div class="flex items-center gap-4">
-                  <div class="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-[#2563EB] font-bold shadow-sm">
+                  <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center text-[#006D3E] font-bold shadow-sm">
                     {{ siswa.name.charAt(0).toUpperCase() }}
                   </div>
                   <div>
-                    <p class="font-bold text-gray-900 leading-none mb-1 group-hover:text-[#2563EB] transition-colors">{{ siswa.name }}</p>
+                    <p class="font-bold text-gray-900 leading-none mb-1 group-hover:text-[#006D3E] transition-colors">{{ siswa.name }}</p>
                     <p class="text-xs text-gray-400 font-medium">Terdaftar: {{ new Date(siswa.created_at).toLocaleDateString() }}</p>
                   </div>
                 </div>
@@ -218,13 +220,13 @@ onMounted(() => {
               <td class="px-6 py-5 text-center">
                 <span 
                   v-if="siswa.is_active" 
-                  class="px-3 py-1 bg-green-50 text-green-600 rounded-full text-[10px] font-black uppercase tracking-widest border border-green-100"
+                  class="px-3 py-1 bg-green-50 text-green-600 rounded-lg text-[10px] font-black uppercase tracking-widest border border-green-100"
                 >
                   Aktif
                 </span>
                 <span 
                   v-else 
-                  class="px-3 py-1 bg-orange-50 text-orange-600 rounded-full text-[10px] font-black uppercase tracking-widest border border-orange-100"
+                  class="px-3 py-1 bg-orange-50 text-orange-600 rounded-lg text-[10px] font-black uppercase tracking-widest border border-orange-100"
                 >
                   Verifikasi
                 </span>
@@ -286,6 +288,6 @@ onMounted(() => {
 
 <style scoped>
 .font-headline { font-family: 'Plus Jakarta Sans', sans-serif; }
-.bg-primary { background-color: #2563EB; }
-.text-primary { color: #2563EB; }
+.bg-primary { background-color: #006D3E; }
+.text-primary { color: #006D3E; }
 </style>

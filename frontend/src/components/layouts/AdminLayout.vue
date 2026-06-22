@@ -22,7 +22,7 @@ const fetchUser = async () => {
   } catch (error) {
     console.error('Failed to fetch user:', error)
     // Jika gagal fetch user (token kadaluwarsa), lempar ke login
-    // router.push('/lms/login')
+    // router.push('/login')
   }
 }
 
@@ -33,7 +33,7 @@ const handleLogout = async () => {
     console.error('Logout error:', e)
   } finally {
     localStorage.removeItem('btqr_token')
-    router.push('/lms/login')
+    router.push('/login')
   }
 }
 
@@ -54,101 +54,98 @@ onMounted(() => {
 
     <!-- SideNavBar -->
     <aside 
-      class="bg-[#2563EB] h-screen w-60 fixed left-0 top-0 flex flex-col py-6 px-5 z-50 overflow-y-auto font-semibold shadow-[0_12px_32px_-4px_rgba(37,99,235,0.08)] transition-transform duration-300 md:translate-x-0"
+      class="bg-[#006D3E] h-screen w-60 fixed left-0 top-0 flex flex-col py-6 px-5 z-50 overflow-y-auto font-semibold shadow-[0_12px_32px_-4px_rgba(0,109,62,0.08)] transition-transform duration-300 md:translate-x-0"
       :class="isSidebarOpen ? 'translate-x-0' : '-translate-x-full'"
     >
       <div class="mb-10 px-4 flex justify-between items-center">
         <div>
           <h1 class="text-white font-['Plus_Jakarta_Sans'] italic text-xl">BTQR</h1>
-          <p class="text-white/60 text-[10px] font-normal mt-0.5 uppercase tracking-widest">Admin Portal</p>
+          <p class="text-white/60 text-[10px] font-normal mt-0.5 uppercase tracking-widest">Portal Admin</p>
         </div>
         <button @click="isSidebarOpen = false" class="text-white md:hidden">
           <span class="material-symbols-outlined">close</span>
         </button>
       </div>
-
+ 
       <nav class="flex-1 space-y-2">
         <!-- Dashboard -->
         <RouterLink 
-          to="/lms/admin" 
+          to="/admin" 
           @click="isSidebarOpen = false"
-          class="flex items-center gap-3 px-4 py-2.5 rounded-full transition-all group text-sm"
-          exact-active-class="bg-white text-[#2563EB] md:-mr-4 shadow-sm"
+          class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all group text-sm"
+          exact-active-class="bg-white text-[#006D3E] md:-mr-4 shadow-sm"
           :class="currentRouteName !== 'admin.dashboard' ? 'text-white/80 hover:bg-white/10 hover:text-white' : ''"
         >
           <span class="material-symbols-outlined" :style="currentRouteName === 'admin.dashboard' ? 'font-variation-settings: \'FILL\' 1' : ''">dashboard</span>
           <span>Dashboard</span>
         </RouterLink>
-
-
+ 
+ 
         <!-- Pengajar -->
         <RouterLink 
-          to="/lms/admin/pengajar" 
+          to="/admin/pengajar" 
           @click="isSidebarOpen = false"
-          class="flex items-center gap-3 px-4 py-3 rounded-full transition-all group"
-          :class="route.path.startsWith('/lms/admin/pengajar') ? 'bg-white text-[#2563EB] md:-mr-4 shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white'"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all group"
+          :class="route.path.startsWith('/admin/pengajar') ? 'bg-white text-[#006D3E] md:-mr-4 shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white'"
         >
-          <span class="material-symbols-outlined" :style="route.path.startsWith('/lms/admin/pengajar') ? 'font-variation-settings: \'FILL\' 1' : ''">badge</span>
+          <span class="material-symbols-outlined" :style="route.path.startsWith('/admin/pengajar') ? 'font-variation-settings: \'FILL\' 1' : ''">badge</span>
           <span>Pengajar</span>
         </RouterLink>
-
+ 
         <!-- Siswa -->
         <RouterLink 
-          to="/lms/admin/siswa" 
+          to="/admin/siswa" 
           @click="isSidebarOpen = false"
-          class="flex items-center gap-3 px-4 py-3 rounded-full transition-all group"
-          :class="route.path.startsWith('/lms/admin/siswa') ? 'bg-white text-[#2563EB] md:-mr-4 shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white'"
+          class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all group"
+          :class="route.path.startsWith('/admin/siswa') ? 'bg-white text-[#006D3E] md:-mr-4 shadow-sm' : 'text-white/80 hover:bg-white/10 hover:text-white'"
         >
-          <span class="material-symbols-outlined" :style="route.path.startsWith('/lms/admin/siswa') ? 'font-variation-settings: \'FILL\' 1' : ''">person</span>
+          <span class="material-symbols-outlined" :style="route.path.startsWith('/admin/siswa') ? 'font-variation-settings: \'FILL\' 1' : ''">person</span>
           <span>Siswa</span>
         </RouterLink>
-
+ 
       </nav>
-
+ 
       <div class="mt-auto pt-6 border-t border-white/10 space-y-1 text-white">
         <RouterLink 
-          to="/lms/admin/settings" 
+          to="/admin/settings" 
           @click="isSidebarOpen = false"
-          class="flex items-center gap-3 px-4 py-2.5 rounded-full text-sm transition-all"
-          :class="route.path === '/lms/admin/settings' ? 'bg-white/15 text-white' : 'text-white/80 hover:bg-white/10 hover:text-white'"
+          class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm transition-all"
+          :class="route.path === '/admin/settings' ? 'bg-white/15 text-white' : 'text-white/80 hover:bg-white/10 hover:text-white'"
         >
           <span class="material-symbols-outlined text-xl">settings</span>
-          <span>Settings</span>
+          <span>Pengaturan</span>
         </RouterLink>
         <button 
           @click="handleLogout"
-          class="w-full flex items-center gap-3 px-4 py-2.5 rounded-full text-white/80 text-sm transition-all hover:bg-white/10 hover:text-white"
+          class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-white/80 text-sm transition-all hover:bg-white/10 hover:text-white"
         >
           <span class="material-symbols-outlined text-xl">logout</span>
-          <span>Logout</span>
+          <span>Keluar</span>
         </button>
       </div>
     </aside>
-
+ 
     <!-- Main Canvas -->
     <main class="min-h-screen bg-white transition-all duration-300 md:ml-60">
       <!-- TopAppBar -->
       <header class="flex justify-between items-center w-full px-4 md:px-8 py-3 bg-white sticky top-0 z-40 border-b border-gray-100 md:border-none">
         <div class="flex items-center gap-3 md:gap-4 text-outline">
-          <button @click="toggleSidebar" class="p-2 -ml-2 text-[#2563EB] md:hidden">
+          <button @click="toggleSidebar" class="p-2 -ml-2 text-[#006D3E] md:hidden">
             <span class="material-symbols-outlined">menu</span>
           </button>
-          <span class="text-xs font-bold uppercase tracking-widest opacity-40 hidden sm:inline">Admin</span>
-          <span class="material-symbols-outlined text-xs hidden sm:inline">chevron_right</span>
-          <span class="text-[#2563EB] font-bold border-b-2 border-[#2563EB] capitalize text-sm">{{ route.path.split('/').pop() || 'Dashboard' }}</span>
         </div>
         <div class="flex items-center gap-4 md:gap-6">
           <NotificationBell 
-            themeColor="#2563EB" 
-            hoverColorClass="hover:text-[#2563EB]" 
+            themeColor="#006D3E" 
+            hoverColorClass="hover:text-[#006D3E]" 
             badgeColorClass="bg-red-600" 
           />
           <div class="flex items-center gap-3 pl-4 border-l border-gray-200">
             <div class="text-right hidden sm:block">
-              <p class="text-sm font-bold text-gray-900 leading-none">{{ user?.name || 'Loading...' }}</p>
-              <p class="text-[10px] text-gray-400 font-bold uppercase tracking-tighter mt-1">{{ user?.role || 'User' }}</p>
+              <p class="text-sm font-bold text-gray-900 leading-none">{{ user?.name || 'Memuat...' }}</p>
+              <p class="text-[10px] text-gray-400 font-bold uppercase tracking-tighter mt-1">{{ user?.role || 'Pengguna' }}</p>
             </div>
-            <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-[#2563EB] shadow-sm overflow-hidden">
+            <div class="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center text-[#006D3E] shadow-sm overflow-hidden">
                <span class="material-symbols-outlined">shield_person</span>
             </div>
           </div>

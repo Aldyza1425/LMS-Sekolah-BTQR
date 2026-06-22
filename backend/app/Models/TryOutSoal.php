@@ -19,7 +19,8 @@ class TryOutSoal extends Model
         'pilihan_d',
         'jawaban',
         'bobot',
-        'urutan'
+        'urutan',
+        'is_arabic'
     ];
 
     public function tryOut()
